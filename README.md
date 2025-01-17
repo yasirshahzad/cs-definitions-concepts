@@ -155,6 +155,11 @@ Adding a new notification type (e.g., PushNotification) now requires **only crea
 **Explanation:**
 Derived classes must be able to replace their base classes without causing unexpected behavior. This ensures that polymorphism works correctly and that the code remains consistent.
 
+**Key Points**
+- Inheritance and polymorphism (behavior consistency)
+- Ensure substitutability of subclasses without breaking correctness
+- Prevents **unexpected behavior** and violations in inheritance hierarchies
+- Subclasses can seamlessly replace their base class without altering the program's functionality
 
 
 **Bad Code**
@@ -224,6 +229,12 @@ Now, both `FlyingBird` and `NonFlyingBird` conform to the Bird abstraction, ensu
 
 **Explanation:**
 Large interfaces should be broken into smaller, more specific ones. This ensures that classes only implement the methods they need.
+
+**Key Points**
+- Interfaces (design of contracts)
+- Avoid forcing a class to implement irrelevant methods
+- Prevents **fat interfaces** and unnecessary dependencies
+- Interfaces are small, focused, and tailored to client needs	
 
 **Bad Code**
 
