@@ -1,6 +1,8 @@
 # Computer Science Definitions and Concepts
 
-## 1. SOLID Design Principle
+## Software Engineering Principles
+
+### 1. SOLID Design Principle
 
 The **SOLID principles** are a set of design guidelines to help create scalable and maintainable software. These principles are:
 
@@ -12,7 +14,7 @@ The **SOLID principles** are a set of design guidelines to help create scalable 
 
 Let's examine each principle with bad code and improved code examples in TypeScript.
 
-### 1. Single Responsibility
+#### 1. Single Responsibility
 
 *A class should have only one reason to change.*
 
@@ -80,7 +82,7 @@ printer.printReport(report);
 
 Now, **each class has one responsibility**, making them easy to modify and test independently.
 
-### 2. Open/Closed Principle (OCP)
+#### 2. Open/Closed Principle (OCP)
 
 *Software entities (classes, modules, functions, etc.) should be open for extension but closed for modification.*
 
@@ -148,7 +150,7 @@ smsService.notify("Hello via SMS");
 
 Adding a new notification type (e.g., PushNotification) now requires **only creating a new class** without modifying the existing ones.
 
-### 3. Liskov Substitution Principle (LSP)
+#### 3. Liskov Substitution Principle (LSP)
 
 *Subtypes must be substitutable for their base types without altering program behavior.*
 
@@ -223,7 +225,7 @@ makeBirdMove(penguin);
 
 Now, both `FlyingBird` and `NonFlyingBird` conform to the Bird abstraction, ensuring no unexpected behavior.
 
-### 4. Interface Segregation Principle (ISP)
+#### 4. Interface Segregation Principle (ISP)
 
 *Clients should not be forced to implement interfaces they do not use.*
 
@@ -294,7 +296,7 @@ class Dog implements Eatable, Swimmable {
 Now, `Dog` only implements the interfaces it needs.
 
 
-### 5. Dependency Inversion Principle (DIP)
+#### 5. Dependency Inversion Principle (DIP)
 
 *High-level modules should not depend on low-level modules. Both should depend on abstractions.*
 
@@ -371,7 +373,7 @@ app2.start();
 
 Now, `App` depends on the `Database` abstraction, making it easy to switch database implementations without modifying the `App` class.
 
-### **Summary:**
+#### **Summary:**
 
 1. **SRP:** Break classes into smaller, focused classes.
 2. **OCP:** Extend functionality via inheritance or composition instead of modifying existing code.
@@ -380,3 +382,84 @@ Now, `App` depends on the `Database` abstraction, making it easy to switch datab
 5. **DIP:** Depend on abstractions, not concrete implementations.
 
 By following these principles, you'll create modular, testable, and maintainable TypeScript applications!
+
+### 2. DRY (Don't Repeat Yourself)
+
+- **Principle:** Avoid duplication of code or logic.
+- **Explanation:** Each piece of knowledge should be represented in a single place in the codebase. Redundant code makes maintenance harder and increases the chances of bugs.
+- **Example:** Instead of copying and pasting a function, extract it into a reusable method.
+
+### 3. YAGNI (You Aren't Gonna Need It)
+
+- **Principle:** Only implement features that are needed now, not what you might need in the future.
+- **Explanation:** Avoid over engineering and building unnecessary features, as they might never be used, leading to wasted effort and complexity.
+
+### 4. KISS (Keep It Simple, Stupid)
+
+- **Principle:** Keep your code as simple as possible.
+- **Explanation:** Simpler code is easier to read, maintain, and debug. Avoid unnecessary complexity unless absolutely required.
+
+### 5. Inversion of Control (IoC)
+
+- **Principle** A class should not manage its dependencies directly but instead rely on an external entity to provide them.
+- **Explanation:** This leads to more flexible and decoupled code, where components can be easily swapped or replaced.
+
+### 6. Dependency Injection (DI)
+
+- **Principle:** A specific form of IoC where dependencies are provided to a class by an external entity (e.g., via a constructor or setter).
+- **Explanation:** Promotes testability and reduces tight coupling between classes.
+
+### 7. Separation of Concerns (SoC)
+
+**Principle:** Different parts of a program should handle distinct concerns or responsibilities.
+**Explanation:** Helps achieve modularity and simplifies code maintenance.
+
+### 8. The Law of Demeter (LoD)
+
+- **Principle:** A module should only talk to its immediate friends and not strangers (no "train wrecks").
+- **Explanation:** Minimize dependencies between classes by limiting how objects communicate with each other.
+
+### 9. Modularity
+
+- **Principle:** Divide the system into smaller, independent, and interchangeable modules.
+- **Explanation:** Facilitates code reuse, parallel development, and easier debugging.
+
+### 10. Code Reusability
+
+- **Principle:** Design systems in a way that components can be reused across different projects or modules.
+- **Explanation:** Saves time and effort by reducing duplication.
+
+### 11. Least Privilege
+
+- **Principle:** Grant only the permissions necessary to perform a task.
+- **Explanation:** Enhances security and minimizes potential damage from mistakes or attacks.
+
+### 12. Fail Fast
+
+- **Principle:** Systems should immediately report any failure.
+- **Explanation:** Detecting issues early helps in debugging and avoids propagating errors further in the system.
+
+### 13. High Cohesion and Low Coupling
+
+- **Principle:** Modules should be highly cohesive (focused on a single task) and loosely coupled (interdependent as little as possible).
+- **Explanation:** Improves code readability, scalability, and maintainability.
+
+### 14. Continuous Refactoring
+
+**Principle:** Regularly update and improve code without changing its external behavior.
+**Explanation:** Keeps the codebase clean, efficient, and adaptable.
+
+### 15. Single Source of Truth (SSoT)
+
+**Principle:** Data should have only one authoritative source.
+**Explanation:** Avoids data inconsistencies and simplifies debugging.
+
+### 16. Composition Over Inheritance
+
+- **Principle:** Prefer using composition (object relationships) instead of inheritance for code reuse.
+- **Explanation:** Reduces tight coupling and allows for greater flexibility.
+
+### 17. Persistence Ignorance
+
+- **Principle:** Business logic should not be dependent on how data is stored or retrieved.
+- **Explanation:** Decouple domain logic from persistence mechanisms.
