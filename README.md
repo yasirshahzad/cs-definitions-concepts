@@ -401,7 +401,7 @@ By following these principles, you'll create modular, testable, and maintainable
 
 ### 5. Inversion of Control (IoC)
 
-- **Principle** A class should not manage its dependencies directly but instead rely on an external entity to provide them.
+- **Principle:** A class should not manage its dependencies directly but instead rely on an external entity to provide them.
 - **Explanation:** This leads to more flexible and decoupled code, where components can be easily swapped or replaced.
 
 ### 6. Dependency Injection (DI)
@@ -444,22 +444,17 @@ By following these principles, you'll create modular, testable, and maintainable
 - **Principle:** Modules should be highly cohesive (focused on a single task) and loosely coupled (interdependent as little as possible).
 - **Explanation:** Improves code readability, scalability, and maintainability.
 
-### 14. Continuous Refactoring
-
-**Principle:** Regularly update and improve code without changing its external behavior.
-**Explanation:** Keeps the codebase clean, efficient, and adaptable.
-
-### 15. Single Source of Truth (SSoT)
+### 14. Single Source of Truth (SSoT)
 
 **Principle:** Data should have only one authoritative source.
 **Explanation:** Avoids data inconsistencies and simplifies debugging.
 
-### 16. Composition Over Inheritance
+### 15. Composition Over Inheritance
 
 - **Principle:** Prefer using composition (object relationships) instead of inheritance for code reuse.
 - **Explanation:** Reduces tight coupling and allows for greater flexibility.
 
-### 17. Persistence Ignorance
+### 16. Persistence Ignorance
 
 - **Principle:** Business logic should not be dependent on how data is stored or retrieved.
 - **Explanation:** Decouple domain logic from persistence mechanisms.
