@@ -401,12 +401,12 @@ By following these principles, you'll create modular, testable, and maintainable
 
 ### 5. Inversion of Control (IoC)
 
-- **Principle:** A class should not manage its dependencies directly but instead rely on an external entity to provide them.
+- **Principle:** A class should not create its own dependencies. It should rely on external control (inversion of control). A class should not manage its dependencies directly but instead rely on an external entity to provide them.
 - **Explanation:** This leads to more flexible and decoupled code, where components can be easily swapped or replaced.
 
 ### 6. Dependency Injection (DI)
 
-- **Principle:** A specific form of IoC where dependencies are provided to a class by an external entity (e.g., via a constructor or setter).
+- **Principle:** DI is a way to achieve IoC by injecting dependencies (usually through constructors or setters). A specific form of IoC where dependencies are provided to a class by an external entity (e.g., via a constructor or setter).
 - **Explanation:** Promotes testability and reduces tight coupling between classes.
 
 ### 7. Separation of Concerns (SoC)
