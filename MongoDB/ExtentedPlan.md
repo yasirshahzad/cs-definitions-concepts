@@ -157,9 +157,7 @@
 
 ## 2. Data Models and Data Types in MongoDB
 
----
-
-## 2.1. **BSON vs JSON**
+### 2.1. **BSON vs JSON**
 
 - **JSON** (JavaScript Object Notation):
 
@@ -175,7 +173,7 @@
 
 ---
 
-### Example (JSON vs BSON internally)
+#### Example (JSON vs BSON internally)
 
 **JSON you write:**
 
@@ -195,7 +193,7 @@
 
 ---
 
-## 2.2. **Embedded Documents**
+### 2.2. **Embedded Documents**
 
 MongoDB supports **documents inside documents** (nested objects).  
 This is **called embedding**.
@@ -223,7 +221,7 @@ db.users.insertOne({
 
 ---
 
-## 2.3. **MongoDB Core Datatypes**
+### 2.3. **MongoDB Core Datatypes**
 
 MongoDB supports the following important types:
 
@@ -258,7 +256,7 @@ db.examples.insertOne({
 
 ---
 
-## 2.4. **Data Model Design: Embedding vs Referencing**
+### 2.4. **Data Model Design: Embedding vs Referencing**
 
 When structuring data in MongoDB, you **choose between:**
 
@@ -316,9 +314,7 @@ Let's continue with **3. Collections and Documents** — and I'll keep it **full
 
 ## 3. Collections and Documents
 
----
-
-## 3.1. **Collections and Documents**
+### 3.1. **Collections and Documents**
 
 **Collection** → Like a table in SQL.  
 **Document** → Like a row, but flexible (schema-less).
@@ -354,7 +350,7 @@ db.users.insertMany([
 
 ---
 
-## 3.2. **`insert()` Method** (Older)
+### 3.2. **`insert()` Method** (Older)
 
 MongoDB older versions used `insert()`, now we mostly use `insertOne()` or `insertMany()`.  
 Still, here's how it works:
@@ -371,7 +367,7 @@ db.products.insert([
 
 ---
 
-## 3.3. **`update()` Method**
+### 3.3. **`update()` Method**
 
 There are modern versions:
 
@@ -401,7 +397,7 @@ db.users.updateMany(
 
 ---
 
-## 3.4. **`delete()` Method**
+### 3.4. **`delete()` Method**
 
 Modern methods are:
 
@@ -422,7 +418,7 @@ db.users.deleteMany({ age: { $gt: 28 } }); // delete all users age > 28
 
 ---
 
-## 3.5. **`bulkWrite()` Method**
+### 3.5. **`bulkWrite()` Method**
 
 Run **multiple operations** together in one network call (better performance).
 
@@ -440,7 +436,7 @@ db.users.bulkWrite([
 
 ---
 
-## 3.6. **`find()` Method**
+### 3.6. **`find()` Method**
 
 **Retrieve documents** from a collection.
 
@@ -464,7 +460,7 @@ db.users.find().pretty();
 
 ---
 
-## 3.7. **`countDocuments()` Method**
+### 3.7. **`countDocuments()` Method**
 
 Count how many documents match a query.
 
@@ -478,7 +474,7 @@ db.users.countDocuments({ age: { $gte: 25 } });
 
 ---
 
-## 3.8. **`createIndex()` Method**
+### 3.8. **`createIndex()` Method**
 
 Improve query performance by creating indexes.
 
@@ -492,7 +488,7 @@ db.users.createIndex({ email: 1 }); // 1 = ascending order
 
 ---
 
-## 3.9. **`dropIndex()` Method**
+### 3.9. **`dropIndex()` Method**
 
 Remove an index.
 
@@ -506,7 +502,7 @@ db.users.dropIndex("email_1"); // index name is usually field_direction
 
 ---
 
-## ✅ Quick Recap
+### ✅ Quick Recap
 
 | Method                     | Purpose                     | Example                                   |
 | :------------------------- | :-------------------------- | :---------------------------------------- |
@@ -518,7 +514,7 @@ db.users.dropIndex("email_1"); // index name is usually field_direction
 | countDocuments()           | Count matching documents    | `db.collection.countDocuments(filter)`    |
 | createIndex(), dropIndex() | Manage indexes              | `db.collection.createIndex({ field: 1 })` |
 
-Awesome — let’s move to **4. CRUD (MongoDB CRUD, upsert, write concern)**! 🚀  
+Awesome — let's move to **4. CRUD (MongoDB CRUD, upsert, write concern)**! 🚀  
 I'll again give **clear explanations + many code examples**.
 
 ---
@@ -536,7 +532,7 @@ MongoDB follows the traditional **CRUD** model:
 
 ---
 
-## 4.1. **Create**
+### 4.1. **Create**
 
 Insert new documents into a collection.
 
@@ -557,7 +553,7 @@ db.books.insertMany([
 
 ---
 
-## 4.2. **Read**
+### 4.2. **Read**
 
 Query documents from a collection.
 
@@ -581,7 +577,7 @@ db.books.find({}, { _id: 0, title: 1, author: 1 });
 
 ---
 
-## 4.3. **Update**
+### 4.3. **Update**
 
 Modify existing documents.
 
@@ -603,7 +599,7 @@ db.books.updateMany(
 
 ---
 
-## 4.4. **Delete**
+### 4.4. **Delete**
 
 Remove documents.
 
@@ -619,7 +615,7 @@ db.books.deleteMany({ price: { $gt: 15 } });
 
 ---
 
-## 4.5. **Upsert Option**
+### 4.5. **Upsert Option**
 
 **Upsert** = Update if exists, Insert if not.
 
@@ -638,7 +634,7 @@ db.books.updateOne(
 
 ---
 
-## 4.6. **Write Concern**
+### 4.6. **Write Concern**
 
 **Write Concern** = How sure MongoDB should be that the write was successful.
 
@@ -668,7 +664,7 @@ db.books.insertOne(
 
 ---
 
-## 🚀 Quick Full CRUD Example
+### 🚀 Quick Full CRUD Example
 
 ```js
 // 1. Create
@@ -686,7 +682,7 @@ db.students.deleteOne({ name: "John Doe" });
 
 ---
 
-## 🔥 Summary Table
+### 🔥 Summary Table
 
 | CRUD          | Method                                  | Example                               |
 | :------------ | :-------------------------------------- | :------------------------------------ |
@@ -700,7 +696,7 @@ db.students.deleteOne({ name: "John Doe" });
 
 ## 5. QUERY AND PROJECTION
 
-## 5.1. **Basic Query**
+### 5.1. **Basic Query**
 
 MongoDB queries are similar to **JSON objects**. You provide a filter, and MongoDB will search for documents that match that filter.
 
@@ -712,7 +708,7 @@ db.users.find({ age: 30 }); // Find all users aged 30
 
 ---
 
-## 5.2. **Projections**
+### 5.2. **Projections**
 
 You can use **projections** to specify which fields to return in the result.
 
@@ -725,11 +721,11 @@ db.users.find({ age: 30 }, { name: 1, age: 1, _id: 0 });
 
 ---
 
-## 5.3. **Comparison Operators**
+### 5.3. **Comparison Operators**
 
 MongoDB supports comparison operators for filtering data.
 
-### Common Comparison Operators
+#### Common Comparison Operators
 
 - `$eq`: Equal to
 - `$ne`: Not equal to
@@ -755,11 +751,11 @@ db.users.find({ age: { $nin: [20, 22, 24] } });
 
 ---
 
-## 5.4. **Logical Operators**
+### 5.4. **Logical Operators**
 
 Logical operators combine multiple conditions.
 
-### Common Logical Operators
+#### Common Logical Operators
 
 - `$and`: All conditions must be true
 - `$or`: At least one condition must be true
@@ -781,11 +777,11 @@ db.users.find({ age: { $not: { $eq: 25 } } });
 
 ---
 
-## 5.5. **Array Operators**
+### 5.5. **Array Operators**
 
 MongoDB supports a variety of operators for querying **arrays**.
 
-### Common Array Operators:
+#### Common Array Operators:
 
 - `$all`: Match all elements in an array
 - `$elemMatch`: Match documents with arrays containing elements that satisfy a query
@@ -807,11 +803,11 @@ db.users.find({ hobbies: { $size: 3 } });
 
 ---
 
-## 5.6. **Element Operators**
+### 5.6. **Element Operators**
 
 These operators allow you to check the presence or type of a field.
 
-### Common Element Operators
+#### Common Element Operators
 
 - `$exists`: Matches documents that have a field
 - `$type`: Matches documents that have a field of a specific type
@@ -828,9 +824,9 @@ db.users.find({ email: { $type: "string" } });
 
 ---
 
-## 🧠 **Quick Examples**
+### 🧠 **Quick Examples**
 
-Here’s a set of queries combining multiple operators for practice:
+Here's a set of queries combining multiple operators for practice:
 
 ```js
 // 1. Find all users who are either 25 years old or live in "New York"
@@ -851,7 +847,7 @@ db.users.find({ phoneNumber: { $type: "string" } });
 
 ---
 
-## 🔥 Summary Table of Operators
+### 🔥 Summary Table of Operators
 
 | Operator     | Meaning                               | Example                                         |
 | :----------- | :------------------------------------ | :---------------------------------------------- |
@@ -880,13 +876,11 @@ Let's dive into **6. Indexing and Optimization**. This is a critical part of wor
 
 ## 6. INDEXING AND OPTIMIZATION
 
----
-
-## 6.1. **Index Types**
+### 6.1. **Index Types**
 
 Indexes in MongoDB work similarly to indexes in books: they allow the database to quickly locate data without scanning the entire collection.
 
-### Common Index Types
+#### Common Index Types
 
 - **Single Field Index**: Indexes a single field.
 - **Compound Index**: Indexes multiple fields.
@@ -895,9 +889,9 @@ Indexes in MongoDB work similarly to indexes in books: they allow the database t
 - **Hashed Index**: Indexes the hashed value of a field.
 - **Geospatial Indexes**: For spatial data (like location-based queries).
 
-### Example of Index Creation
+#### Example of Index Creation
 
-#### Single Field Index
+##### Single Field Index
 
 ```js
 // Create an index on the `age` field
@@ -920,11 +914,11 @@ db.products.createIndex({ description: "text" });
 
 ---
 
-## 6.2. **Using Indexes**
+### 6.2. **Using Indexes**
 
 Once you have indexes, MongoDB will use them to optimize queries. Here's how you can check if an index is being used:
 
-### Check Index Usage
+#### Check Index Usage
 
 ```js
 // Explain the query to see if an index is being used
@@ -935,7 +929,7 @@ The `"executionStats"` option will show you details like whether an index is bei
 
 ---
 
-## 6.3. **Indexing Strategy**
+### 6.3. **Indexing Strategy**
 
 1. **Create Indexes on Frequently Queried Fields**: Index fields that are frequently used in queries to improve query speed.
 2. **Compound Indexes**: Use compound indexes when queries involve multiple fields. However, order matters in compound indexes (the fields must be queried in the index order).
@@ -944,11 +938,11 @@ The `"executionStats"` option will show you details like whether an index is bei
 
 ---
 
-## 6.4. **Query Optimization**
+### 6.4. **Query Optimization**
 
 MongoDB provides several tools to optimize queries. The key ones are **query structure** and **indexing**.
 
-### 6.4.1. **Covered Queries**
+#### 6.4.1. **Covered Queries**
 
 A **covered query** is one where all the fields returned by the query are present in the index. This prevents MongoDB from having to scan the actual documents, thus improving performance.
 
@@ -964,7 +958,7 @@ db.users.find({ age: 30 }, { name: 1 }).explain("executionStats");
 
 In the above query, if the index contains both `age` and `name`, MongoDB can use the index to "cover" the query, improving performance.
 
-### 6.4.2. **Use `limit()` and `skip()`**
+#### 6.4.2. **Use `limit()` and `skip()`**
 
 When working with large datasets, it's often helpful to use `limit()` and `skip()` to avoid querying too many documents at once.
 
@@ -980,11 +974,11 @@ These commands are especially useful when you're implementing **pagination** in 
 
 ---
 
-## 6.5. **Indexing with MongoDB Atlas Search**
+### 6.5. **Indexing with MongoDB Atlas Search**
 
 MongoDB Atlas provides **Atlas Search**, which is built on **full-text search capabilities**.
 
-### 6.5.1. **Atlas Full-Text Search**
+#### 6.5.1. **Atlas Full-Text Search**
 
 You can create advanced text indexes directly from the MongoDB Atlas UI.
 
@@ -1008,7 +1002,7 @@ db.products.aggregate([
 
 ---
 
-## 6.6. **Managing Indexes**
+### 6.6. **Managing Indexes**
 
 - **List Indexes**:
 
@@ -1032,9 +1026,9 @@ db.users.dropIndexes();
 
 ---
 
-## 6.7. **Indexing and Performance Tuning**
+### 6.7. **Indexing and Performance Tuning**
 
-### 6.7.1. **Use Compound Indexes for Multiple Conditions**
+#### 6.7.1. **Use Compound Indexes for Multiple Conditions**
 
 When a query filters on multiple fields, a **compound index** is more efficient than creating separate indexes for each field.
 
@@ -1046,7 +1040,7 @@ db.users.createIndex({ age: 1, city: 1 });
 db.users.find({ age: 30, city: "New York" });
 ```
 
-### 6.7.2. **Optimize Indexes for Sorting**
+#### 6.7.2. **Optimize Indexes for Sorting**
 
 If you're frequently sorting by a field, consider adding an index to that field.
 
@@ -1062,19 +1056,17 @@ db.users.find().sort({ age: 1 });
 
 ## 7. AGGREGATION AND PIPELINE
 
----
-
-## 7.1. **What is Aggregation?**
+### 7.1. **What is Aggregation?**
 
 **Aggregation** means **processing data records** and **returning computed results**.
 
-- It’s like SQL’s `GROUP BY`, `SUM()`, `COUNT()`, etc.
-- It’s **faster** and **more powerful** than manual loops.
+- It's like SQL's `GROUP BY`, `SUM()`, `COUNT()`, etc.
+- It's **faster** and **more powerful** than manual loops.
 - MongoDB provides the **Aggregation Pipeline**, where **documents pass through multiple stages** to be transformed.
 
 ---
 
-## 7.2. **Aggregation Pipeline Structure**
+### 7.2. **Aggregation Pipeline Structure**
 
 ```js
 db.collection.aggregate([
@@ -1090,7 +1082,7 @@ The output of one stage becomes the input to the next stage.
 
 ---
 
-## 7.3. **Common Aggregation Stages**
+### 7.3. **Common Aggregation Stages**
 
 | Stage      | Purpose                                       |
 | ---------- | --------------------------------------------- |
@@ -1106,7 +1098,7 @@ The output of one stage becomes the input to the next stage.
 
 ---
 
-## 7.4. **Simple Example**
+### 7.4. **Simple Example**
 
 Suppose we have a `sales` collection:
 
@@ -1121,7 +1113,7 @@ db.sales.insertMany([
 
 ---
 
-### Example 1: Group sales by item and calculate total quantity
+#### Example 1: Group sales by item and calculate total quantity
 
 ```js
 db.sales.aggregate([
@@ -1145,7 +1137,7 @@ db.sales.aggregate([
 
 ---
 
-### Example 2: Match + Group + Sort
+#### Example 2: Match + Group + Sort
 
 ```js
 db.sales.aggregate([
@@ -1168,7 +1160,7 @@ db.sales.aggregate([
 
 ---
 
-## 7.5. **Important Aggregation Operators**
+### 7.5. **Important Aggregation Operators**
 
 - `$sum`: Sum values.
 - `$avg`: Average.
@@ -1179,7 +1171,7 @@ db.sales.aggregate([
 
 ---
 
-## 7.6. **Aggregation Pipeline Optimization**
+### 7.6. **Aggregation Pipeline Optimization**
 
 🔵 **Best Practices for Optimization:**
 
@@ -1197,7 +1189,7 @@ db.sales.aggregate([
 
 ---
 
-## 7.7. **Advanced Example: JOIN with `$lookup`**
+### 7.7. **Advanced Example: JOIN with `$lookup`**
 
 Suppose:
 
@@ -1218,7 +1210,7 @@ db.orders.insertMany([
 ]);
 ```
 
-### Perform a JOIN using `$lookup`
+#### Perform a JOIN using `$lookup`
 
 ```js
 db.orders.aggregate([
@@ -1254,7 +1246,7 @@ db.orders.aggregate([
 
 ---
 
-## ✨ QUICK CHEAT SHEET
+### ✨ QUICK CHEAT SHEET
 
 | Pipeline Stage | Example                                                                 |
 | -------------- | ----------------------------------------------------------------------- |
@@ -1267,16 +1259,14 @@ db.orders.aggregate([
 
 ---
 
-Awesome! Let’s build a **real-world MongoDB aggregation** for a **Leaderboard**. 🎯  
+Awesome! Let's build a **real-world MongoDB aggregation** for a **Leaderboard**. 🎯  
 This is a super useful pattern for games, online courses, sales apps, fitness apps, etc.
 
 ---
 
 ## 🏆 Building a Leaderboard using MongoDB Aggregation
 
----
-
-## 1. Sample Data
+### 1. Sample Data
 
 Suppose we have a `scores` collection like this:
 
@@ -1293,7 +1283,7 @@ db.scores.insertMany([
 
 ---
 
-## 2. Goal
+### 2. Goal
 
 ✅ Rank players based on `points`  
 ✅ Show top N players (e.g., top 3)  
@@ -1301,7 +1291,7 @@ db.scores.insertMany([
 
 ---
 
-## 3. Simple Leaderboard: Top 3 Players
+### 3. Simple Leaderboard: Top 3 Players
 
 ```js
 db.scores.aggregate([
@@ -1323,7 +1313,7 @@ db.scores.aggregate([
 
 ---
 
-## 4. Leaderboard by Country: Top 2 USA Players
+### 4. Leaderboard by Country: Top 2 USA Players
 
 ```js
 db.scores.aggregate([
@@ -1345,7 +1335,7 @@ db.scores.aggregate([
 
 ---
 
-## 5. Full Leaderboard with Ranks
+### 5. Full Leaderboard with Ranks
 
 MongoDB 5.0+ introduced **`$setWindowFields`**, allowing you to **assign RANKS**!
 
@@ -1380,7 +1370,7 @@ db.scores.aggregate([
 
 ---
 
-## 🎯 Concepts Used Here
+### 🎯 Concepts Used Here
 
 - `$match` → Filter by country
 - `$sort` → Sort players
@@ -1390,7 +1380,7 @@ db.scores.aggregate([
 
 ---
 
-## ✨ Bonus Tips
+### ✨ Bonus Tips
 
 - You can also add **pagination** with `$skip` + `$limit` for "load more players."
 - You can **group by level** using `$group` and show average points per level.
@@ -1400,9 +1390,7 @@ db.scores.aggregate([
 
 ## 🏆 Leaderboard with Daily / Weekly / Monthly Aggregation
 
----
-
-## 1. Sample Data (with Timestamps)
+### 1. Sample Data (with Timestamps)
 
 We'll insert some **sample scores** where users score points on different days.
 
@@ -1424,7 +1412,7 @@ db.scores.insertMany([
 
 ---
 
-## 2. 🎯 Daily Leaderboard (group by date)
+### 2. 🎯 Daily Leaderboard (group by date)
 
 ```js
 db.scores.aggregate([
@@ -1487,7 +1475,7 @@ db.scores.aggregate([
 
 ---
 
-## 3. 🎯 Weekly Leaderboard (group by week)
+### 3. 🎯 Weekly Leaderboard (group by week)
 
 ```js
 db.scores.aggregate([
@@ -1531,7 +1519,7 @@ db.scores.aggregate([
 
 ---
 
-## 4. 🎯 Monthly Leaderboard (group by month)
+### 4. 🎯 Monthly Leaderboard (group by month)
 
 ```js
 db.scores.aggregate([
@@ -1578,7 +1566,7 @@ db.scores.aggregate([
 
 ---
 
-## ✨ Concepts We Used
+### ✨ Concepts We Used
 
 - `$group` → To group scores by day/week/month
 - `$dateToString`, `$year`, `$month`, `$isoWeek`, `$isoWeekYear` → Date operations
@@ -1590,9 +1578,7 @@ db.scores.aggregate([
 
 ## 8. 🛡️ MongoDB Transactions
 
----
-
-## 📖 What is a Transaction?
+### 📖 What is a Transaction?
 
 A **Transaction** in MongoDB is like a **"bundle of multiple operations"** that are treated as a single unit.  
 ✅ **All operations succeed together**, or  
@@ -1602,7 +1588,7 @@ Very useful for **financial apps**, **inventory systems**, **multi-step updates*
 
 ---
 
-## 🧠 Key Points
+### 🧠 Key Points
 
 - MongoDB transactions are **ACID compliant** (Atomic, Consistent, Isolated, Durable).
 - Available on **replica sets** (MongoDB 4.0+) and **sharded clusters** (MongoDB 4.2+).
@@ -1610,7 +1596,7 @@ Very useful for **financial apps**, **inventory systems**, **multi-step updates*
 
 ---
 
-## 📦 Example 1: Single-document Update without Transaction
+#### 📦 Example 1: Single-document Update without Transaction
 
 Normally without transaction:
 
@@ -1625,7 +1611,7 @@ Imagine deducting money from Alice but not crediting Bob. 🥲
 
 ---
 
-## 🚀 Example 2: Multi-document Transaction
+### 🚀 Example 2: Multi-document Transaction
 
 **Safe Money Transfer** between Alice ➡️ Bob:
 
@@ -1660,7 +1646,7 @@ try {
 
 ---
 
-## ⚙️ Important Methods
+### ⚙️ Important Methods
 
 | Method                | Meaning                  |
 | :-------------------- | :----------------------- |
@@ -1672,7 +1658,7 @@ try {
 
 ---
 
-## 🌟 Important Notes
+### 🌟 Important Notes
 
 - Use **transactions only when needed**; they are heavier than normal ops.
 - If you're working **inside one document**, MongoDB already ensures atomicity (no transaction needed).
@@ -1689,7 +1675,7 @@ session.startTransaction({
 
 ---
 
-## 🎯 Where Transactions are SUPER useful
+### 🎯 Where Transactions are SUPER useful
 
 - **Banking systems** (transfer money).
 - **Inventory management** (update stock and orders).
@@ -1698,7 +1684,7 @@ session.startTransaction({
 
 ---
 
-## Quick Summary
+### Quick Summary
 
 | Concept                    | Description                                   |
 | :------------------------- | :-------------------------------------------- |
@@ -1711,8 +1697,6 @@ session.startTransaction({
 
 ## 9. ⚡ PERFORMANCE in MongoDB
 
----
-
 MongoDB is **designed to scale**, but to make it _perform really well_, you need to understand:
 
 - **Replica Sets** (for fault tolerance)
@@ -1720,11 +1704,7 @@ MongoDB is **designed to scale**, but to make it _perform really well_, you need
 - **Indexing** (already discussed earlier)
 - **Monitoring and Troubleshooting**
 
-Let's go step-by-step:
-
----
-
-## 9.1. 🔁 Replica Sets (High Availability)
+### 9.1. 🔁 Replica Sets (High Availability)
 
 A **Replica Set** is a group of MongoDB servers that **keep copies** of the same data.
 
@@ -1738,7 +1718,7 @@ A **Replica Set** is a group of MongoDB servers that **keep copies** of the same
 
 ---
 
-### 📦 Example: Create a Replica Set Locally
+#### 📦 Example: Create a Replica Set Locally
 
 (Assuming you have 3 `mongod` servers running)
 
@@ -1766,7 +1746,7 @@ Now you have a **replica set**! 🎯
 
 ---
 
-## 9.2. 🧩 Sharding (Horizontal Scaling)
+### 9.2. 🧩 Sharding (Horizontal Scaling)
 
 When your **data is too big** for one server, you **split** (shard) it across multiple servers.
 
@@ -1776,7 +1756,7 @@ When your **data is too big** for one server, you **split** (shard) it across mu
 
 ---
 
-### 🧠 How Sharding Works
+#### 🧠 How Sharding Works
 
 - **Shard Key**: Field used to divide data.
 - **Mongos**: Query router that knows where data is.
@@ -1809,13 +1789,13 @@ Done! 🔥
 
 ---
 
-## 9.3. 📈 Monitoring and Troubleshooting
+### 9.3. 📈 Monitoring and Troubleshooting
 
 You **must monitor** your MongoDB servers in production.
 
 ---
 
-### 🛠 Built-in Tools
+#### 🛠 Built-in Tools
 
 - `mongostat` — Show live server stats.
 - `mongotop` — Show collection read/write activity.
@@ -1842,7 +1822,7 @@ If you're using **MongoDB Atlas**, it gives you beautiful **dashboards**:
 
 ---
 
-## 🚨 Troubleshooting Tips
+### 🚨 Troubleshooting Tips
 
 | Symptom            | Possible Cause                   |
 | :----------------- | :------------------------------- |
@@ -1853,7 +1833,7 @@ If you're using **MongoDB Atlas**, it gives you beautiful **dashboards**:
 
 ---
 
-## 🔥 Real-world Practices for PERFORMANCE
+### 🔥 Real-world Practices for PERFORMANCE
 
 - Always **create indexes** on query fields.
 - Use **read preference** (nearest, secondary, etc.) smartly.
@@ -1863,7 +1843,7 @@ If you're using **MongoDB Atlas**, it gives you beautiful **dashboards**:
 
 ---
 
-## 🎯 Quick Summary
+### 🎯 Quick Summary
 
 | Concept      | Why Important           |
 | :----------- | :---------------------- |
@@ -1887,7 +1867,7 @@ We'll cover:
 
 ---
 
-## 10.1. 🛡️ Role-Based Access Control (RBAC)
+### 10.1. 🛡️ Role-Based Access Control (RBAC)
 
 MongoDB uses **roles** to control what users can do.
 
@@ -1895,7 +1875,7 @@ MongoDB uses **roles** to control what users can do.
 
 ---
 
-### 📦 Example: Create a User with Role
+#### 📦 Example: Create a User with Role
 
 First, enable authentication in your `mongod`:
 
@@ -1917,11 +1897,11 @@ db.createUser({
 
 Now this user can **create other users** across databases.
 
-✅ Best practice: Use **least privilege** principle — only grant what’s needed.
+✅ Best practice: Use **least privilege** principle — only grant what's needed.
 
 ---
 
-### ✨ Common Built-in Roles
+#### ✨ Common Built-in Roles
 
 | Role           | Description                    |
 | :------------- | :----------------------------- |
@@ -1933,7 +1913,7 @@ Now this user can **create other users** across databases.
 
 ---
 
-## 10.2. 🔐 TLS/SSL Encryption (Secure Data in Transit)
+### 10.2. 🔐 TLS/SSL Encryption (Secure Data in Transit)
 
 TLS/SSL encrypts all data moving between **clients ↔ servers**.
 
@@ -1941,7 +1921,7 @@ TLS/SSL encrypts all data moving between **clients ↔ servers**.
 
 ---
 
-### 📦 Example: Start MongoDB with SSL
+#### 📦 Example: Start MongoDB with SSL
 
 First, create a self-signed certificate (for dev):
 
@@ -1960,19 +1940,19 @@ mongod --sslMode requireSSL --sslPEMKeyFile /path/to/mongodb.pem
 
 ---
 
-## 10.3. 🧩 Authentication Methods
+### 10.3. 🧩 Authentication Methods
 
 MongoDB supports multiple authentication systems:
 
 ---
 
-### 🔹 1. Username/Password Authentication
+#### 🔹 1. Username/Password Authentication
 
 Normal `db.createUser` users/passwords like shown above.
 
 ---
 
-### 🔹 2. X.509 Certificate Authentication
+#### 🔹 2. X.509 Certificate Authentication
 
 Used for **server-to-server** authentication or **client-to-server** without passwords.
 
@@ -1990,7 +1970,7 @@ mongo --ssl --sslPEMKeyFile client.pem --sslCAFile ca.pem
 
 ---
 
-### 🔹 3. Kerberos Authentication
+#### 🔹 3. Kerberos Authentication
 
 Use **Kerberos tickets** (SSO) instead of passwords — popular in enterprise environments.
 
@@ -2000,7 +1980,7 @@ mongod --auth --setParameter authenticationMechanisms=GSSAPI
 
 ---
 
-### 🔹 4. LDAP Authentication (Proxy)
+#### 🔹 4. LDAP Authentication (Proxy)
 
 Connect MongoDB to your organization's **LDAP server** (e.g., Active Directory).
 
@@ -2008,7 +1988,7 @@ Instead of managing MongoDB users manually, you integrate with existing user acc
 
 ---
 
-## 10.4. 🕵️ MongoDB Audit
+### 10.4. 🕵️ MongoDB Audit
 
 **Auditing** allows you to **track**:
 
@@ -2026,13 +2006,13 @@ mongod --auditDestination file --auditFormat JSON --auditPath /var/log/mongodb/a
 
 ---
 
-## 10.5. 🔒 Encryption at Rest (Data at Rest Encryption)
+### 10.5. 🔒 Encryption at Rest (Data at Rest Encryption)
 
 Even if attackers get your disks, they can't read the data.
 
 ---
 
-### Options
+#### Options
 
 | Method                    | Description                                         |
 | :------------------------ | :-------------------------------------------------- |
@@ -2042,7 +2022,7 @@ Even if attackers get your disks, they can't read the data.
 
 ---
 
-## 🔥 Real-World Security Best Practices
+### 🔥 Real-World Security Best Practices
 
 | Tip                           | Why                         |
 | :---------------------------- | :-------------------------- |
@@ -2055,23 +2035,23 @@ Even if attackers get your disks, they can't read the data.
 
 ---
 
-Great! Let’s move on to **Section 11: MONGODB DEVELOPMENT** 🚀
+Great! Let's move on to **Section 11: MONGODB DEVELOPMENT** 🚀
 
 ---
 
 ## 11. MONGODB DEVELOPMENT
 
-In this section, we’ll cover key development tools and features that can help you work more efficiently with MongoDB. These include:
+In this section, we'll cover key development tools and features that can help you work more efficiently with MongoDB. These include:
 
 1. **Developer Tools** (to work interactively with MongoDB)
 2. **Language Drivers** (to interact with MongoDB from various programming languages)
 3. **MongoDB Analyze** (for analyzing and optimizing your MongoDB performance)
 
-Let’s break each one down:
+Let's break each one down:
 
 ---
 
-## 11.1. 🛠 Developer Tools
+### 11.1. 🛠 Developer Tools
 
 MongoDB offers several powerful developer tools to streamline your workflow, such as:
 
@@ -2129,18 +2109,18 @@ For advanced users, the Mongo shell is perfect for **quick testing**, **scriptin
 
 ### 🔹 3. MongoDB Atlas UI
 
-If you're using **MongoDB Atlas** (MongoDB’s cloud service), you have access to an easy-to-use web interface to:
+If you're using **MongoDB Atlas** (MongoDB's cloud service), you have access to an easy-to-use web interface to:
 
 - Manage databases, collections, users, and clusters
 - Monitor performance in real time
 - Set up and manage backups
 - Configure security settings
 
-**Atlas** is ideal if you don’t want to manage infrastructure and just want to focus on your application.
+**Atlas** is ideal if you don't want to manage infrastructure and just want to focus on your application.
 
 ---
 
-## 11.2. 💻 Language Drivers
+### 11.2. 💻 Language Drivers
 
 MongoDB provides **official language drivers** for multiple programming languages, so you can easily integrate MongoDB with your application.
 
@@ -2300,7 +2280,7 @@ public class Program
 
 ---
 
-## 11.3. 📊 MongoDB Analyze (Performance Insights)
+### 11.3. 📊 MongoDB Analyze (Performance Insights)
 
 MongoDB **Analyze** is available via the **MongoDB Atlas** UI and can be used to optimize your queries and schema. It includes:
 
@@ -2346,7 +2326,7 @@ MongoDB Atlas offers **index suggestions** based on query patterns, helping to *
 
 ---
 
-## 🎯 Summary of Section 11: MONGODB DEVELOPMENT
+### 🎯 Summary of Section 11: MONGODB DEVELOPMENT
 
 | Topic                                      | Why It's Important                                                          |
 | :----------------------------------------- | :-------------------------------------------------------------------------- |
@@ -2364,9 +2344,9 @@ Great! Let's dive into **Section 12: MONGODB RECOVERY** 🛠️.
 
 In this section, we'll explore essential MongoDB tools and practices for backup and recovery. These are critical for protecting your data and ensuring business continuity in case of system failures or data corruption.
 
-## 12.1. **Backup and Recovery**
+### 12.1. **Backup and Recovery**
 
-### 🔹 Backup Strategies
+#### 🔹 Backup Strategies
 
 There are different strategies for backing up MongoDB data:
 
@@ -2386,11 +2366,11 @@ There are different strategies for backing up MongoDB data:
 4. **Oplog-based Backups (For Replicas)**
    - MongoDB uses an **Oplog** (operation log) to replicate data across nodes in a replica set. You can use this log to perform incremental backups by capturing the operations that have been performed on the database.
 
-### 🔹 MongoDB Backup using **`mongodump`**
+#### 🔹 MongoDB Backup using **`mongodump`**
 
 **`mongodump`** is the primary tool for creating backups in MongoDB. It creates a BSON file of your MongoDB database or collection.
 
-### 📦 Example of Backing Up a Database
+#### 📦 Example of Backing Up a Database
 
 ```bash
 mongodump --uri="mongodb://localhost:27017" --db=mydatabase --out=/path/to/backup/
@@ -2400,7 +2380,7 @@ mongodump --uri="mongodb://localhost:27017" --db=mydatabase --out=/path/to/backu
 - **`--db`**: The database to back up.
 - **`--out`**: Directory where the backup will be stored.
 
-### 📦 Example of Backing Up a Specific Collection
+#### 📦 Example of Backing Up a Specific Collection
 
 ```bash
 mongodump --uri="mongodb://localhost:27017" --db=mydatabase --collection=mycollection --out=/path/to/backup/
@@ -2408,14 +2388,14 @@ mongodump --uri="mongodb://localhost:27017" --db=mydatabase --collection=mycolle
 
 You can use `mongodump` to backup all collections or just one. You can also apply filters using query parameters.
 
-### 💡 Note
+#### 💡 Note
 
 - `mongodump` is typically run from the MongoDB shell or command line.
 - The backup will be in BSON format, which you can restore later with `mongorestore`.
 
 ---
 
-### 🔹 MongoDB Restore using **`mongorestore`**
+#### 🔹 MongoDB Restore using **`mongorestore`**
 
 **`mongorestore`** is used to restore a MongoDB backup created with `mongodump`.
 
@@ -2437,11 +2417,11 @@ mongorestore --uri="mongodb://localhost:27017" --db=mydatabase --collection=myco
 
 ---
 
-## 12.2. **Point-in-Time Recovery with MongoDB Atlas**
+### 12.2. **Point-in-Time Recovery with MongoDB Atlas**
 
 If you are using **MongoDB Atlas**, the cloud service offers built-in **Point-in-Time Recovery** (PITR) which allows you to restore a database to any specific point in time, without needing to manually manage backups.
 
-### Key Features
+#### Key Features
 
 - **Automated Backups**: Atlas performs scheduled backups automatically.
 - **Point-in-Time Restoration**: You can select the exact timestamp to restore from.
@@ -2456,7 +2436,7 @@ To use PITR in Atlas:
 
 ---
 
-## 12.3. **Backup and Restore with Replica Sets**
+### 12.3. **Backup and Restore with Replica Sets**
 
 If you're running MongoDB as a **Replica Set**, you can use **Oplog-based backups** for incremental backups, which will capture only the changes since the last backup.
 
@@ -2466,7 +2446,7 @@ To perform an Oplog-based backup:
 2. Continuously track and dump the Oplog (operation log) for incremental changes.
 3. Use **`mongorestore`** to restore the primary replica data, followed by restoring the Oplog to get incremental changes.
 
-### Example: Backup using Oplog
+#### Example: Backup using Oplog
 
 You can dump the Oplog with the following command:
 
@@ -2484,11 +2464,11 @@ The **`--oplogReplay`** flag ensures the oplog entries are applied in the correc
 
 ---
 
-## 12.4. **MongoDB Backup Scheduling with Cron**
+### 12.4. **MongoDB Backup Scheduling with Cron**
 
 For automated backups on Linux or macOS, you can schedule your backups using **cron jobs**.
 
-### 📦 Example: Scheduling Backups with Cron
+#### 📦 Example: Scheduling Backups with Cron
 
 1. Open your crontab file:
 
@@ -2506,7 +2486,7 @@ This will create a new backup every day with the current date in the folder name
 
 ---
 
-## 12.5. **Recovery in Case of Failure**
+### 12.5. **Recovery in Case of Failure**
 
 To recover from a failure:
 
@@ -2516,7 +2496,7 @@ To recover from a failure:
 
 ---
 
-## 12.6. **Monitoring and Alerting**
+### 12.6. **Monitoring and Alerting**
 
 It's crucial to set up **monitoring** to ensure your backups are occurring as scheduled and to be alerted to any issues.
 
@@ -2524,7 +2504,7 @@ If using **MongoDB Atlas**, you can set up **alerts** to monitor your backup sta
 
 ---
 
-## 🎯 Summary of Section 12: MONGODB RECOVERY
+#### 🎯 Summary of Section 12: MONGODB RECOVERY
 
 | Topic                              | Why It's Important                                                              |
 | :--------------------------------- | :------------------------------------------------------------------------------ |
@@ -2541,13 +2521,13 @@ Sure! These are some advanced MongoDB topics that cover real-time data changes, 
 
 ---
 
-## 1. **Change Streams (Real-time Data Changes)**
+## 13. **Change Streams (Real-time Data Changes)**
 
 ### What are Change Streams?
 
 Change Streams provide a real-time feed of changes to documents in MongoDB. It allows you to listen to changes on a collection, database, or even the entire MongoDB deployment. This is especially useful for applications that need real-time notifications or updates.
 
-Change Streams rely on MongoDB’s replication and Oplog (operation log), making it efficient for detecting changes.
+Change Streams rely on MongoDB's replication and Oplog (operation log), making it efficient for detecting changes.
 
 ### 📦 Example of Using Change Streams in MongoDB
 
@@ -2581,7 +2561,7 @@ This example listens to any changes (insert, update, delete) on the `mycollectio
 
 ---
 
-## 2. **Time Series Collections**
+## 14. **Time Series Collections**
 
 ### What are Time Series Collections?
 
@@ -2623,7 +2603,7 @@ This code creates a collection named `sensor_data` to store time series data wit
 
 ---
 
-## 3. **Working with GridFS**
+## 15. **Working with GridFS**
 
 ### What is GridFS?
 
@@ -2686,7 +2666,7 @@ This example demonstrates how to upload a file to GridFS and download it. Files 
 
 ---
 
-## 4. **Serverless MongoDB (With Atlas Functions)**
+## 16. **Serverless MongoDB (With Atlas Functions)**
 
 ### What is Serverless MongoDB?
 
@@ -2737,7 +2717,7 @@ getData().catch(console.error);
 
 ---
 
-## 5. **MongoDB Schema Validation**
+## 17. **MongoDB Schema Validation**
 
 ### What is Schema Validation?
 
@@ -2788,7 +2768,7 @@ This code defines schema validation for the `users` collection, ensuring that ev
 
 ---
 
-## 6. **Multi-Tenancy Patterns (Using MongoDB for SaaS Apps)**
+## 18. **Multi-Tenancy Patterns (Using MongoDB for SaaS Apps)**
 
 ### What is Multi-Tenancy?
 
@@ -2822,7 +2802,7 @@ This approach allows each tenant to have its own isolated database, making it ea
 
 ---
 
-## 7. **Connection Pooling**
+## 19. **Connection Pooling**
 
 ### What is Connection Pooling?
 
