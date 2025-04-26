@@ -1,6 +1,8 @@
-# MongoDB Learning Plan (Expanded)
+# MongoDb Study Plan (Extended)
 
-## 1. **Introduction to MongoDB**
+## 1. Topics
+
+### 1. **Introduction to MongoDB**
 
 - What is MongoDB?
 - MongoDB Architecture (high level)
@@ -8,7 +10,7 @@
 
 ---
 
-## 2. **Data Models and Data Types**
+### 2. **Data Models and Data Types**
 
 - BSON vs JSON
 - Embedded Documents
@@ -17,7 +19,7 @@
 
 ---
 
-## 3. **Collections and Documents**
+### 3. **Collections and Documents**
 
 - What is a Collection?
 - What is a Document?
@@ -38,7 +40,7 @@
 
 ---
 
-## 4. **Query and Projection**
+### 4. **Query and Projection**
 
 - **Query Filters**
   - Comparison Operators (`$eq`, `$ne`, `$gt`, `$gte`, `$lt`, `$lte`)
@@ -51,7 +53,7 @@
 
 ---
 
-## 5. **Indexing and Optimization**
+### 5. **Indexing and Optimization**
 
 - Why Indexes?
 - Types of Indexes:
@@ -67,7 +69,7 @@
 
 ---
 
-## 6. **Aggregation and Pipeline**
+### 6. **Aggregation and Pipeline**
 
 - **What is Aggregation?**
 - Aggregation Framework
@@ -78,7 +80,7 @@
 
 ---
 
-## 7. **MongoDB Transactions**
+### 7. **MongoDB Transactions**
 
 - ACID Transactions in MongoDB
 - Multi-Document Transactions
@@ -87,7 +89,7 @@
 
 ---
 
-## 8. **Performance**
+### 8. **Performance**
 
 - **Replica Sets**
   - How replication works
@@ -104,7 +106,7 @@
 
 ---
 
-## 9. **Security**
+### 9. **Security**
 
 - Role-Based Access Control (RBAC)
 - Authentication Methods:
@@ -119,7 +121,7 @@
 
 ---
 
-## 10. **MongoDB Development**
+### 10. **MongoDB Development**
 
 - Developer Tools:
   - MongoDB Compass
@@ -133,7 +135,7 @@
 
 ---
 
-## 11. **MongoDB Recovery**
+### 11. **MongoDB Recovery**
 
 - Backup and Restore:
   - `mongodump` and `mongorestore`
@@ -143,7 +145,7 @@
 
 ---
 
-## 🌟 Extra Topics
+### 🌟 Extra Topics
 
 - Change Streams (Real-time Data Changes)
 - Time Series Collections (for sensor or event data)
@@ -1264,7 +1266,7 @@ This is a super useful pattern for games, online courses, sales apps, fitness ap
 
 ---
 
-## 🏆 Building a Leaderboard using MongoDB Aggregation
+### 🏆 Building a Leaderboard using MongoDB Aggregation
 
 ### 1. Sample Data
 
@@ -1388,7 +1390,7 @@ db.scores.aggregate([
 
 ---
 
-## 🏆 Leaderboard with Daily / Weekly / Monthly Aggregation
+### 🏆 Leaderboard with Daily / Weekly / Monthly Aggregation
 
 ### 1. Sample Data (with Timestamps)
 
