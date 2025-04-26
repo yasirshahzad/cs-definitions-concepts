@@ -153,9 +153,6 @@
 - Multi-Tenancy Patterns (using MongoDB for SaaS apps)
 - Connection Pooling
 
-Perfect!  
-Let’s dive right into **2. Data Models and Data Types** — and yes, I’ll include **clear code examples** for each concept.
-
 ---
 
 ## 2. Data Models and Data Types in MongoDB
@@ -1398,11 +1395,6 @@ db.scores.aggregate([
 - You can also add **pagination** with `$skip` + `$limit` for "load more players."
 - You can **group by level** using `$group` and show average points per level.
 - You can **join** with a `users` collection (profile images, bios) using `$lookup`.
-
----
-
-Perfect! 🔥 Let's build a **Daily, Weekly, and Monthly Leaderboard** in MongoDB Aggregation.  
-This is **extremely useful** for games, competitions, learning apps, fitness apps, etc.
 
 ---
 
