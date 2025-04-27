@@ -1718,8 +1718,6 @@ A **Replica Set** is a group of MongoDB servers that **keep copies** of the same
 
 👉 **Purpose:** Data redundancy, automatic failover, backup.
 
----
-
 #### 📦 Example: Create a Replica Set Locally
 
 (Assuming you have 3 `mongod` servers running)
@@ -1787,15 +1785,11 @@ sh.enableSharding("mydatabase");
 sh.shardCollection("mydatabase.users", { userId: "hashed" });
 ```
 
-Done! 🔥
-
 ---
 
 ### 9.3. 📈 Monitoring and Troubleshooting
 
 You **must monitor** your MongoDB servers in production.
-
----
 
 #### 🛠 Built-in Tools
 
@@ -1821,8 +1815,6 @@ If you're using **MongoDB Atlas**, it gives you beautiful **dashboards**:
 - Query performance
 
 ✅ Easy to set **alerts** when something goes wrong.
-
----
 
 ### 🚨 Troubleshooting Tips
 
@@ -2006,10 +1998,6 @@ mongod --auditDestination file --auditFormat JSON --auditPath /var/log/mongodb/a
 | Use role-based access control | Limit user permissions      |
 | Enable auditing               | Track suspicious activity   |
 | Encrypt at rest               | Protect stolen disks        |
-
----
-
-Great! Let's move on to **Section 11: MONGODB DEVELOPMENT** 🚀
 
 ---
 
