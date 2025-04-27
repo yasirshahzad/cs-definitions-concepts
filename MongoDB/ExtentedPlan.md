@@ -1934,8 +1934,6 @@ mongod --sslMode requireSSL --sslPEMKeyFile /path/to/mongodb.pem
 
 ✅ In production, use **certificates signed by a trusted CA**.
 
----
-
 ### 10.3. 🔒 Encryption at Rest (Data at Rest Encryption)
 
 Even if attackers get your disks, they can't read the data.
@@ -1948,19 +1946,13 @@ Even if attackers get your disks, they can't read the data.
 | Cloud Provider Encryption | Atlas automatically encrypts data                   |
 | OS Disk Encryption        | Use Linux LUKS, Windows BitLocker, etc.             |
 
----
-
 ### 10.4. 🧩 Authentication Methods
 
 MongoDB supports multiple authentication systems:
 
----
-
 #### 🔹 1. Username/Password Authentication
 
 Normal `db.createUser` users/passwords like shown above.
-
----
 
 #### 🔹 2. X.509 Certificate Authentication
 
@@ -1978,8 +1970,6 @@ In Mongo Shell:
 mongo --ssl --sslPEMKeyFile client.pem --sslCAFile ca.pem
 ```
 
----
-
 #### 🔹 3. Kerberos Authentication
 
 Use **Kerberos tickets** (SSO) instead of passwords — popular in enterprise environments.
@@ -1988,15 +1978,11 @@ Use **Kerberos tickets** (SSO) instead of passwords — popular in enterprise en
 mongod --auth --setParameter authenticationMechanisms=GSSAPI
 ```
 
----
-
 #### 🔹 4. LDAP Authentication (Proxy)
 
 Connect MongoDB to your organization's **LDAP server** (e.g., Active Directory).
 
 Instead of managing MongoDB users manually, you integrate with existing user accounts.
-
----
 
 ### 10.5. 🕵️ MongoDB Audit
 
@@ -2013,8 +1999,6 @@ mongod --auditDestination file --auditFormat JSON --auditPath /var/log/mongodb/a
 ```
 
 ✅ Useful for security compliance (GDPR, HIPAA, etc.)
-
----
 
 ### 🔥 Real-World Security Best Practices
 
