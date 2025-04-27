@@ -888,9 +888,10 @@ db.products.createIndex({ description: "text" });
 db.articles.find({ $text: { $search: "mongodb tutorial" } });
 ```
 
----
-
 #### Hashed Index
+
+--- For sharding or random distribution.
+---Hashes the field value.
 
 ```ts
 db.users.createIndex({ userId: "hashed" });
@@ -925,8 +926,6 @@ The `"executionStats"` option will show you details like whether an index is bei
 2. **Compound Indexes**: Use compound indexes when queries involve multiple fields. However, order matters in compound indexes (the fields must be queried in the index order).
 3. **Limit Index Size**: Avoid over-indexing. Indexing every field can degrade write performance, and indexes take up disk space.
 4. **Use `explain()` to Monitor Index Efficiency**: Regularly monitor query performance to ensure the right indexes are being used.
-
----
 
 ### 6.4. **Query Optimization**
 
@@ -987,8 +986,6 @@ db.products.aggregate([
   },
 ]);
 ```
-
----
 
 ### 6.6. **Managing Indexes**
 
