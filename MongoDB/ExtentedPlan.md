@@ -1873,8 +1873,6 @@ MongoDB uses **roles** to control what users can do.
 
 👉 Instead of giving users full admin rights, you assign them **roles**.
 
----
-
 #### 📦 Example: Create a User with Role
 
 First, enable authentication in your `mongod`:
