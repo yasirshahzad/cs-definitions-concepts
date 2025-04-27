@@ -1897,8 +1897,6 @@ Now this user can **create other users** across databases.
 
 ✅ Best practice: Use **least privilege** principle — only grant what's needed.
 
----
-
 #### ✨ Common Built-in Roles
 
 | Role           | Description                    |
@@ -1908,8 +1906,6 @@ Now this user can **create other users** across databases.
 | `dbAdmin`      | Database administration tasks  |
 | `userAdmin`    | Manage users and roles         |
 | `clusterAdmin` | Manage cluster-wide operations |
-
----
 
 ### 10.2. 🔐 TLS/SSL Encryption (Secure Data in Transit)
 
