@@ -890,8 +890,8 @@ db.articles.find({ $text: { $search: "mongodb tutorial" } });
 
 #### Hashed Index
 
---- For sharding or random distribution.
----Hashes the field value.
+-- For sharding or random distribution.
+-- Hashes the field value.
 
 ```ts
 db.users.createIndex({ userId: "hashed" });
@@ -1049,8 +1049,6 @@ db.users.find().sort({ age: 1 });
 - It's **faster** and **more powerful** than manual loops.
 - MongoDB provides the **Aggregation Pipeline**, where **documents pass through multiple stages** to be transformed.
 
----
-
 ### 7.2. **Aggregation Pipeline Structure**
 
 ```js
@@ -1064,8 +1062,6 @@ db.collection.aggregate([
 
 Each **stage** transforms the documents in some way.  
 The output of one stage becomes the input to the next stage.
-
----
 
 ### 7.3. **Common Aggregation Stages**
 
@@ -1081,8 +1077,6 @@ The output of one stage becomes the input to the next stage.
 | `$unwind`  | Deconstruct arrays into multiple documents    |
 | `$lookup`  | Perform a LEFT JOIN with another collection   |
 
----
-
 ### 7.4. **Simple Example**
 
 Suppose we have a `sales` collection:
@@ -1095,8 +1089,6 @@ db.sales.insertMany([
   { item: "banana", quantity: 5, price: 5 },
 ]);
 ```
-
----
 
 #### Example 1: Group sales by item and calculate total quantity
 
@@ -1172,8 +1164,6 @@ db.sales.aggregate([
 4. **Minimize document size** using `$project` to keep only required fields.
 5. **Avoid $lookup unless necessary** (joins can be slow).
 
----
-
 ### 7.7. **Advanced Example: JOIN with `$lookup`**
 
 Suppose:
@@ -1229,8 +1219,6 @@ db.orders.aggregate([
 ]
 ```
 
----
-
 ### ✨ QUICK CHEAT SHEET
 
 | Pipeline Stage | Example                                                                 |
@@ -1241,13 +1229,6 @@ db.orders.aggregate([
 | `$project`     | Reshape documents: `{ $project: { name: 1, age: 1 } }`                  |
 | `$lookup`      | Join collections                                                        |
 | `$unwind`      | Split array fields                                                      |
-
----
-
-Awesome! Let's build a **real-world MongoDB aggregation** for a **Leaderboard**. 🎯  
-This is a super useful pattern for games, online courses, sales apps, fitness apps, etc.
-
----
 
 ### 🏆 Building a Leaderboard using MongoDB Aggregation
 
