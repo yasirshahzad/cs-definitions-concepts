@@ -2046,12 +2046,9 @@ Great! Let's move on to **Section 11: MONGODB DEVELOPMENT** 🚀
 In this section, we'll cover key development tools and features that can help you work more efficiently with MongoDB. These include:
 
 1. **Developer Tools** (to work interactively with MongoDB)
-2. **Language Drivers** (to interact with MongoDB from various programming languages)
-3. **MongoDB Analyze** (for analyzing and optimizing your MongoDB performance)
+2. **MongoDB Analyze** (for analyzing and optimizing your MongoDB performance)
 
 Let's break each one down:
-
----
 
 ### 11.1. 🛠 Developer Tools
 
@@ -2073,20 +2070,11 @@ MongoDB offers several powerful developer tools to streamline your workflow, suc
 
 It also has performance monitoring capabilities to help optimize your queries and indexes.
 
-#### 📦 Example
-
-To start using MongoDB Compass:
-
-1. Download and install it from the [MongoDB Compass website](https://www.mongodb.com/products/compass).
-2. Connect to your MongoDB instance.
-3. Use the **"Schema"** tab to explore the structure of your data.
-4. Use the **"Explain Plan"** feature to analyze the performance of your queries.
-
 ---
 
-### 🔹 2. Mongo Shell
+### 🔹 2. Mongosh Shell
 
-The **Mongo Shell** is the command-line tool for interacting with MongoDB.
+The **Mongosh Shell** is the command-line tool for interacting with MongoDB.
 
 You can:
 
@@ -2095,7 +2083,7 @@ You can:
 - Perform administrative tasks
 
 ```bash
-mongo --host localhost --port 27017
+mongosh --host localhost --port 27017
 ```
 
 Once connected, you can run MongoDB commands:
@@ -2126,162 +2114,6 @@ If you're using **MongoDB Atlas** (MongoDB's cloud service), you have access to 
 
 MongoDB provides **official language drivers** for multiple programming languages, so you can easily integrate MongoDB with your application.
 
-Here are the most commonly used drivers:
-
-### 🔹 1. Node.js Driver
-
-MongoDB has an official **Node.js driver** to interact with MongoDB in your Node.js applications.
-
-#### 📦 Example: Node.js with MongoDB
-
-First, install the MongoDB Node.js driver:
-
-```bash
-npm install mongodb
-```
-
-Now, in your `app.js`, connect to MongoDB and perform operations:
-
-```javascript
-const { MongoClient } = require("mongodb");
-
-async function main() {
-  const uri = "mongodb://localhost:27017";
-  const client = new MongoClient(uri);
-
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB!");
-
-    const db = client.db("testdb");
-    const collection = db.collection("users");
-
-    // Insert a document
-    await collection.insertOne({ name: "Alice", age: 30 });
-
-    // Query documents
-    const users = await collection.find({}).toArray();
-    console.log(users);
-  } finally {
-    await client.close();
-  }
-}
-
-main().catch(console.error);
-```
-
-### 🔹 2. Python Driver (PyMongo)
-
-For Python, you can use the **PyMongo** driver:
-
-#### 📦 Example: Python with MongoDB
-
-Install PyMongo:
-
-```bash
-pip install pymongo
-```
-
-Then, in your Python script:
-
-```python
-from pymongo import MongoClient
-
-# Connect to MongoDB
-client = MongoClient("mongodb://localhost:27017")
-db = client["testdb"]
-collection = db["users"]
-
-# Insert a document
-collection.insert_one({"name": "Bob", "age": 25})
-
-# Query documents
-users = collection.find()
-for user in users:
-    print(user)
-```
-
-### 🔹 3. Java Driver
-
-For Java, use the **MongoDB Java Driver**:
-
-#### 📦 Example: Java with MongoDB
-
-Add dependencies to `pom.xml` (Maven):
-
-```xml
-<dependency>
-  <groupId>org.mongodb</groupId>
-  <artifactId>mongodb-driver-sync</artifactId>
-  <version>4.4.0</version>
-</dependency>
-```
-
-Now, use it in your Java code:
-
-```java
-import com.mongodb.client.*;
-import org.bson.Document;
-
-public class MongoApp {
-    public static void main(String[] args) {
-        MongoClient client = MongoClients.create("mongodb://localhost:27017");
-        MongoDatabase database = client.getDatabase("testdb");
-        MongoCollection<Document> collection = database.getCollection("users");
-
-        // Insert a document
-        collection.insertOne(new Document("name", "Charlie").append("age", 28));
-
-        // Query documents
-        for (Document doc : collection.find()) {
-            System.out.println(doc.toJson());
-        }
-    }
-}
-```
-
----
-
-### 🔹 4. C# Driver
-
-If you're working with C#, use the **MongoDB C# Driver**:
-
-#### 📦 Example: C# with MongoDB
-
-Install via NuGet:
-
-```bash
-Install-Package MongoDB.Driver
-```
-
-Then use it in your C# code:
-
-```csharp
-using MongoDB.Driver;
-using MongoDB.Bson;
-
-public class Program
-{
-    public static void Main(string[] args)
-    {
-        var client = new MongoClient("mongodb://localhost:27017");
-        var database = client.GetDatabase("testdb");
-        var collection = database.GetCollection<BsonDocument>("users");
-
-        var doc = new BsonDocument { { "name", "David" }, { "age", 35 } };
-        collection.InsertOne(doc);
-
-        var users = collection.Find(new BsonDocument()).ToList();
-        foreach (var user in users)
-        {
-            Console.WriteLine(user);
-        }
-    }
-}
-```
-
----
-
 ### 11.3. 📊 MongoDB Analyze (Performance Insights)
 
 MongoDB **Analyze** is available via the **MongoDB Atlas** UI and can be used to optimize your queries and schema. It includes:
@@ -2290,9 +2122,7 @@ MongoDB **Analyze** is available via the **MongoDB Atlas** UI and can be used to
 - **Query Optimization**: Analyze slow queries and optimize them.
 - **Index Suggestions**: See if adding indexes will improve query performance.
 
----
-
-### 🔹 Explain Plans
+#### 🔹 Explain Plans
 
 MongoDB allows you to see how it executes your queries using **Explain**:
 
@@ -2304,7 +2134,7 @@ This will return a detailed explanation of the query execution, including index 
 
 ---
 
-### 🔹 Query Profiling
+#### 🔹 Query Profiling
 
 MongoDB has a **Query Profiler** to log slow queries.
 
@@ -2322,7 +2152,7 @@ db.system.profile.find().pretty();
 
 ---
 
-### 🔹 Index Suggestions
+#### 🔹 Index Suggestions
 
 MongoDB Atlas offers **index suggestions** based on query patterns, helping to **optimize your performance**.
 
@@ -2335,10 +2165,6 @@ MongoDB Atlas offers **index suggestions** based on query patterns, helping to *
 | Developer Tools (Compass, Shell, Atlas UI) | Provides GUI, CLI, and cloud tools for ease of use                          |
 | Language Drivers                           | MongoDB integrates seamlessly with languages like Node.js, Python, Java, C# |
 | MongoDB Analyze                            | Helps you analyze and optimize performance, queries, and indexes            |
-
----
-
-Great! Let's dive into **Section 12: MONGODB RECOVERY** 🛠️.
 
 ---
 
@@ -2395,8 +2221,6 @@ You can use `mongodump` to backup all collections or just one. You can also appl
 - `mongodump` is typically run from the MongoDB shell or command line.
 - The backup will be in BSON format, which you can restore later with `mongorestore`.
 
----
-
 #### 🔹 MongoDB Restore using **`mongorestore`**
 
 **`mongorestore`** is used to restore a MongoDB backup created with `mongodump`.
@@ -2417,8 +2241,6 @@ mongorestore --uri="mongodb://localhost:27017" --db=mydatabase /path/to/backup/m
 mongorestore --uri="mongodb://localhost:27017" --db=mydatabase --collection=mycollection /path/to/backup/mydatabase/mycollection.bson
 ```
 
----
-
 ### 12.2. **Point-in-Time Recovery with MongoDB Atlas**
 
 If you are using **MongoDB Atlas**, the cloud service offers built-in **Point-in-Time Recovery** (PITR) which allows you to restore a database to any specific point in time, without needing to manually manage backups.
@@ -2429,15 +2251,6 @@ If you are using **MongoDB Atlas**, the cloud service offers built-in **Point-in
 - **Point-in-Time Restoration**: You can select the exact timestamp to restore from.
 - **Continuous Backup**: Changes are backed up incrementally using the **Oplog**.
 
-To use PITR in Atlas:
-
-1. Go to the **Atlas UI**.
-2. Select the **Cluster**.
-3. Click on **Backups**.
-4. Choose **Restore** and specify a time to restore from.
-
----
-
 ### 12.3. **Backup and Restore with Replica Sets**
 
 If you're running MongoDB as a **Replica Set**, you can use **Oplog-based backups** for incremental backups, which will capture only the changes since the last backup.
@@ -2447,24 +2260,6 @@ To perform an Oplog-based backup:
 1. Use **`mongodump`** to dump the primary replica data.
 2. Continuously track and dump the Oplog (operation log) for incremental changes.
 3. Use **`mongorestore`** to restore the primary replica data, followed by restoring the Oplog to get incremental changes.
-
-#### Example: Backup using Oplog
-
-You can dump the Oplog with the following command:
-
-```bash
-mongodump --host=primaryReplicaHost --oplog --out=/path/to/oplog_backup/
-```
-
-To restore, use:
-
-```bash
-mongorestore --host=primaryReplicaHost --oplogReplay /path/to/oplog_backup/
-```
-
-The **`--oplogReplay`** flag ensures the oplog entries are applied in the correct order during restoration.
-
----
 
 ### 12.4. **MongoDB Backup Scheduling with Cron**
 
@@ -2496,17 +2291,13 @@ To recover from a failure:
 2. If using **MongoDB Atlas**, restore from the backup or point-in-time recovery.
 3. If using **`mongodump`** and **`mongorestore`**, restore the backup files to a fresh MongoDB instance.
 
----
-
 ### 12.6. **Monitoring and Alerting**
 
 It's crucial to set up **monitoring** to ensure your backups are occurring as scheduled and to be alerted to any issues.
 
 If using **MongoDB Atlas**, you can set up **alerts** to monitor your backup status and receive notifications if backups fail.
 
----
-
-#### 🎯 Summary of Section 12: MONGODB RECOVERY
+### 🎯 Summary of Section 12: MONGODB RECOVERY
 
 | Topic                              | Why It's Important                                                              |
 | :--------------------------------- | :------------------------------------------------------------------------------ |
@@ -2516,10 +2307,6 @@ If using **MongoDB Atlas**, you can set up **alerts** to monitor your backup sta
 | **Replica Set Backups**            | Oplog-based backups help you keep up-to-date backups with minimal data loss.    |
 | **Automated Backups with Cron**    | Ensures that backups happen automatically at specified intervals.               |
 | **Monitoring and Alerts**          | Monitoring tools alert you to issues with backups, preventing disasters.        |
-
----
-
-Sure! These are some advanced MongoDB topics that cover real-time data changes, time series data, file storage, serverless features, schema validation, multi-tenancy patterns, and connection pooling. Let's dive into each of these in detail, with examples and explanations:
 
 ---
 
