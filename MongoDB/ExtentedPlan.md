@@ -193,8 +193,6 @@
 - `age`: 32-bit integer
 - `createdAt`: BSON Date object (not just text!)
 
----
-
 ### 2.2. **Embedded Documents**
 
 MongoDB supports **documents inside documents** (nested objects).  
@@ -238,8 +236,6 @@ MongoDB supports the following important types:
 | ObjectId                                  | Unique identifier           | `"_id": ObjectId("6540d27f8c1b2d3a4a70c123")`  |
 | Null                                      | Empty value                 | `"deletedAt": null`                            |
 | Binary Data                               | Buffer data (images, files) | `"profilePic": BinData(0, "...")`              |
-
----
 
 **Quick Code Examples:**
 
@@ -306,13 +302,6 @@ db.comments.insertMany([
 | Embedded Documents | Nest documents inside documents                      |
 | MongoDB Datatypes  | String, Number, Boolean, Array, Date, ObjectId, etc. |
 | Data Modeling      | Choose Embed or Reference based on access patterns   |
-
----
-
-Awesome!  
-Let's continue with **3. Collections and Documents** — and I'll keep it **full of code examples** like you asked. 🚀
-
----
 
 ## 3. Collections and Documents
 
@@ -516,9 +505,6 @@ db.users.dropIndex("email_1"); // index name is usually field_direction
 | countDocuments()           | Count matching documents    | `db.collection.countDocuments(filter)`    |
 | createIndex(), dropIndex() | Manage indexes              | `db.collection.createIndex({ field: 1 })` |
 
-Awesome — let's move to **4. CRUD (MongoDB CRUD, upsert, write concern)**! 🚀  
-I'll again give **clear explanations + many code examples**.
-
 ---
 
 ## 4. CRUD (Create, Read, Update, Delete)
@@ -531,8 +517,6 @@ MongoDB follows the traditional **CRUD** model:
 | **Read**   | `find()`, `findOne()`         | Retrieve documents |
 | **Update** | `updateOne()`, `updateMany()` | Modify documents   |
 | **Delete** | `deleteOne()`, `deleteMany()` | Remove documents   |
-
----
 
 ### 4.1. **Create**
 
@@ -577,8 +561,6 @@ You can also use **projections** to control what fields you return:
 db.books.find({}, { _id: 0, title: 1, author: 1 });
 ```
 
----
-
 ### 4.3. **Update**
 
 Modify existing documents.
@@ -599,8 +581,6 @@ db.books.updateMany(
 
 ✅ MongoDB update operators like `$set`, `$inc`, `$unset` are very powerful.
 
----
-
 ### 4.4. **Delete**
 
 Remove documents.
@@ -614,8 +594,6 @@ db.books.deleteMany({ price: { $gt: 15 } });
 ```
 
 ✅ Deletes are **permanent** — be careful!
-
----
 
 ### 4.5. **Upsert Option**
 
@@ -633,8 +611,6 @@ db.books.updateOne(
 
 ✅ If `Brave New World` exists, it will update it.  
 ✅ If it doesn't exist, it will insert a **new document**.
-
----
 
 ### 4.6. **Write Concern**
 
@@ -664,8 +640,6 @@ db.books.insertOne(
 ✅ Higher write concern = More safe  
 ✅ But can also = Slower writes
 
----
-
 ### 🚀 Quick Full CRUD Example
 
 ```js
@@ -681,8 +655,6 @@ db.students.updateOne({ name: "John Doe" }, { $set: { grade: "A+" } });
 // 4. Delete
 db.students.deleteOne({ name: "John Doe" });
 ```
-
----
 
 ### 🔥 Summary Table
 
@@ -721,8 +693,6 @@ db.users.find({ age: 30 }, { name: 1, age: 1, _id: 0 });
 
 ✅ **`_id: 0`** removes the `_id` field from the result.
 
----
-
 ### 5.3. **Comparison Operators**
 
 MongoDB supports comparison operators for filtering data.
@@ -750,8 +720,6 @@ db.users.find({ age: { $in: [25, 30] } });
 // Find users whose age is not in [20, 22, 24]
 db.users.find({ age: { $nin: [20, 22, 24] } });
 ```
-
----
 
 ### 5.4. **Logical Operators**
 
@@ -869,10 +837,6 @@ db.users.find({ phoneNumber: { $type: "string" } });
 | `$size`      | Matches arrays of a specific size     | `{ hobbies: { $size: 3 } }`                     |
 | `$exists`    | Matches documents with a field        | `{ email: { $exists: true } }`                  |
 | `$type`      | Matches fields of a specific type     | `{ email: { $type: "string" } }`                |
-
----
-
-Let's dive into **6. Indexing and Optimization**. This is a critical part of working with MongoDB because it can significantly improve the performance of queries by reducing the number of documents MongoDB needs to scan.
 
 ---
 
@@ -1844,8 +1808,6 @@ If you're using **MongoDB Atlas**, it gives you beautiful **dashboards**:
 | Replica Sets | High availability (HA)  |
 | Sharding     | Handle massive datasets |
 | Monitoring   | Catch problems early    |
-
-Awesome! Let's dive into
 
 ## 10: 🔒 SECURITY in MongoDB
 
