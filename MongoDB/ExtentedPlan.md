@@ -1863,11 +1863,9 @@ We'll cover:
 
 - Role-Based Access Control (RBAC)
 - TLS/SSL Encryption
+- Encryption at Rest
 - Authentication Methods (X.509, LDAP, Kerberos)
 - Auditing
-- Encryption at Rest
-
----
 
 ### 10.1. 🛡️ Role-Based Access Control (RBAC)
 
@@ -1921,8 +1919,6 @@ TLS/SSL encrypts all data moving between **clients ↔ servers**.
 
 **Without it**, passwords and sensitive data could be sniffed!
 
----
-
 #### 📦 Example: Start MongoDB with SSL
 
 First, create a self-signed certificate (for dev):
@@ -1942,7 +1938,21 @@ mongod --sslMode requireSSL --sslPEMKeyFile /path/to/mongodb.pem
 
 ---
 
-### 10.3. 🧩 Authentication Methods
+### 10.3. 🔒 Encryption at Rest (Data at Rest Encryption)
+
+Even if attackers get your disks, they can't read the data.
+
+#### Options
+
+| Method                    | Description                                         |
+| :------------------------ | :-------------------------------------------------- |
+| WiredTiger Encryption     | Built-in file-level encryption (Enterprise Edition) |
+| Cloud Provider Encryption | Atlas automatically encrypts data                   |
+| OS Disk Encryption        | Use Linux LUKS, Windows BitLocker, etc.             |
+
+---
+
+### 10.4. 🧩 Authentication Methods
 
 MongoDB supports multiple authentication systems:
 
@@ -1990,7 +2000,7 @@ Instead of managing MongoDB users manually, you integrate with existing user acc
 
 ---
 
-### 10.4. 🕵️ MongoDB Audit
+### 10.5. 🕵️ MongoDB Audit
 
 **Auditing** allows you to **track**:
 
@@ -2005,22 +2015,6 @@ mongod --auditDestination file --auditFormat JSON --auditPath /var/log/mongodb/a
 ```
 
 ✅ Useful for security compliance (GDPR, HIPAA, etc.)
-
----
-
-### 10.5. 🔒 Encryption at Rest (Data at Rest Encryption)
-
-Even if attackers get your disks, they can't read the data.
-
----
-
-#### Options
-
-| Method                    | Description                                         |
-| :------------------------ | :-------------------------------------------------- |
-| WiredTiger Encryption     | Built-in file-level encryption (Enterprise Edition) |
-| Cloud Provider Encryption | Atlas automatically encrypts data                   |
-| OS Disk Encryption        | Use Linux LUKS, Windows BitLocker, etc.             |
 
 ---
 
