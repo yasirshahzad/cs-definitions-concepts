@@ -51,8 +51,6 @@
   - Including fields
   - Excluding fields
 
----
-
 ### 5. **Indexing and Optimization**
 
 - Why Indexes?
@@ -751,7 +749,7 @@ db.users.find({ age: { $not: { $eq: 25 } } });
 
 MongoDB supports a variety of operators for querying **arrays**.
 
-#### Common Array Operators:
+#### Common Array Operators
 
 - `$all`: Match all elements in an array
 - `$elemMatch`: Match documents with arrays containing elements that satisfy a query
@@ -770,8 +768,6 @@ db.users.find({ hobbies: { $elemMatch: { $eq: "music" } } });
 // Find users who have exactly 3 hobbies
 db.users.find({ hobbies: { $size: 3 } });
 ```
-
----
 
 ### 5.6. **Element Operators**
 
@@ -871,6 +867,16 @@ db.users.createIndex({ age: 1 }); // 1 for ascending order, -1 for descending
 db.users.createIndex({ name: 1, age: -1 });
 ```
 
+#### Multi-key
+
+Automatically created if you index a field that is an array.
+
+```ts
+db.products.createIndex({ tags: 1 });
+```
+
+Each element of the array is indexed separately.
+
 #### Text Index
 
 ```js
@@ -878,7 +884,27 @@ db.users.createIndex({ name: 1, age: -1 });
 db.products.createIndex({ description: "text" });
 ```
 
+```ts
+db.articles.find({ $text: { $search: "mongodb tutorial" } });
+```
+
 ---
+
+#### Hashed Index
+
+```ts
+db.users.createIndex({ userId: "hashed" });
+```
+
+#### Geospatial Index
+
+- For location-based queries.
+
+```ts
+db.places.createIndex({ location: "2dsphere" });
+```
+
+Needed for `$near`, `$geoWithin` queries.
 
 ### 6.2. **Using Indexes**
 
@@ -892,8 +918,6 @@ db.users.find({ age: 30 }).explain("executionStats");
 ```
 
 The `"executionStats"` option will show you details like whether an index is being used, the number of documents scanned, and more.
-
----
 
 ### 6.3. **Indexing Strategy**
 
@@ -937,8 +961,6 @@ db.users.find().skip(10).limit(10);
 ```
 
 These commands are especially useful when you're implementing **pagination** in your application.
-
----
 
 ### 6.5. **Indexing with MongoDB Atlas Search**
 
