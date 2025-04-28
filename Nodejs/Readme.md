@@ -2798,3 +2798,262 @@ pm2 deploy production
 | Startup on Boot  | `pm2 startup` → `pm2 save` |
 | Setup Deploy     | `pm2 deploy production`    |
 | Ecosystem Config | `ecosystem.config.js`      |
+
+## Error Handling
+
+### 🧠 First: What Types of Errors Exist in Node.js?
+
+| Error Type             | Example                                             | What It Means         |
+| :--------------------- | :-------------------------------------------------- | :-------------------- |
+| **Synchronous error**  | `throw new Error('Something went wrong')`           | Immediate, blocking   |
+| **Asynchronous error** | `fs.readFile('nofile', cb)` → error inside callback | Error happens _later_ |
+| **Promise rejection**  | `Promise.reject(new Error('fail'))`                 | Unhandled `.catch()`  |
+| **Operational Error**  | Database connection fails, API timeout              | Expected failures     |
+| **Programmer Error**   | Typos, bugs, wrong API usage                        | Code mistake          |
+
+✅ Good apps **handle Operational errors** carefully.  
+❌ Programmer errors should **crash** the app (so you find the bug and fix).
+
+---
+
+### 🚀 Synchronous Error Handling Pattern
+
+Wrap synchronous risky code inside `try-catch`.
+
+```js
+try {
+  let data = riskyFunction();
+  console.log(data);
+} catch (err) {
+  console.error("Caught an error:", err.message);
+}
+```
+
+✅ Simple, works immediately.
+
+---
+
+###🚀 Asynchronous (Callback) Error Handling Pattern
+
+Always **first argument** in Node.js callback is `err`.
+
+```js
+fs.readFile("/invalid/path", (err, data) => {
+  if (err) {
+    console.error("Failed to read file:", err.message);
+    return;
+  }
+  console.log(data.toString());
+});
+```
+
+✅ Always **check** if `err` exists inside callbacks!
+
+---
+
+### 🚀 Promise Error Handling Pattern
+
+Always `.catch()` your promises.
+
+```js
+asyncFunction()
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((error) => {
+    console.error("Promise rejected:", error.message);
+  });
+```
+
+✅ Every promise must have a `.catch()` somewhere!
+
+---
+
+### 🚀 `async/await` Error Handling Pattern
+
+Use `try-catch` around `await`.
+
+```js
+async function fetchData() {
+  try {
+    const data = await fetchFromDatabase();
+    console.log(data);
+  } catch (err) {
+    console.error("Failed to fetch data:", err.message);
+  }
+}
+```
+
+✅ No silent failures.
+
+---
+
+### 💥 Global Error Handlers
+
+Sometimes your server should **catch** unhandled errors globally too:
+
+```js
+process.on("uncaughtException", (err) => {
+  console.error("Uncaught Exception:", err);
+  process.exit(1); // mandatory: exit process
+});
+
+process.on("unhandledRejection", (reason, promise) => {
+  console.error("Unhandled Promise Rejection:", reason);
+  process.exit(1);
+});
+```
+
+✅ Catch catastrophic failures and shut down gracefully.
+
+### 📚 Advanced Professional Error Handling Patterns
+
+#### 1. **Centralized Error Handling Middleware (Express)**
+
+In ExpressJS, make a central error handler:
+
+```js
+// error-handler.js
+function errorHandler(err, req, res, next) {
+  console.error(err.stack);
+
+  res.status(err.statusCode || 500).json({
+    success: false,
+    message: err.message || "Internal Server Error",
+  });
+}
+
+module.exports = errorHandler;
+```
+
+Use it in your app:
+
+```js
+const errorHandler = require("./error-handler");
+
+app.use(errorHandler);
+```
+
+✅ All errors go through this one place.
+
+---
+
+#### 2. **Create Custom Error Classes**
+
+Instead of throwing generic `Error`, you create **structured errors**:
+
+```js
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+    this.isOperational = true;
+    Error.captureStackTrace(this, this.constructor);
+  }
+}
+```
+
+Usage:
+
+```js
+throw new AppError("User not found", 404);
+```
+
+✅ Helps you distinguish between **Operational errors** (handle) and **Programmer errors** (crash).
+
+---
+
+#### 3. **Use `next(err)` in Express**
+
+In routes:
+
+```js
+app.get("/user/:id", async (req, res, next) => {
+  try {
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return next(new AppError("User not found", 404));
+    }
+    res.json(user);
+  } catch (err) {
+    next(err);
+  }
+});
+```
+
+✅ If an error occurs, `next(err)` sends it to the error handler.
+
+---
+
+#### 4. **Fail Fast, Fail Loud**
+
+**Best practice**: **Crash** immediately if a **Programmer error** (e.g., typo, undefined variable) occurs.
+
+Don't try to recover from bugs:
+
+- Let the app crash.
+- Use a process manager (like **PM2**) to auto-restart.
+
+✅ This ensures you don't run your app in a corrupted state.
+
+---
+
+#### 5. **Graceful Shutdowns on Fatal Errors**
+
+On fatal errors, you should close servers gracefully:
+
+```js
+process.on("uncaughtException", (err) => {
+  console.error(err);
+  process.exit(1);
+});
+
+process.on("unhandledRejection", (err) => {
+  console.error(err);
+  server.close(() => {
+    process.exit(1);
+  });
+});
+```
+
+✅ Example: Wait for HTTP server to close before exiting.
+
+---
+
+### 📈 Complete Node.js Error Handling Flow
+
+```mermaid
+flowchart TD
+A[Error Happens] --> B{Type of Error?}
+B -- Operational --> C[Handle Gracefully]
+B -- Programmer --> D[Crash App]
+C --> E[Return Error Response]
+D --> F[PM2 Restart App]
+```
+
+✅ Handle expected errors. Crash on bugs. Restart automatically.
+
+---
+
+### 📋 Node.js Error Handling Cheat Sheet
+
+| Pattern                            | Use                     |
+| :--------------------------------- | :---------------------- |
+| `try-catch`                        | Sync code, async/await  |
+| `if (err) return next(err)`        | In callbacks            |
+| `Promise.catch()`                  | In promises             |
+| `process.on('uncaughtException')`  | Fatal sync error        |
+| `process.on('unhandledRejection')` | Fatal promise rejection |
+| Custom `AppError` class            | Structured errors       |
+| Express `errorHandler` middleware  | Central handling        |
+| Crash on bugs                      | Fail fast               |
+
+---
+
+### 🏆 Summary
+
+✅ Properly handled async/sync errors  
+✅ Built centralized error middleware  
+✅ Structured errors using classes  
+✅ Catch-all global event listeners  
+✅ Graceful shutdowns
