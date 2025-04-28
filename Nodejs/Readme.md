@@ -984,3 +984,435 @@ const filePath = path.join(__dirname, "folder", "file.txt");
 ✅ 100% portable between Linux, Mac, and Windows!
 
 ---
+
+Of course!  
+Now I’ll **restructure** the `stream` guide in **pipeline** style — smaller headings, more real-world feel — and **include**:
+
+✅ Build a Mini **Streaming Video Server** 🎬  
+✅ Build a Mini **CLI Tool** for GB-sized file processing 📁
+
+---
+
+## Streams
+
+- **Streams** handle **data chunks** — not entire files.
+- Super useful for **big files**, **networks**, and **memory** efficiency.
+
+### 🧵 4 Types of Streams
+
+- **Readable**: Read data (file, HTTP request)
+- **Writable**: Write data (file, HTTP response)
+- **Duplex**: Both (like TCP socket)
+- **Transform**: Modify while passing (gzip compression)
+
+### 🛠️ Basic Stream Usage
+
+#### Read a file (Readable)
+
+```javascript
+const fs = require("fs");
+
+const readable = fs.createReadStream("./bigfile.txt", { encoding: "utf8" });
+
+readable.on("data", (chunk) => {
+  console.log("Chunk:", chunk.length);
+});
+
+readable.on("end", () => {
+  console.log("Done reading.");
+});
+```
+
+---
+
+#### Write to a file (Writable)
+
+```javascript
+const writable = fs.createWriteStream("./output.txt");
+
+writable.write("Hello World!\n");
+writable.end();
+
+writable.on("finish", () => {
+  console.log("Done writing.");
+});
+```
+
+---
+
+#### Pipe (Connect streams)
+
+```javascript
+const read = fs.createReadStream("./bigfile.txt");
+const write = fs.createWriteStream("./copy.txt");
+
+read.pipe(write);
+```
+
+✅ Reads + Writes efficiently — no manual handling!
+
+---
+
+## 🚰 Pipeline Pattern
+
+Instead of manually managing `.on('data')`, use **pipeline**:
+
+```javascript
+const { pipeline } = require("stream");
+const fs = require("fs");
+
+pipeline(
+  fs.createReadStream("./bigfile.txt"),
+  fs.createWriteStream("./copy.txt"),
+  (err) => {
+    if (err) console.error("Pipeline failed:", err);
+    else console.log("Pipeline succeeded.");
+  }
+);
+```
+
+✅ Automatic error handling.  
+✅ Cleaner than `.pipe()` chain.
+
+---
+
+## 📈 Handle Backpressure Manually
+
+```javascript
+const read = fs.createReadStream("./bigfile.txt");
+const write = fs.createWriteStream("./copy.txt");
+
+read.on("data", (chunk) => {
+  const ok = write.write(chunk);
+  if (!ok) {
+    read.pause();
+    write.once("drain", () => {
+      read.resume();
+    });
+  }
+});
+```
+
+✅ If writable is **full**, pause reading temporarily.
+
+---
+
+## 🧪 Create a Transform Stream (Modify Data)
+
+Example: Convert text to **uppercase** while streaming.
+
+```javascript
+const { Transform } = require("stream");
+
+const upper = new Transform({
+  transform(chunk, encoding, callback) {
+    callback(null, chunk.toString().toUpperCase());
+  },
+});
+
+pipeline(
+  fs.createReadStream("./input.txt"),
+  upper,
+  fs.createWriteStream("./output.txt"),
+  (err) => {
+    if (err) console.error("Transform failed:", err);
+    else console.log("Transform done.");
+  }
+);
+```
+
+✅ Modify while moving data! (No memory hit)
+
+---
+
+## ⚙️ Stream Options
+
+- `highWaterMark`: Buffer size (default 64KB)
+- `encoding`: auto decode (e.g., `'utf8'`)
+
+```javascript
+fs.createReadStream("./file.txt", { highWaterMark: 128 * 1024 });
+```
+
+✅ Tune buffer size for optimization.
+
+---
+
+## 🎬 Build a Mini Streaming Video Server
+
+**Stream a video file** chunk-by-chunk via HTTP:
+
+```javascript
+const http = require("http");
+const fs = require("fs");
+const path = require("path");
+
+http
+  .createServer((req, res) => {
+    const videoPath = path.join(__dirname, "video.mp4");
+    const stat = fs.statSync(videoPath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+
+    if (range) {
+      const parts = range.replace(/bytes=/, "").split("-");
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+
+      const chunksize = end - start + 1;
+      const file = fs.createReadStream(videoPath, { start, end });
+      const head = {
+        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunksize,
+        "Content-Type": "video/mp4",
+      };
+
+      res.writeHead(206, head);
+      file.pipe(res);
+    } else {
+      const head = {
+        "Content-Length": fileSize,
+        "Content-Type": "video/mp4",
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(videoPath).pipe(res);
+    }
+  })
+  .listen(8000);
+
+console.log("Streaming server running on http://localhost:8000");
+```
+
+✅ Handles **partial content** for smooth seeking!  
+✅ Supports **large videos** without memory crash.
+
+---
+
+## 📁 Build a CLI Tool for GB-Sized File Processing
+
+**Replace text in a huge file** without loading all.
+
+```javascript
+const fs = require("fs");
+const { Transform, pipeline } = require("stream");
+
+const replaceTransform = new Transform({
+  transform(chunk, encoding, callback) {
+    const data = chunk.toString().replace(/oldword/g, "newword");
+    callback(null, data);
+  },
+});
+
+pipeline(
+  fs.createReadStream(process.argv[2]), // input file
+  replaceTransform,
+  fs.createWriteStream("output.txt"), // output file
+  (err) => {
+    if (err) console.error("CLI processing failed:", err);
+    else console.log("File processed successfully.");
+  }
+);
+```
+
+Run from CLI:
+
+```bash
+node cli-tool.js input.txt
+```
+
+✅ Can handle **GB+ files** easily.  
+✅ Memory-safe.
+
+---
+
+### 🧠 Quick Summary
+
+| You Mastered                | Means                          |
+| :-------------------------- | :----------------------------- |
+| Readable / Writable streams | Chunk-by-chunk processing      |
+| Pipe and pipeline           | Stream chaining + error safety |
+| Transform streams           | Modify data during flow        |
+| Backpressure handling       | Avoid overload                 |
+| Custom stream apps          | Server + CLI tools             |
+
+---
+
+## 💾 What is a Buffer?
+
+- A **Buffer** is like a **raw chunk of memory**.
+- It stores **binary data** directly (without string encoding).
+
+✅ Useful for files, TCP streams, image processing, video streaming, etc.
+
+### 📦 Create a Buffer
+
+#### From a String
+
+```javascript
+const buf = Buffer.from("Hello World");
+console.log(buf);
+// Output: <Buffer 48 65 6c 6c 6f 20 57 6f 72 6c 64>
+```
+
+- Each character → binary.
+
+---
+
+#### From an Array
+
+```javascript
+const buf = Buffer.from([72, 101, 108, 108, 111]);
+console.log(buf.toString());
+// Output: Hello
+```
+
+- Array of bytes.
+
+---
+
+#### Allocate Empty Buffer
+
+```javascript
+const buf = Buffer.alloc(10);
+console.log(buf);
+// Output: <Buffer 00 00 00 00 00 00 00 00 00 00>
+```
+
+- 10 bytes, initialized to `0`.
+
+---
+
+## 🔎 Read/Write Buffer
+
+### Write to Buffer
+
+```javascript
+const buf = Buffer.alloc(5);
+buf.write("abc");
+console.log(buf.toString());
+// Output: abc
+```
+
+- Overwrites buffer memory.
+
+---
+
+### Read from Buffer
+
+```javascript
+const buf = Buffer.from("Hello");
+console.log(buf[0]);
+// Output: 72
+console.log(String.fromCharCode(buf[0]));
+// Output: H
+```
+
+- Buffers are **indexed** like arrays!
+
+---
+
+## 🧠 Important Buffer Methods
+
+| Method                                                    | What it does                      |
+| :-------------------------------------------------------- | :-------------------------------- |
+| `toString([encoding])`                                    | Convert buffer to readable string |
+| `toJSON()`                                                | Get JSON representation           |
+| `slice(start, end)`                                       | Create a sub-buffer (no copy!)    |
+| `copy(targetBuffer, targetStart, sourceStart, sourceEnd)` | Copy parts of buffer              |
+| `concat([buf1, buf2])`                                    | Merge multiple buffers            |
+| `length`                                                  | Size of buffer in bytes           |
+
+---
+
+## ⚡ Encoding Types
+
+- `'utf8'` (default)
+- `'ascii'`
+- `'base64'`
+- `'hex'`
+- `'binary'`
+- `'latin1'`
+
+```javascript
+const buf = Buffer.from("Hello", "utf8");
+console.log(buf.toString("hex"));
+// Output: 48656c6c6f
+```
+
+---
+
+## 🛠 Real-World Mini Projects
+
+### 🎬 Build a Simple Image Server Using Buffer
+
+Serve a binary image from memory!
+
+```javascript
+const http = require("http");
+const fs = require("fs");
+
+const server = http.createServer((req, res) => {
+  fs.readFile("./image.png", (err, data) => {
+    if (err) {
+      res.writeHead(500);
+      res.end("Error loading image");
+      return;
+    }
+    res.writeHead(200, { "Content-Type": "image/png" });
+    res.end(data); // Buffer is sent directly!
+  });
+});
+
+server.listen(3000, () =>
+  console.log("Image server running on http://localhost:3000")
+);
+```
+
+✅ Sends image **buffer** as HTTP response.
+
+---
+
+### 📁 Build a CLI Tool that Converts Images to Base64
+
+Command-line tool to encode image files into base64.
+
+```javascript
+const fs = require("fs");
+
+const filePath = process.argv[2];
+
+fs.readFile(filePath, (err, data) => {
+  if (err) throw err;
+
+  const base64 = data.toString("base64");
+  console.log(base64);
+});
+```
+
+Run it:
+
+```bash
+node base64-encoder.js myphoto.jpg
+```
+
+✅ Converts any file into a **Base64 string** for APIs, embedding, etc.
+
+---
+
+## 🚀 Bonus: Streaming with Buffers
+
+Streams internally use buffers!
+
+```javascript
+const fs = require("fs");
+
+const readStream = fs.createReadStream("largefile.zip");
+readStream.on("data", (chunk) => {
+  console.log("Received chunk:", chunk.length, "bytes");
+});
+```
+
+✅ Every `chunk` event gives a **Buffer**!
+
+---
