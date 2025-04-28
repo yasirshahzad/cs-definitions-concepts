@@ -1,11 +1,44 @@
-const fs = require("fs");
-const http = require("http");
-const { pipeline } = require("stream/promises");
+const EventEmitter = require("events");
 
-const server = http.createServer(async (req, res) => {
-  const stream = fs.createReadStream("./bigfile.txt");
+class AuthSystem extends EventEmitter {
+  constructor() {
+    super();
+    this.users = new Map(); // Store users in a Map for quick access
+  }
 
-  await pipeline(stream, res);
+  register(username, password) {
+    if (this.users.has(username)) {
+      this.emit("error", new Error("User already exists"));
+      return;
+    }
+    this.users.set(username, password);
+    this.emit("registered", username);
+  }
+
+  login(username, password) {
+    if (!this.users.has(username)) {
+      this.emit("error", new Error("User not found"));
+      return;
+    }
+    if (this.users.get(username) !== password) {
+      this.emit("error", new Error("Invalid password"));
+      return;
+    }
+    this.emit("loggedIn", username);
+  }
+}
+
+const authSystem = new AuthSystem();
+
+// Event listeners
+authSystem.on("registered", (username) => {
+  console.log(`User ${username} registered successfully.`);
 });
 
-server.listen(3000, () => console.log("Streaming server running"));
+authSystem.on("loggedIn", (username) => {
+  console.log(`User ${username} logged in successfully.`);
+});
+
+authSystem.on("error", (error) => {
+  console.error(`Error: ${error.message}`);
+});
