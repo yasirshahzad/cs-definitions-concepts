@@ -790,3 +790,197 @@ server.listen(3000, () =>
 ✅ No Express, fully manual server!
 
 ---
+
+Perfect — let's **go advanced** into the `path` module.  
+This is **super important** if you want to build servers, file systems, CLIs, etc.
+
+---
+
+## 📂 Node.js `path` Module
+
+✅ The `path` module gives you **cross-platform** (Windows, Linux, Mac) ways to handle file/directory paths properly.
+
+```javascript
+const path = require("path");
+```
+
+---
+
+### 1. **Basic but Critical Functions**
+
+| Function          | Purpose                    |
+| :---------------- | :------------------------- |
+| `path.join()`     | Join path segments safely  |
+| `path.resolve()`  | Resolve full absolute path |
+| `path.basename()` | Get filename               |
+| `path.dirname()`  | Get directory name         |
+| `path.extname()`  | Get file extension         |
+
+---
+
+### 2. **path.join() — Safely Build Paths**
+
+**Example:**
+
+```javascript
+const fullPath = path.join("folder", "subfolder", "file.txt");
+console.log(fullPath);
+// On Linux/Mac ➔ folder/subfolder/file.txt
+// On Windows ➔ folder\subfolder\file.txt
+```
+
+✅ Automatically inserts the correct `/` or `\` depending on the OS.
+
+---
+
+### 3. **path.resolve() — Build Absolute Paths**
+
+```javascript
+const fullPath = path.resolve("folder", "file.txt");
+console.log(fullPath);
+// Outputs: /Users/yourname/project/folder/file.txt
+```
+
+- `resolve()` **starts from current working directory (cwd)**.
+- `resolve()` is **smarter**: it handles `..` (parent folders).
+
+Example:
+
+```javascript
+const x = path.resolve("a", "..", "b", "file.txt");
+console.log(x);
+// Means: from a's parent ➔ go into b ➔ file.txt
+```
+
+---
+
+### 4. **path.basename() — Get the filename only**
+
+```javascript
+const fileName = path.basename("/folder/subfolder/file.txt");
+console.log(fileName);
+// file.txt
+```
+
+You can also **remove the extension**:
+
+```javascript
+const name = path.basename("/folder/subfolder/file.txt", ".txt");
+console.log(name);
+// file
+```
+
+---
+
+### 5. **path.dirname() — Get the directory name**
+
+```javascript
+const dirName = path.dirname("/folder/subfolder/file.txt");
+console.log(dirName);
+// /folder/subfolder
+```
+
+---
+
+### 6. **path.extname() — Get file extension**
+
+```javascript
+const ext = path.extname("/folder/subfolder/file.txt");
+console.log(ext);
+// .txt
+```
+
+✅ Useful to filter files: `.jpg`, `.png`, `.pdf`, etc.
+
+---
+
+### 7. **path.parse() and path.format() — Full Object Control**
+
+#### a. parse()
+
+```javascript
+const parsed = path.parse("/folder/subfolder/file.txt");
+console.log(parsed);
+/*
+{
+  root: '/',
+  dir: '/folder/subfolder',
+  base: 'file.txt',
+  ext: '.txt',
+  name: 'file'
+}
+*/
+```
+
+✅ Breaks a full path into parts!
+
+---
+
+#### b. format()
+
+```javascript
+const formatted = path.format({
+  dir: "/folder/subfolder",
+  name: "file",
+  ext: ".txt",
+});
+console.log(formatted);
+// /folder/subfolder/file.txt
+```
+
+✅ Build a path from an object.
+
+---
+
+### 8. **Cross-Platform Differences (Important)**
+
+| Path                     | Windows Example | Linux Example |
+| :----------------------- | :-------------- | :------------ |
+| separator                | `\`             | `/`           |
+| delimiter (PATH env var) | `;`             | `:`           |
+
+```javascript
+console.log(path.sep); // \ (Windows) OR / (Linux)
+console.log(path.delimiter); // ; (Windows) OR : (Linux)
+```
+
+✅ Good when handling environment variables like `PATH`.
+
+---
+
+### 9. **Relative vs Absolute Paths**
+
+| Path Type | Example                      |
+| :-------- | :--------------------------- |
+| Absolute  | `/Users/you/folder/file.txt` |
+| Relative  | `./folder/file.txt`          |
+
+**Check if path is absolute:**
+
+```javascript
+console.log(path.isAbsolute("/folder/file.txt")); // true
+console.log(path.isAbsolute("folder/file.txt")); // false
+```
+
+✅ Important for building server-side file loaders.
+
+---
+
+### 10. **Best Practice: Always Use path.join() or path.resolve()**
+
+❌ Bad:
+
+```javascript
+const filePath = __dirname + "/folder/file.txt";
+// Breaks on Windows
+```
+
+✅ Good:
+
+```javascript
+const filePath = path.join(__dirname, "folder", "file.txt");
+```
+
+✅ 100% portable between Linux, Mac, and Windows!
+
+---
