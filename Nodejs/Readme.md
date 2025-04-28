@@ -1341,3 +1341,17 @@ console.log(buf.toString("hex"));
 ```
 
 ---
+
+### Os Module
+
+| Function               | What it Gives (Detailed)                                                                                                                |
+| :--------------------- | :-------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------- |
+| os.platform()          | Operating System platform (win32, linux, darwin for macOS). Useful for OS-specific behavior.                                            |
+| os.arch()              | CPU architecture (x64, arm, arm64). Important for compiling binaries or optimizing code.                                                |
+| os.cpus()              | Detailed info about each CPU core (model, speed in MHz, times spent in user/system/idle). Helps in load balancing, threading decisions. |
+| os.totalmem()          | Total system memory (RAM) in bytes. Must convert to MB/GB manually for readable formats.                                                |
+| os.freemem()           | Free/available system memory (RAM) in bytes. Helps monitor memory usage in real-time.                                                   |
+| os.uptime()            | System uptime in seconds. Useful for monitoring server stability, scheduling restarts.                                                  |
+| os.hostname()          | Machine's hostname (network identity). Often used for logging, networking, or configuration purposes.                                   |
+| os.homedir()           | Absolute path of the current user's home directory. Useful for storing user-specific files or config.                                   |
+| os.networkInterfaces() | Details about all network interfaces — IP addresses (IPv4/IPv6), MAC addresses, etc. Important for networking apps and                  | discovering public/internal IPs. |
