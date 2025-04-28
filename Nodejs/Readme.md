@@ -148,7 +148,7 @@ When you write `require('foo')`, Node tries in this order:
 }
 ```
 
-## 🔥🔥 EXPERT LEVEL: Publishing Your Own npm Package
+## 6. Publishing Your Own npm Package
 
 Steps:
 
@@ -166,8 +166,6 @@ Example:
 ```bash
 npm publish --access public
 ```
-
-## 🏆 1. Pro-level Small Challenges
 
 ### 1. Event Loop Race
 
@@ -256,7 +254,7 @@ eventLoop();
 ▶️ **Task**:  
 Add some `setTimeout` and `Promise.then` to simulate how Node handles real event loop.
 
-### 6. Module Caching Bug Challenge
+### 4. Module Caching Bug Challenge
 
 ▶️ **Task**:
 Create two files:
@@ -295,7 +293,7 @@ console.log(counter1.getCount()); // Predict output
 
 ---
 
-## 🏗️ 2. Node.js Runtime Architecture Diagram (Deep)
+## 7. Node.js Runtime Architecture Diagram (Deep)
 
 Here's a **conceptual deep architecture** of Node.js runtime:
 
@@ -338,7 +336,7 @@ Your Code → V8 → Node APIs → libuv → OS Kernel
 
 ⮕ The Event Loop is the **traffic controller** of all of this.
 
-## 🧩 3. Visual: Deep Node.js Runtime Diagram
+## 8. Visual: Deep Node.js Runtime Diagram
 
 Here's the **full Node.js runtime diagram** with complete flow:
 
@@ -363,7 +361,7 @@ Here's the **full Node.js runtime diagram** with complete flow:
  └────────────────────────────────────┘
 ```
 
-## 📖 4. Deep-dive Cheat Sheet: Node.js Event Loop Phases
+## 9. Deep-dive Cheat Sheet: Node.js Event Loop Phases
 
 > Imagine the Event Loop phases as **sub-stages**:
 
@@ -397,7 +395,7 @@ Microtasks Queue: (executed after each phase)
 - `process.nextTick` is **even before Promise.then**.
 - `setImmediate` is NOT the same as `setTimeout(fn, 0)`.
 
-## ✨ 5. Visual: Node.js Single-threaded but Multi-tasking
+## 10. Visual: Node.js Single-threaded but Multi-tasking
 
 ```plaintext
 ┌──────────────────────────────────────────────────────────────┐
@@ -416,6 +414,8 @@ Microtasks Queue: (executed after each phase)
 
 ✅ Node itself is single-threaded in terms of _your code_.  
 ✅ But **libuv** uses a **threadpool** behind the scenes for non-blocking magic.
+
+---
 
 ## 1. 🔥 **Creating a Server using `http`**
 
@@ -550,7 +550,7 @@ read();
 
 ✅ Manually **promisifying** gives you **more control** than relying on libraries.
 
-## 🎯 **Hidden Pro-Level Concepts (you must master)**
+## 🎯 **Concepts (you must master)**
 
 | Concept                  | Why It Matters                                     |
 | ------------------------ | -------------------------------------------------- |
