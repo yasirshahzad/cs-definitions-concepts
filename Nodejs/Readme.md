@@ -550,7 +550,7 @@ read();
 
 ✅ Manually **promisifying** gives you **more control** than relying on libraries.
 
-## 🎯 **Concepts**
+### 🎯 **Concepts**
 
 | Concept                  | Why It Matters                                     |
 | ------------------------ | -------------------------------------------------- |
@@ -558,3 +558,235 @@ read();
 | HighWaterMark in streams | Tuning how much data is buffered in streams        |
 | Graceful Shutdown        | Stop accepting new connections but finish old ones |
 | Zero-Copy Streaming      | `stream.pipe()` does not copy data manually        |
+
+## Nodejs Internal Modules
+
+There are **four main APIs** in `fs` you must master:
+
+| Style                  | Example Function       | Characteristics                           |
+| :--------------------- | :--------------------- | :---------------------------------------- |
+| Callback-based         | `fs.readFile`          | Asynchronous but uses callbacks           |
+| Promise-based          | `fs.promises.readFile` | Modern async/await style                  |
+| Stream-based           | `fs.createReadStream`  | Efficient chunked reading/writing         |
+| Synchronous (blocking) | `fs.readFileSync`      | Blocks entire process — **use carefully** |
+
+### 1. **Promise-based fs (best practice)**
+
+Instead of messy callbacks, Node provides a **promise API** via `fs.promises`.
+
+```javascript
+const fs = require("fs/promises");
+const path = require("path");
+
+async function readFileAsync() {
+  try {
+    const data = await fs.readFile(path.join(__dirname, "file.txt"), "utf8");
+    console.log(data);
+  } catch (err) {
+    console.error("Error reading file:", err);
+  }
+}
+
+readFileAsync();
+```
+
+✅ Use `fs/promises` for **clean, awaitable** code.
+
+---
+
+### 2. **Important Advanced Functions**
+
+Let's cover the most powerful ones:
+
+#### a. `fs.promises.mkdir` — Make Directory (Recursive)
+
+```javascript
+await fs.mkdir("a/b/c", { recursive: true });
+console.log("Folders created");
+```
+
+✅ If the parent folders don’t exist, **recursive** creates them.
+
+---
+
+#### b. `fs.promises.readdir` — Read Directory
+
+```javascript
+const files = await fs.readdir("./myFolder");
+console.log("Files:", files);
+```
+
+✅ Lists all files/folders inside a directory.
+
+---
+
+#### c. `fs.promises.stat` — File/Folder Information
+
+```javascript
+const stat = await fs.stat("path/to/file");
+console.log(stat.isFile()); // true
+console.log(stat.isDirectory()); // false
+console.log("Size:", stat.size, "bytes");
+```
+
+✅ Check **if it's a file or folder**, get **size**, **timestamps**.
+
+---
+
+#### d. `fs.promises.unlink` — Delete a File
+
+```javascript
+await fs.unlink("path/to/file.txt");
+console.log("File deleted");
+```
+
+✅ Careful: `unlink` = permanently deletes the file.
+
+---
+
+#### e. `fs.promises.rm` — Remove Directory/File (new method)
+
+```javascript
+await fs.rm("path/to/folder", { recursive: true, force: true });
+console.log("Folder deleted");
+```
+
+✅ **`rm`** replaces old `rmdir` — better, safer, stronger.
+
+---
+
+### 3. **Watch Files in Real Time**
+
+Monitor when a file changes:
+
+```javascript
+const fs = require("fs");
+
+fs.watch("./file.txt", (eventType, filename) => {
+  console.log(`Event: ${eventType} on file: ${filename}`);
+});
+```
+
+✅ Useful for hot reloading servers, live updates.
+
+---
+
+### 4. **Handling Streams** (Best for BIG Files)
+
+```javascript
+const fs = require("fs");
+
+const readStream = fs.createReadStream("bigfile.txt", {
+  highWaterMark: 16 * 1024,
+}); // 16kb chunks
+
+readStream.on("data", (chunk) => {
+  console.log("Chunk:", chunk.length, "bytes");
+});
+
+readStream.on("end", () => {
+  console.log("Reading done");
+});
+```
+
+✅ Memory efficient: only **small chunks** loaded.
+
+**Tip:** You can **pipe** streams to each other:
+
+```javascript
+const writeStream = fs.createWriteStream("copy.txt");
+readStream.pipe(writeStream);
+```
+
+---
+
+### 5. **Advanced Error Handling**
+
+✅ Always check for errors — not every failure is critical.
+
+```javascript
+try {
+  await fs.readFile("nonexistent.txt");
+} catch (err) {
+  if (err.code === "ENOENT") {
+    console.error("File does not exist");
+  } else {
+    throw err;
+  }
+}
+```
+
+| Error Code | Meaning               |
+| :--------- | :-------------------- |
+| `ENOENT`   | File/folder not found |
+| `EACCES`   | Permission denied     |
+| `EISDIR`   | Is a directory        |
+
+---
+
+### 6. **Atomic Writes (safe writes)**
+
+If you want **safe saving** (prevent half-written files):
+
+```javascript
+const fs = require("fs/promises");
+
+async function safeWrite(filePath, data) {
+  const tmpPath = filePath + ".tmp";
+  await fs.writeFile(tmpPath, data);
+  await fs.rename(tmpPath, filePath); // Atomic
+}
+
+safeWrite("data.json", '{"name": "Hero"}');
+```
+
+✅ Guarantees either **old** or **new** data — never broken file.
+
+---
+
+### 7. **Bonus: Copy files easily**
+
+From Node.js 16+, use `fs.promises.cp()`:
+
+```javascript
+await fs.cp("source.txt", "destination.txt");
+```
+
+✅ Fast, clean file copying!
+
+---
+
+### 8. Real World Example
+
+**Serve static files manually** using only `fs`:
+
+```javascript
+const http = require("http");
+const fs = require("fs/promises");
+const path = require("path");
+
+const server = http.createServer(async (req, res) => {
+  let filePath = path.join(
+    __dirname,
+    "public",
+    req.url === "/" ? "index.html" : req.url
+  );
+
+  try {
+    const content = await fs.readFile(filePath);
+    res.writeHead(200);
+    res.end(content);
+  } catch (err) {
+    res.writeHead(404);
+    res.end("404 Not Found");
+  }
+});
+
+server.listen(3000, () =>
+  console.log("Server running on http://localhost:3000")
+);
+```
+
+✅ No Express, fully manual server!
+
+---
