@@ -11,6 +11,7 @@ class AuthSystem extends EventEmitter {
       this.emit("error", new Error("User already exists"));
       return;
     }
+
     this.users.set(username, password);
     this.emit("registered", username);
   }
@@ -20,10 +21,12 @@ class AuthSystem extends EventEmitter {
       this.emit("error", new Error("User not found"));
       return;
     }
+
     if (this.users.get(username) !== password) {
       this.emit("error", new Error("Invalid password"));
       return;
     }
+
     this.emit("loggedIn", username);
   }
 }

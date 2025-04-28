@@ -512,7 +512,7 @@ auth.register("hero");
 
 ✅ You are now building **Observable systems** — like what large apps (Discord, Slack) do.
 
-## 4. 🚀 **Advanced Async Control**
+## 4. 🚀 **Async Control**
 
 In real projects, you'll **combine**:
 
@@ -550,7 +550,7 @@ read();
 
 ✅ Manually **promisifying** gives you **more control** than relying on libraries.
 
-## 🎯 **Concepts (you must master)**
+## 🎯 **Concepts**
 
 | Concept                  | Why It Matters                                     |
 | ------------------------ | -------------------------------------------------- |
@@ -558,5 +558,3 @@ read();
 | HighWaterMark in streams | Tuning how much data is buffered in streams        |
 | Graceful Shutdown        | Stop accepting new connections but finish old ones |
 | Zero-Copy Streaming      | `stream.pipe()` does not copy data manually        |
-| Cluster Module           | Run multiple Node.js instances for multicore usage |
-| Event Loop + Microtasks  | Full understanding of callback queue, nextTick etc |
