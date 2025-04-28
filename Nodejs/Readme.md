@@ -1355,3 +1355,835 @@ console.log(buf.toString("hex"));
 | `os.hostname()`          | Machine's hostname (network identity). Often used for logging, networking, or configuration purposes.                                                   |
 | `os.homedir()`           | Absolute path of the current user's home directory. Useful for storing user-specific files or config.                                                   |
 | `os.networkInterfaces()` | Details about all network interfaces — IP addresses (IPv4/IPv6), MAC addresses, etc. Important for networking apps and discovering public/internal IPs. |
+
+## HTTP & Web Servers
+
+### 1. HTTP Protocol Fundamentals
+
+**Key Concepts:**
+
+- **Client-Server Model**: HTTP is a request-response protocol between a client (browser) and server
+- **Stateless**: Each request is independent (sessions are maintained via cookies/tokens)
+- **Text-Based**: Human-readable format (though can transmit binary data)
+- **Methods**:
+  - `GET` - Retrieve data
+  - `POST` - Create data
+  - `PUT`/`PATCH` - Update data
+  - `DELETE` - Remove data
+  - `HEAD`/`OPTIONS` - Metadata/visibility
+
+**Request/Response Structure:**
+
+```text
+GET /index.html HTTP/1.1       |       HTTP/1.1 200 OK
+Host: example.com              |       Content-Type: text/html
+User-Agent: Chrome             |       <html>...
+```
+
+### 2. HTTP Status Codes & Headers
+
+**Important Status Codes:**
+
+- **2xx Success**:
+  - `200 OK` - Standard success
+  - `201 Created` - Resource created (POST)
+  - `204 No Content` - Success but no body (DELETE)
+- **3xx Redirection**:
+  - `301 Moved Permanently`
+  - `304 Not Modified` (caching)
+- **4xx Client Errors**:
+  - `400 Bad Request` - Malformed request
+  - `401 Unauthorized` - Needs authentication
+  - `403 Forbidden` - No permission
+  - `404 Not Found`
+  - `429 Too Many Requests`
+- **5xx Server Errors**:
+  - `500 Internal Server Error`
+  - `502 Bad Gateway`
+  - `503 Service Unavailable`
+
+**Key Headers:**
+
+- **Request Headers**:
+  - `Authorization`: Bearer tokens
+  - `Content-Type`: application/json, multipart/form-data
+  - `Accept`: What client can handle
+  - `Cookie`, `User-Agent`
+- **Response Headers**:
+  - `Set-Cookie`
+  - `Cache-Control`
+  - `Location` (for redirects)
+  - `Access-Control-Allow-Origin` (CORS)
+
+### 3. Express.js Framework
+
+**Core Concepts:**
+
+```javascript
+const express = require("express");
+const app = express();
+```
+
+**Middleware:**
+
+```javascript
+// Application-level middleware
+app.use(express.json()); // Body parser
+app.use((req, res, next) => {
+  console.log("Time:", Date.now());
+  next(); // Critical for chaining
+});
+
+// Router-level middleware
+const router = express.Router();
+router.use(myMiddleware);
+
+// Error-handling middleware (4 params)
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+```
+
+**Routing:**
+
+```javascript
+app.get('/', (req, res) => {
+  res.send('Hello World');
+});
+
+// Route parameters
+app.get('/users/:userId', (req, res) => {
+  res.send(req.params.userId);
+});
+
+// Route chaining
+app.route('/book')
+  .get((req, res) => { ... })
+  .post((req, res) => { ... });
+
+// Modular routes
+const userRouter = require('./routes/users');
+app.use('/users', userRouter);
+```
+
+### 4. REST API Design Principles
+
+**Key Constraints:**
+
+1. **Client-Server Separation**
+2. **Statelessness** - Each request contains all needed context
+3. **Cacheability** - Responses should define cacheability
+4. **Uniform Interface**:
+   - Resource identification in URIs (`/users/123`)
+   - Resource manipulation through representations (JSON/XML)
+   - Self-descriptive messages
+   - HATEOAS (Hypermedia as the Engine of Application State) - Include links to related resources
+
+**Best Practices:**
+
+- Use nouns (not verbs) in endpoints:
+  - ✅ `/users`
+  - ❌ `/getUsers`
+- Plural resource names: `/products` instead of `/product`
+- Nest resources for hierarchy: `/users/5/orders`
+- Filter/sort/paginate via query params:
+  - `/users?role=admin&sort=-createdAt&limit=10`
+- Version your API: `/v1/users`
+- Use proper status codes
+- Standardize error responses:
+  ```json
+  {
+    "error": {
+      "code": "invalid_email",
+      "message": "The provided email is invalid"
+    }
+  }
+  ```
+- Security:
+  - Always use HTTPS
+  - Validate input
+  - Rate limiting
+  - CORS configuration
+
+**Example RESTful Routes:**
+
+```text
+GET    /articles          - List all articles
+POST   /articles          - Create new article
+GET    /articles/:id      - Get specific article
+PUT    /articles/:id      - Replace entire article
+PATCH  /articles/:id      - Partial update
+DELETE /articles/:id      - Delete article
+```
+
+Here are practical code examples for each scenario you requested:
+
+---
+
+### 1. Basic Express Server with Routes
+
+```javascript
+const express = require("express");
+const app = express();
+const PORT = 3000;
+
+// Basic route
+app.get("/", (req, res) => {
+  res.send("Home Page");
+});
+
+// Route with parameters
+app.get("/greet/:name", (req, res) => {
+  res.send(`Hello, ${req.params.name}!`);
+});
+
+// Route with query parameters
+app.get("/search", (req, res) => {
+  res.json({
+    query: req.query.q,
+    page: req.query.page || 1,
+  });
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+```
+
+---
+
+### 2. Middleware for Logging & Auth
+
+```javascript
+// Logger middleware
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url} - ${new Date()}`);
+  next();
+});
+
+// Auth middleware
+const authMiddleware = (req, res, next) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader === "secret-token") {
+    next();
+  } else {
+    res.status(401).json({ error: "Unauthorized" });
+  }
+};
+
+// Protected route
+app.get("/admin", authMiddleware, (req, res) => {
+  res.send("Admin Dashboard");
+});
+```
+
+---
+
+### 3. REST API for Blog Posts
+
+```javascript
+let posts = [{ id: 1, title: "First Post", content: "Hello World" }];
+
+app.use(express.json());
+
+// GET all posts
+app.get("/api/posts", (req, res) => {
+  res.json(posts);
+});
+
+// GET single post
+app.get("/api/posts/:id", (req, res) => {
+  const post = posts.find((p) => p.id === parseInt(req.params.id));
+  if (!post) return res.status(404).json({ error: "Post not found" });
+  res.json(post);
+});
+
+// POST create new post
+app.post("/api/posts", (req, res) => {
+  const newPost = {
+    id: posts.length + 1,
+    ...req.body,
+  };
+  posts.push(newPost);
+  res.status(201).json(newPost);
+});
+
+// PUT update post
+app.put("/api/posts/:id", (req, res) => {
+  const post = posts.find((p) => p.id === parseInt(req.params.id));
+  if (!post) return res.status(404).json({ error: "Post not found" });
+
+  Object.assign(post, req.body);
+  res.json(post);
+});
+
+// DELETE post
+app.delete("/api/posts/:id", (req, res) => {
+  posts = posts.filter((p) => p.id !== parseInt(req.params.id));
+  res.status(204).end();
+});
+```
+
+---
+
+### 4. Testing with Postman/cURL
+
+**cURL Examples:**
+
+```bash
+# GET all posts
+curl http://localhost:3000/api/posts
+
+# GET single post
+curl http://localhost:3000/api/posts/1
+
+# POST new post
+curl -X POST -H "Content-Type: application/json" \
+  -d '{"title":"New Post","content":"Some content"}' \
+  http://localhost:3000/api/posts
+
+# Authenticated request
+curl -H "Authorization: secret-token" \
+  http://localhost:3000/admin
+```
+
+**Postman Tips:**
+
+1. Set `Content-Type: application/json` header
+2. For POST/PUT requests, send raw JSON body
+3. Save requests in collections
+4. Use environment variables for base URLs
+
+---
+
+### 5. Error Handling & Status Codes
+
+```javascript
+// Custom error class
+class AppError extends Error {
+  constructor(message, statusCode) {
+    super(message);
+    this.statusCode = statusCode;
+  }
+}
+
+// Route with error
+app.get("/error", (req, res) => {
+  throw new AppError("Something went wrong", 500);
+});
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({ error: "Route not found" });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  const statusCode = err.statusCode || 500;
+  res.status(statusCode).json({
+    error: {
+      message: err.message,
+      status: statusCode,
+    },
+  });
+});
+```
+
+---
+
+### 6. Advanced Features: Pagination
+
+```javascript
+// Mock database with 100 posts
+let allPosts = Array.from({ length: 100 }, (_, i) => ({
+  id: i + 1,
+  title: `Post ${i + 1}`,
+  content: `Content for post ${i + 1}`,
+}));
+
+// Paginated GET endpoint
+app.get("/api/v2/posts", (req, res) => {
+  const page = parseInt(req.query.page) || 1;
+  const limit = parseInt(req.query.limit) || 10;
+  const startIndex = (page - 1) * limit;
+
+  const results = {
+    data: allPosts.slice(startIndex, startIndex + limit),
+    pagination: {
+      currentPage: page,
+      totalPages: Math.ceil(allPosts.length / limit),
+      totalItems: allPosts.length,
+    },
+    links: {
+      next:
+        page < Math.ceil(allPosts.length / limit)
+          ? `/api/v2/posts?page=${page + 1}&limit=${limit}`
+          : null,
+      prev: page > 1 ? `/api/v2/posts?page=${page - 1}&limit=${limit}` : null,
+    },
+  };
+
+  res.json(results);
+});
+```
+
+**Sample Response:**
+
+```json
+{
+  "data": [...],
+  "pagination": {
+    "currentPage": 2,
+    "totalPages": 10,
+    "totalItems": 100
+  },
+  "links": {
+    "next": "/api/v2/posts?page=3&limit=10",
+    "prev": "/api/v2/posts?page=1&limit=10"
+  }
+}
+```
+
+### Bonus: Complete Project Structure
+
+```text
+project/
+├── src/
+│   ├── app.js          # Main app setup
+│   ├── routes/         # Route definitions
+│   ├── middleware/     # Custom middleware
+│   ├── controllers/    # Route handlers
+│   ├── models/         # Data models
+│   └── utils/          # Helpers & utilities
+├── package.json
+└── .env                # Environment variables
+```
+
+## Authentication Methods
+
+### JWT (JSON Web Tokens)
+
+- **What it is**: A stateless authentication mechanism that uses digitally signed tokens
+- **Structure**: Header.Payload.Signature
+- **Key features**:
+  - Self-contained (contains all needed info)
+  - Typically expires (short-lived access tokens + refresh tokens)
+  - Signed (JWS) or encrypted (JWE)
+- **Implementation**:
+
+  ```javascript
+  const jwt = require("jsonwebtoken");
+
+  // Create token
+  const token = jwt.sign({ userId: 123 }, "secret", { expiresIn: "1h" });
+
+  // Verify token
+  jwt.verify(token, "secret", (err, decoded) => {
+    console.log(decoded.userId); // 123
+  });
+  ```
+
+### OAuth 2.0 / OpenID Connect
+
+- **OAuth 2.0**: Authorization framework (not authentication)
+- **OpenID Connect**: Authentication layer on top of OAuth 2.0
+- **Flows**:
+  - Authorization Code (web apps)
+  - Implicit (legacy)
+  - Client Credentials (machine-to-machine)
+  - Device Code (TVs, IoT)
+  - Refresh Token
+- **Implementation**:
+  ```javascript
+  // Using Passport.js with OAuth strategy
+  passport.use(
+    new GoogleStrategy(
+      {
+        clientID: GOOGLE_CLIENT_ID,
+        clientSecret: GOOGLE_CLIENT_SECRET,
+        callbackURL: "/auth/google/callback",
+      },
+      (accessToken, refreshToken, profile, done) => {
+        // Handle user authentication
+      }
+    )
+  );
+  ```
+
+### Session-based Authentication
+
+- **What it is**: Stateful authentication using server-side sessions
+- **How it works**:
+  1. Server creates session ID on login
+  2. Session ID stored in cookie
+  3. Server validates session on each request
+- **Implementation**:
+
+  ```javascript
+  const express = require("express");
+  const session = require("express-session");
+
+  app.use(
+    session({
+      secret: "your secret",
+      resave: false,
+      saveUninitialized: false,
+      cookie: { secure: true },
+    })
+  );
+
+  app.post("/login", (req, res) => {
+    req.session.userId = 123; // Store user ID in session
+  });
+  ```
+
+## Security Best Practices
+
+### Helmet.js
+
+- **What it does**: Sets various HTTP headers for security
+- **Implementation**:
+  ```javascript
+  const helmet = require("helmet");
+  app.use(helmet());
+  ```
+- **Headers it sets**:
+  - Content Security Policy (CSP)
+  - X-Frame-Options (clickjacking protection)
+  - X-Content-Type-Options (MIME sniffing prevention)
+  - Strict-Transport-Security (HSTS)
+
+### CSRF Protection
+
+- **What it is**: Prevents Cross-Site Request Forgery attacks
+- **Implementation**:
+
+  ```javascript
+  const csrf = require("csurf");
+  app.use(csrf({ cookie: true }));
+
+  // Include CSRF token in forms
+  app.get("/form", (req, res) => {
+    res.render("send", { csrfToken: req.csrfToken() });
+  });
+  ```
+
+  ```html
+  <!-- In your form -->
+  <input type="hidden" name="_csrf" value="<%= csrfToken %>" />
+  ```
+
+### Rate Limiting
+
+- **Why it's important**: Prevents brute force and DDoS attacks
+- **In-memory implementation**:
+
+  ```javascript
+  const rateLimit = require("express-rate-limit");
+
+  const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 100, // limit each IP to 100 requests per windowMs
+  });
+
+  app.use("/api/", limiter);
+  ```
+
+- **Redis-based implementation**:
+
+  ```javascript
+  const RedisStore = require("rate-limit-redis");
+
+  const limiter = rateLimit({
+    store: new RedisStore({
+      expiry: 60 * 60, // 1 hour
+    }),
+    max: 100,
+    delayMs: 0, // disable delaying
+  });
+  ```
+
+### Input Validation/Sanitization
+
+- **Why it's important**: Prevents XSS, SQL injection, etc.
+- **Implementation**:
+
+  ```javascript
+  const { body, validationResult } = require("express-validator");
+
+  app.post(
+    "/user",
+    body("username").isEmail().normalizeEmail(),
+    body("password").isLength({ min: 5 }).trim().escape(),
+    (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+      // Process data
+    }
+  );
+  ```
+
+### Password Hashing
+
+- **Best practices**:
+  - Never store plaintext passwords
+  - Use slow hashing algorithms (bcrypt, Argon2, PBKDF2)
+  - Include salt
+- **bcrypt implementation**:
+
+  ```javascript
+  const bcrypt = require("bcrypt");
+  const saltRounds = 10;
+
+  // Hashing
+  bcrypt.hash("myPassword", saltRounds, (err, hash) => {
+    // Store hash in DB
+  });
+
+  // Verification
+  bcrypt.compare("myPassword", hash, (err, result) => {
+    // result == true if match
+  });
+  ```
+
+- **Argon2 implementation**:
+
+  ```javascript
+  const argon2 = require("argon2");
+
+  // Hashing
+  try {
+    const hash = await argon2.hash("password");
+  } catch (err) {
+    /* handle error */
+  }
+
+  // Verification
+  try {
+    if (await argon2.verify("<big long hash>", "password")) {
+      // password match
+    }
+  } catch (err) {
+    /* handle error */
+  }
+  ```
+
+You're serious about becoming a **true Node.js backend engineer**.  
+Perfect. Now we go **ADVANCED**, deep where 90% developers **never** go.  
+This is _professional backend-level Node.js_.
+
+---
+
+## 🧠 Node.js Advanced (Profiling, Benchmarking, Load Testing, Memory Management)
+
+I'll organize this properly:
+
+### 📈 1. Profiling and Benchmarking Node.js Applications
+
+🔹 **Goal**: Find performance bottlenecks in Node.js code (CPU profiling, memory leaks, slow operations).
+
+#### ✅ What you will master:
+
+| Concept           | Tools/Techniques                  | What you'll do                     |
+| :---------------- | :-------------------------------- | :--------------------------------- |
+| CPU Profiling     | Node Inspector, Chrome DevTools   | Analyze CPU usage, hotspots        |
+| Performance Hooks | `perf_hooks` module               | Measure timing between sections    |
+| Flamegraphs       | `0x`, `clinic flame`              | Visualize expensive function calls |
+| Benchmarking      | `Benchmark.js`, `autocannon`      | Compare two versions of code       |
+| Profiling Scripts | Manual profiling with `--inspect` | Attach debugger to running app     |
+
+---
+
+### 🛠 Tools you will use:
+
+- `node --inspect app.js` (for Chrome DevTools debugging)
+- [`clinic`](https://clinicjs.org/) (`clinic doctor`, `clinic flame`)
+- `0x` (generate flamegraphs)
+- `benchmark.js` (microbenchmarks)
+
+---
+
+### ✍ How you will practice:
+
+### Example Task 1: Profile slow code
+
+```javascript
+const crypto = require("crypto");
+
+function slowFunction() {
+  for (let i = 0; i < 1e6; i++) {
+    crypto.pbkdf2Sync("password", "salt", 1000, 64, "sha512");
+  }
+}
+
+slowFunction();
+```
+
+- Run `node --inspect-brk app.js`
+- Open `chrome://inspect`
+- Start CPU profiling
+- Analyze where time is spent.
+
+### Example Task 2: Benchmark two methods
+
+```javascript
+const Benchmark = require("benchmark");
+const suite = new Benchmark.Suite();
+
+suite
+  .add("for loop", function () {
+    let arr = [];
+    for (let i = 0; i < 1000; i++) arr.push(i);
+  })
+  .add("Array.from", function () {
+    Array.from({ length: 1000 }, (_, i) => i);
+  })
+  .on("cycle", function (event) {
+    console.log(String(event.target));
+  })
+  .on("complete", function () {
+    console.log("Fastest is " + this.filter("fastest").map("name"));
+  })
+  .run();
+```
+
+Result tells you which method is faster 🔥.
+
+---
+
+## 📊 2. Load Testing using Artillery
+
+🔹 **Goal**: Test if your Node.js server can handle heavy real-world traffic.
+
+### ✅ What you will master:
+
+| Concept        | Tools/Techniques                 | What you'll do                  |
+| :------------- | :------------------------------- | :------------------------------ |
+| Load Testing   | Artillery                        | Simulate 100s/1000s of users    |
+| Stress Testing | Artillery + custom scenarios     | Push server until it breaks     |
+| Reporting      | Artillery reports                | Analyze p50, p90, p99 latencies |
+| Spike Testing  | Sudden traffic burst simulations |
+
+---
+
+### 🛠 Tools:
+
+- [`artillery`](https://artillery.io/)
+  - `artillery quick`
+  - `artillery run`
+  - `artillery report`
+
+### ✍ How you will practice
+
+### Example Task 1: Install and run basic Artillery load test
+
+```bash
+npm install -g artillery
+```
+
+Basic load test:
+
+```bash
+artillery quick --count 50 -n 20 http://localhost:3000/
+```
+
+- 50 users
+- 20 requests each
+- Boom! You’ll see latency stats.
+
+---
+
+### Example Task 2: Create a full load test script (`loadtest.yml`)
+
+```yaml
+config:
+  target: "http://localhost:3000"
+  phases:
+    - duration: 60
+      arrivalRate: 10
+scenarios:
+  - flow:
+      - get:
+          url: "/api/data"
+```
+
+Run it:
+
+```bash
+artillery run loadtest.yml
+```
+
+You will see:
+
+- Requests/sec
+- Response Times (p50, p90, p99)
+- Errors
+- Latency
+
+### 🧹 3. Memory Management and Garbage Collection
+
+🔹 **Goal**: Prevent memory leaks, manage app memory usage like a pro.
+
+#### ✅ What you will master
+
+| Concept                    | Tools/Techniques                                     | What you'll do |
+| :------------------------- | :--------------------------------------------------- | :------------- |
+| How Node.js manages memory | V8 heap, garbage collection types                    |
+| Memory Leaks               | Identify and fix leaks                               |
+| Garbage Collection         | Understand `Scavenge`, `Mark-Sweep`, `Mark-Compact`  |
+| Manual Garbage Collection  | `global.gc()` (only when started with `--expose-gc`) |
+| Heap Snapshots             | Chrome DevTools, heapdump module                     |
+| Memory profiling           | `clinic heapprofile`, `node --inspect`               |
+
+#### 🛠 Tools
+
+- `--inspect` and Chrome DevTools
+- `heapdump` npm package
+- `clinic heapprofile`
+- Visual heap snapshot analysis
+
+#### Example Task 1: Memory Leak Example
+
+```javascript
+let leaks = [];
+
+function leakMemory() {
+  leaks.push(new Array(1000000).join("leak"));
+}
+
+setInterval(leakMemory, 1000);
+```
+
+- Run with `node --inspect app.js`
+- Open `chrome://inspect`
+- Take **Heap Snapshots** over time.
+- See how memory keeps growing 🔥.
+
+---
+
+#### Example Task 2: Monitor memory usage
+
+```javascript
+setInterval(() => {
+  const used = process.memoryUsage();
+  console.log(`Heap Used: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB`);
+}, 2000);
+```
+
+You'll see how much memory your app uses live.
+
+#### 📜 Summary of your Advanced Node.js Roadmap:
+
+| Step | Focus                        | Tools                                   |
+| :--- | :--------------------------- | :-------------------------------------- |
+| 1    | CPU + Memory Profiling       | Node Inspector, Chrome DevTools, Clinic |
+| 2    | Micro and Macro Benchmarking | Benchmark.js, autocannon                |
+| 3    | Load Testing                 | Artillery scripts                       |
+| 4    | Memory Management            | Heap snapshots, GC understanding        |
+| 5    | Leak Detection               | heapdump, memory reports                |
+
+---
