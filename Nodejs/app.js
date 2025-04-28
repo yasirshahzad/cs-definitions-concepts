@@ -1,19 +1,31 @@
-console.log("Start");
+const http = require("http");
 
-setImmediate(() => {
-  console.log("Immediate 1");
+const server = http.createServer((req, res) => {
+  res.writeHead(200, { "Content-Type": "text/plain" });
+
+  // OR
+
+  // res.setHeaders({ "Content-Type": "text/plain" });
+
+  res.end("Hello World\n");
 });
 
-setTimeout(() => {
-  console.log("Timeout 1");
-}, 0);
-
-Promise.resolve().then(() => {
-  console.log("Promise 1");
+server.on("request", (req, res) => {
+  console.log(`Request received: ${req.method} ${req.url}`);
 });
 
-process.nextTick(() => {
-  console.log("Next Tick 1");
+server.on("close", () => {
+  console.log("Server closed");
 });
 
-console.log("End");
+server.on("error", (err) => {
+  console.error("Server error:", err);
+});
+
+server.on("connection", (socket) => {
+  console.log("New connection established");
+});
+
+server.listen(3000, () => {
+  console.log("Server running at http://localhost:3000/");
+});
