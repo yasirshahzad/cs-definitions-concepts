@@ -1283,7 +1283,7 @@ console.log(buf);
 
 ---
 
-## 🔎 Read/Write Buffer
+### 🔎 Read/Write Buffer
 
 ### Write to Buffer
 
@@ -1312,7 +1312,7 @@ console.log(String.fromCharCode(buf[0]));
 
 ---
 
-## 🧠 Important Buffer Methods
+### 🧠 Important Buffer Methods
 
 | Method                                                    | What it does                      |
 | :-------------------------------------------------------- | :-------------------------------- |
@@ -1325,7 +1325,7 @@ console.log(String.fromCharCode(buf[0]));
 
 ---
 
-## ⚡ Encoding Types
+### ⚡ Encoding Types
 
 - `'utf8'` (default)
 - `'ascii'`
@@ -1339,80 +1339,5 @@ const buf = Buffer.from("Hello", "utf8");
 console.log(buf.toString("hex"));
 // Output: 48656c6c6f
 ```
-
----
-
-## 🛠 Real-World Mini Projects
-
-### 🎬 Build a Simple Image Server Using Buffer
-
-Serve a binary image from memory!
-
-```javascript
-const http = require("http");
-const fs = require("fs");
-
-const server = http.createServer((req, res) => {
-  fs.readFile("./image.png", (err, data) => {
-    if (err) {
-      res.writeHead(500);
-      res.end("Error loading image");
-      return;
-    }
-    res.writeHead(200, { "Content-Type": "image/png" });
-    res.end(data); // Buffer is sent directly!
-  });
-});
-
-server.listen(3000, () =>
-  console.log("Image server running on http://localhost:3000")
-);
-```
-
-✅ Sends image **buffer** as HTTP response.
-
----
-
-### 📁 Build a CLI Tool that Converts Images to Base64
-
-Command-line tool to encode image files into base64.
-
-```javascript
-const fs = require("fs");
-
-const filePath = process.argv[2];
-
-fs.readFile(filePath, (err, data) => {
-  if (err) throw err;
-
-  const base64 = data.toString("base64");
-  console.log(base64);
-});
-```
-
-Run it:
-
-```bash
-node base64-encoder.js myphoto.jpg
-```
-
-✅ Converts any file into a **Base64 string** for APIs, embedding, etc.
-
----
-
-## 🚀 Bonus: Streaming with Buffers
-
-Streams internally use buffers!
-
-```javascript
-const fs = require("fs");
-
-const readStream = fs.createReadStream("largefile.zip");
-readStream.on("data", (chunk) => {
-  console.log("Received chunk:", chunk.length, "bytes");
-});
-```
-
-✅ Every `chunk` event gives a **Buffer**!
 
 ---
