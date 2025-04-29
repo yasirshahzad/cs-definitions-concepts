@@ -16,7 +16,7 @@ Let's examine each principle with bad code and improved code examples in TypeScr
 
 #### 1. Single Responsibility
 
-*A class should have only one reason to change.*
+_A class should have only one reason to change._
 
 **Explanation:**
 A class or module should do one thing and do it well. If a class is handling multiple responsibilities, a change in one responsibility can potentially impact others, leading to fragile and tightly coupled code.
@@ -40,7 +40,6 @@ class ReportGenerator {
     // Logic to print report
   }
 }
-
 ```
 
 In this code, the class handles three responsibilities: generating, saving, and printing reports. Changes in printing logic could accidentally break report generation.
@@ -77,14 +76,13 @@ const printer = new ReportPrinter();
 const report = generator.generateReport({});
 saver.saveToDatabase(report);
 printer.printReport(report);
-
 ```
 
 Now, **each class has one responsibility**, making them easy to modify and test independently.
 
 #### 2. Open/Closed Principle (OCP)
 
-*Software entities (classes, modules, functions, etc.) should be open for extension but closed for modification.*
+_Software entities (classes, modules, functions, etc.) should be open for extension but closed for modification._
 
 **Explanation:**
 You should be able to add new functionality without altering existing code. Modifying existing code can introduce bugs and cause regressions. Instead, use abstractions like interfaces or inheritance to extend functionality.
@@ -103,7 +101,6 @@ class NotificationService {
     }
   }
 }
-
 ```
 
 Adding a new notification type (e.g., Push Notification) requires modifying the existing `sendNotification` method, which violates OCP.
@@ -145,24 +142,23 @@ emailService.notify("Hello via Email");
 
 const smsService = new NotificationService(new SMSNotification());
 smsService.notify("Hello via SMS");
-
 ```
 
 Adding a new notification type (e.g., PushNotification) now requires **only creating a new class** without modifying the existing ones.
 
 #### 3. Liskov Substitution Principle (LSP)
 
-*Subtypes must be substitutable for their base types without altering program behavior.*
+_Subtypes must be substitutable for their base types without altering program behavior._
 
 **Explanation:**
 Derived classes must be able to replace their base classes without causing unexpected behavior. This ensures that polymorphism works correctly and that the code remains consistent.
 
 **Key Points**
+
 - Inheritance and polymorphism (behavior consistency)
 - Ensure substitutability of subclasses without breaking correctness
 - Prevents **unexpected behavior** and violations in inheritance hierarchies
 - Subclasses can seamlessly replace their base class without altering the program's functionality
-
 
 **Bad Code**
 
@@ -185,8 +181,6 @@ function makeBirdFly(bird: Bird) {
 
 const penguin = new Penguin();
 makeBirdFly(penguin); // Error: Penguins can't fly
-
-
 ```
 
 Here, substituting `Penguin` for `Bird` violates LSP because `Penguin` does not fully behave like a `Bird`.
@@ -219,24 +213,23 @@ makeBirdMove(sparrow);
 
 const penguin = new NonFlyingBird();
 makeBirdMove(penguin);
-
-
 ```
 
 Now, both `FlyingBird` and `NonFlyingBird` conform to the Bird abstraction, ensuring no unexpected behavior.
 
 #### 4. Interface Segregation Principle (ISP)
 
-*Clients should not be forced to implement interfaces they do not use.*
+_Clients should not be forced to implement interfaces they do not use._
 
 **Explanation:**
 Large interfaces should be broken into smaller, more specific ones. This ensures that classes only implement the methods they need.
 
 **Key Points**
+
 - Interfaces (design of contracts)
 - Avoid forcing a class to implement irrelevant methods
 - Prevents **fat interfaces** and unnecessary dependencies
-- Interfaces are small, focused, and tailored to client needs	
+- Interfaces are small, focused, and tailored to client needs
 
 **Bad Code**
 
@@ -260,7 +253,6 @@ class Dog implements Animal {
     console.log("Dog is swimming");
   }
 }
-
 ```
 
 `Dog` is forced to implement `fly()`, even though it doesn't make sense for dogs.
@@ -289,21 +281,16 @@ class Dog implements Eatable, Swimmable {
     console.log("Dog is swimming");
   }
 }
-
-
 ```
 
 Now, `Dog` only implements the interfaces it needs.
 
-
 #### 5. Dependency Inversion Principle (DIP)
 
-*High-level modules should not depend on low-level modules. Both should depend on abstractions.*
+_High-level modules should not depend on low-level modules. Both should depend on abstractions._
 
 **Explanation:**
 The dependency between classes should be on abstractions (e.g., interfaces) rather than concrete implementations. This reduces coupling and makes code more flexible.
-
-
 
 **Bad Code**
 
@@ -325,8 +312,6 @@ class App {
     this.db.connect();
   }
 }
-
-
 ```
 
 The `App` class is tightly coupled with `SQLDatabase`. Switching to another database requires changes in the `App` class.
@@ -368,7 +353,6 @@ app1.start();
 
 const app2 = new App(new MongoDB());
 app2.start();
-
 ```
 
 Now, `App` depends on the `Database` abstraction, making it easy to switch database implementations without modifying the `App` class.
