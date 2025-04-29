@@ -789,13 +789,6 @@ server.listen(3000, () =>
 
 ✅ No Express, fully manual server!
 
----
-
-Perfect — let's **go advanced** into the `path` module.  
-This is **super important** if you want to build servers, file systems, CLIs, etc.
-
----
-
 ## 📂 Node.js `path` Module
 
 ✅ The `path` module gives you **cross-platform** (Windows, Linux, Mac) ways to handle file/directory paths properly.
@@ -982,14 +975,6 @@ const filePath = path.join(__dirname, "folder", "file.txt");
 ```
 
 ✅ 100% portable between Linux, Mac, and Windows!
-
----
-
-Of course!  
-Now I’ll **restructure** the `stream` guide in **pipeline** style — smaller headings, more real-world feel — and **include**:
-
-✅ Build a Mini **Streaming Video Server** 🎬  
-✅ Build a Mini **CLI Tool** for GB-sized file processing 📁
 
 ---
 
@@ -3068,22 +3053,16 @@ D --> F[PM2 Restart App]
 | **Integration Test**      | How modules/services work _together_        | API route connects to DB and returns correct user |
 | **End-to-End (E2E) Test** | Entire app flow like a user would           | Browser opens, user signs up                      |
 
-✅ Right now we’ll focus on **Unit** and **Integration**.
-
----
-
 ### ⚙️ Testing Libraries You Need
 
 | Library              | Purpose                                       |
 | :------------------- | :-------------------------------------------- |
-| **Jest**             | Test runner, assertion, mocking               |
+| **Jest**/**Vitest**  | Test runner, assertion, mocking               |
 | **Supertest**        | For HTTP endpoint testing (Integration tests) |
 | **Sinon** (optional) | Mocking and spying functions (if needed)      |
 | **ts-jest**          | If you are using TypeScript                   |
 
 Most popular setup today = **Jest + Supertest**.
-
----
 
 ### 🚀 Installing
 
@@ -3104,8 +3083,6 @@ In `package.json`:
 ```bash
 npm run test
 ```
-
----
 
 ### ✏️ Basic **Unit Testing** Example (pure function)
 
@@ -3268,11 +3245,6 @@ You can also run:
 npm run test -- --coverage
 ```
 
-Awesome — you’re asking for **real-world**, **professional-level** Node.js testing.  
-Not basic “does 2+2=4” tests — but **real API + Service + DB logic + Mocks**.
-
-I'll **deliver** exactly that, clean and serious. 🚀
-
 ---
 
 ## Testing a Real Project
@@ -3303,8 +3275,6 @@ This will involve:
 - Mocking **Database** access in **Unit** tests.
 - Testing **Express routes** in **Integration** tests.
 - Using **Supertest** and **Jest** together.
-
----
 
 ### 1. Code: Real Service + Controller Example
 
