@@ -384,5 +384,3 @@ class EventStore {
 ✅ Use **projectors** for fast read models  
 ✅ Keep **idempotent** event handlers  
 ✅ Add **versioning** for evolving schemas
-
----
