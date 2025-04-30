@@ -128,9 +128,3 @@ Example CI config enforcing mutation score:
 - 'Mutation score shows actual **test quality**, not just **test quantity** like code coverage.'
 - 'I run Stryker locally and integrate it into CI/CD pipelines to enforce high-quality standards.'
 - 'In critical services, I prefer Stryker thresholds even stricter than coverage thresholds.'
-
-## 🔥 If you want, next I can create:
-
-- A **full real Node.js repo** setup with Stryker (step-by-step)
-- **Mock interview questions** for Stryker
-- **CI/CD pipeline file** ready to copy-paste
