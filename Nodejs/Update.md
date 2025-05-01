@@ -2285,9 +2285,8 @@ Pending
 
 ## 15. Logging
 
-### Morgan
-
-### Winston
+1. [Winston](/Nodejs/logging/winston.md)
+1. [Morgan](/Nodejs/logging/morgan.md)
 
 ## 16. Keeping App Running
 
