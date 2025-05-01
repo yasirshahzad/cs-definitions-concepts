@@ -1,4 +1,4 @@
-# 🔐 Passport.js – From Beginner to Advan
+# 🔐 Passport.js – From Beginner to Advanced
 
 ## 📌 What is Passport.js?
 
@@ -61,8 +61,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 ```
 
----
-
 ### 2. Define Users and Auth Strategy
 
 ```js
@@ -79,8 +77,6 @@ passport.use(
 );
 ```
 
----
-
 ### 3. Serialize and Deserialize User
 
 ```js
@@ -93,8 +89,6 @@ passport.deserializeUser((id, done) => {
   done(null, user);
 });
 ```
-
----
 
 ### 4. Routes
 
@@ -120,11 +114,7 @@ function ensureAuthenticated(req, res, next) {
 }
 ```
 
----
-
 ## 🧠 Advanced Concepts
-
----
 
 ### 🔐 OAuth (e.g., Google Login)
 
@@ -175,8 +165,6 @@ app.get(
   })
 );
 ```
-
----
 
 ### 🔐 JWT Authentication with Passport
 
@@ -231,8 +219,6 @@ app.get(
 );
 ```
 
----
-
 ## ✅ Best Practices
 
 | Practice                        | Reason                                |
@@ -245,8 +231,6 @@ app.get(
 | Use CSRF tokens on forms        | For web form security                 |
 | Store minimal user info in JWTs | Avoid sensitive data exposure         |
 
----
-
 ## 🛡 Tools & Extensions
 
 | Tool                      | Use Case                  |
@@ -258,8 +242,6 @@ app.get(
 | `bcrypt`                  | Hash passwords            |
 | `connect-ensure-login`    | Middleware for auth guard |
 
----
-
 ## 🧪 Testing Auth Routes
 
 Use **Postman** or **curl** to test:
@@ -267,8 +249,6 @@ Use **Postman** or **curl** to test:
 ```bash
 curl -X POST -d "username=admin&password=1234" http://localhost:3000/login
 ```
-
----
 
 ## ✅ Summary
 
