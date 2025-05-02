@@ -240,3 +240,28 @@ node cli-tool.js input.txt
 | Transform streams           | Modify data during flow        |
 | Backpressure handling       | Avoid overload                 |
 | Custom stream apps          | Server + CLI tools             |
+
+## 📂 **Reading/Writing Files — STREAMS Instead of readFile**
+
+At advanced level, we **do not load full file in memory**.  
+We use **Streams**.
+
+```javascript
+const fs = require("fs");
+const http = require("http");
+
+const server = http.createServer((req, res) => {
+  const stream = fs.createReadStream("./bigfile.txt");
+
+  stream.pipe(res); // Auto-handles backpressure
+});
+
+server.listen(3000, () => console.log("Streaming server running"));
+```
+
+✅ **Streams** solve:
+
+- **Memory Efficiency** (big files)
+- **Backpressure** (client slower than server)
+
+🔵 `fs.createReadStream` returns a readable **stream**, and `res` is a writable stream.
