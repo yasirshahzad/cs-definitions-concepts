@@ -1,4 +1,4 @@
-## 8. File System
+# 8. File System
 
 Let's take an **advanced deep dive** into the following Node.js tools:
 
@@ -6,11 +6,11 @@ Let's take an **advanced deep dive** into the following Node.js tools:
 2. `glob` open-source package
 3. `fs-extra` (extended fs module)
 
-### ✅ 1. `fs` (File System Module)
+## ✅ 1. `fs` (File System Module)
 
 The `fs` module is a **core Node.js module** for interacting with the file system.
 
-#### ✅ Key Concepts
+### ✅ Key Concepts
 
 - Synchronous (`fs.readFileSync`) vs. Asynchronous (`fs.readFile`)
 - Streams (`fs.createReadStream`, `fs.createWriteStream`)
@@ -18,9 +18,9 @@ The `fs` module is a **core Node.js module** for interacting with the file syste
 - Permissions & file modes
 - Recursive directory manipulation
 
-#### ⚙️ Basic Examples
+### ⚙️ Basic Examples
 
-#### 🔸 Async Read/Write
+### 🔸 Async Read/Write
 
 ```js
 const fs = require("fs");
@@ -36,7 +36,7 @@ fs.readFile("example.txt", "utf-8", (err, data) => {
 });
 ```
 
-#### 🔸 Promises API (Recommended for modern code)
+### 🔸 Promises API (Recommended for modern code)
 
 ```js
 const fs = require("fs/promises");
@@ -48,7 +48,7 @@ const fs = require("fs/promises");
 })();
 ```
 
-#### 🔸 Streaming a large file
+### 🔸 Streaming a large file
 
 ```js
 const fs = require("fs");
@@ -57,7 +57,7 @@ const readStream = fs.createReadStream("largefile.txt", "utf8");
 readStream.on("data", (chunk) => console.log("Chunk:", chunk));
 ```
 
-#### 🔸 Watching for file changes
+### 🔸 Watching for file changes
 
 ```js
 fs.watch("example.txt", (eventType, filename) => {
@@ -65,7 +65,7 @@ fs.watch("example.txt", (eventType, filename) => {
 });
 ```
 
-#### 🔥 Advanced Use: Recursive Directory Traversal
+### 🔥 Advanced Use: Recursive Directory Traversal
 
 ```js
 const fs = require("fs/promises");
@@ -84,17 +84,17 @@ async function listFiles(dir) {
 }
 ```
 
-### ✅ 2. `glob` (Open Source)
+## ✅ 2. `glob` (Open Source)
 
 [`glob`](https://www.npmjs.com/package/glob) is a powerful pattern-matching utility for finding files using shell-like wildcards.
 
-#### 📦 Installation
+### 📦 Installation
 
 ```bash
 npm install glob
 ```
 
-#### 🔸 Basic Example
+### 🔸 Basic Example
 
 ```js
 const glob = require("glob");
@@ -105,7 +105,7 @@ glob("**/*.js", (err, files) => {
 });
 ```
 
-#### 🔸 Promisified Version (Recommended)
+### 🔸 Promisified Version (Recommended)
 
 ```js
 const { promisify } = require("util");
@@ -117,7 +117,7 @@ const glob = promisify(require("glob"));
 })();
 ```
 
-#### ✅ Use Case: Delete all `.log` files in a directory
+### ✅ Use Case: Delete all `.log` files in a directory
 
 ```js
 const fs = require("fs/promises");
@@ -135,7 +135,7 @@ const globAsync = promisify(glob);
 })();
 ```
 
-#### 🧠 Best Practices with `glob`
+### 🧠 Best Practices with `glob`
 
 - Use absolute paths (`cwd` option) for better reliability
 - Use `ignore` option to skip `node_modules`, `.git`, etc.
@@ -144,17 +144,17 @@ const globAsync = promisify(glob);
 glob("**/*.js", { ignore: ["node_modules/**", "**/*.test.js"] }, callback);
 ```
 
-### ✅ 3. `fs-extra` (Supercharged `fs`)
+## ✅ 3. `fs-extra` (Supercharged `fs`)
 
 [`fs-extra`](https://www.npmjs.com/package/fs-extra) extends the native `fs` with additional utilities like `copy`, `move`, `ensureDir`, `remove`.
 
-#### 📦 Installation
+### 📦 Installation
 
 ```bash
 npm install fs-extra
 ```
 
-#### 🔸 Copying files & folders
+### 🔸 Copying files & folders
 
 ```js
 const fs = require("fs-extra");
@@ -165,25 +165,25 @@ const fs = require("fs-extra");
 })();
 ```
 
-#### 🔸 Ensuring directory existence
+### 🔸 Ensuring directory existence
 
 ```js
 await fs.ensureDir("logs"); // Like mkdir -p
 ```
 
-#### 🔸 Writing and ensuring parent dir
+### 🔸 Writing and ensuring parent dir
 
 ```js
 await fs.outputFile("output/data/info.txt", "Hello");
 ```
 
-#### 🔸 Removing files or folders
+### 🔸 Removing files or folders
 
 ```js
 await fs.remove("build"); // Recursively removes directory
 ```
 
-#### 🔸 JSON utilities
+### 🔸 JSON utilities
 
 ```js
 const config = { port: 3000 };
@@ -191,9 +191,9 @@ await fs.writeJson("config.json", config);
 const json = await fs.readJson("config.json");
 ```
 
-### 🚀 Best Practices
+## 🚀 Best Practices
 
-#### 🧩 fs vs fs/promises vs fs-extra
+### 🧩 fs vs fs/promises vs fs-extra
 
 | Task               | Recommended API | Why?                         |
 | ------------------ | --------------- | ---------------------------- |
@@ -201,7 +201,7 @@ const json = await fs.readJson("config.json");
 | Recursive ops      | `fs-extra`      | Has robust utility functions |
 | Wildcard file find | `glob`          | Best for complex matching    |
 
-#### 🧠 Tips
+### 🧠 Tips
 
 - Use `fs.promises` or `fs-extra` instead of callbacks for cleaner async/await logic.
 - Wrap `fs.watch` with debounce to avoid frequent triggering.

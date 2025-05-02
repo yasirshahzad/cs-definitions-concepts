@@ -169,50 +169,6 @@ console.log(counter1.getCount()); // Predict output
 
 ---
 
-## 1. 🔥 **Creating a Server using `http`**
-
-When you create a server, behind the scenes:
-
-- `http.Server` is an **EventEmitter**.
-- Events like `'request'`, `'connection'`, `'close'`, `'checkContinue'` are fired.
-
-👉 Let's create a server that **handles different events manually**:
-
-```javascript
-const http = require("http");
-
-const server = http.createServer();
-
-// Listen manually
-server.on("request", (req, res) => {
-  console.log(`Request event triggered for ${req.url}`);
-  res.writeHead(200, { "Content-Type": "text/plain" });
-  res.end("Advanced Server Response");
-});
-
-server.on("connection", (socket) => {
-  console.log("New connection established.");
-});
-
-server.on("close", () => {
-  console.log("Server shutting down...");
-});
-
-server.listen(3000, () => {
-  console.log("Server listening on port 3000");
-});
-
-// Shutdown server after 10 seconds
-setTimeout(() => {
-  server.close();
-}, 10000);
-```
-
-**Key Points**:
-
-- `server.on('request', handler)` is what `createServer(handler)` **internally does**.
-- You can manually handle **connections** and **shutdown gracefully**.
-
 ## 3. 📡 **Handling Events — Custom EventEmitters Advanced**
 
 Create **your own event-driven classes**:

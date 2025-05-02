@@ -146,8 +146,6 @@ console.log(path.delimiter); // ; (Windows) OR : (Linux)
 
 ✅ Good when handling environment variables like `PATH`.
 
----
-
 ### 9. **Relative vs Absolute Paths**
 
 | Path Type | Example                      |
