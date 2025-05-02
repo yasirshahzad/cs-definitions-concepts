@@ -40,11 +40,11 @@
 
 ## 4. Error Handling
 
-- [Types of Errors](/Nodejs/sub/errors.md)
-- [Uncaught Exceptions](/Nodejs/sub/errors.md)
-- [Handling Async Errors](/Nodejs/sub/errors.md)
-- [Call Stack & Stack Trace](/Nodejs/sub/errors.md)
-- [Debugging NodeJs](/Nodejs/sub/errors.md)
+- [Types of Errors](/Nodejs/sub/errors.md#1-types-of-errors)
+- [Uncaught Exceptions](/Nodejs/sub/errors.md#-2-uncaught-exceptions)
+- [Handling Async Errors](/Nodejs/sub/errors.md#-3-handling-async-errors)
+- [Call Stack & Stack Trace](/Nodejs/sub/errors.md#-4-call-stack--stack-trace)
+- [Debugging NodeJs](/Nodejs/sub/errors.md#-5-using-debugger)
 
 ## 5. Async Programming
 
