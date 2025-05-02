@@ -1,1356 +1,219 @@
-## 5. package.json and package-lock.json — Advanced control
+# 🚀 Nodejs
+
+## 1. Introduction
+
+1. What is Node.js?
+2. Why use Node.js?
+3. History of Node.js?
+4. Node.js vs Browser
+5. Running Node Code
 
-- **package.json**:
+[Read Here](./overview.md)
 
-  - Can define **scripts**, **dependencies**, **engines** (specify Node.js version).
-  - Custom fields can be added too (`"author"`, `"repository"`, `"license"`, etc).
+## 2. Modules
 
-- **package-lock.json**:
-  - Ensures **deterministic installs** — no surprises when teammates install your app.
-  - Records **exact versions** and **dependency tree**.
+- [CommonJs](/Nodejs/sub/modules.md)
+- [ESM Modules](/Nodejs/sub/modules.md)
+- [Creating Custom Modules](/Nodejs/sub/modules.md)
+- [`global` Keyword](/Nodejs/sub/modules.md)
 
-**Example:**
+## 3. npm
 
-```json
-"dependencies": {
-  "express": "^4.18.2"
-},
-"lockfileVersion": 2,
-"packages": {
-  "": {},
-  "node_modules/express": {
-    "version": "4.18.2"
-  }
-}
-```
+- [`npx`](/Nodejs/sub/npm.md)
+- [`Updating packages`](/Nodejs/sub/npm.md)
+- [`Using Installed packages`](/Nodejs/sub/npm.md)
+- [`Running Scripts`](/Nodejs/sub/npm.md)
+- [`Npm Workspaces`](/Nodejs/sub/npm.md)
 
-## 6. Publishing Your Own npm Package
+## 4. Error Handling
 
-Steps:
+- [Types of Errors](/Nodejs/sub/errors.md#1-types-of-errors)
+- [Uncaught Exceptions](/Nodejs/sub/errors.md#-2-uncaught-exceptions)
+- [Handling Async Errors](/Nodejs/sub/errors.md#-3-handling-async-errors)
+- [Call Stack & Stack Trace](/Nodejs/sub/errors.md#-4-call-stack--stack-trace)
+- [Debugging NodeJs](/Nodejs/sub/errors.md#-5-using-debugger)
 
-1. Create your code (e.g., a library).
-2. `npm init` to generate package.json
-3. Add a unique name.
-4. `npm login` (create an npmjs.com account if needed).
-5. `npm publish`
+## 5. Async Programming
 
-> Pro Tip:  
-> If name already exists, npm will throw an error. Use `@scope/package-name` for personal namespacing.
+- [Writing Async Code:](/Nodejs/async_programing/what_is_async_prog.md)
+  - [Promises](/Nodejs/async_programing//writing_async_code.md)
+  - [async/await](/Nodejs/async_programing//writing_async_code.md)
+  - [Callbacks](/Nodejs/async_programing//writing_async_code.md)
+  - [setTimeout](/Nodejs/async_programing//writing_async_code.md)
+  - [setInterval](/Nodejs/async_programing//writing_async_code.md)
+  - [setImmediate](/Nodejs/async_programing//writing_async_code.md)
+  - [process.nextTick](/Nodejs/async_programing//writing_async_code.md)
+- [Event Emitter](/Nodejs/async_programing/event_emitter.md)
+- [Event Loop](/Nodejs/async_programing/event_emitter.md)
 
-Example:
+## 6. Working with files
 
-```bash
-npm publish --access public
-```
+- [fs module](/Nodejs/files/fs.md)
+- [path module](/Nodejs/files/path.md)
+- [process.cwd()](/Nodejs/files/path.md)
+- [\_\_dirname](/Nodejs/files/path.md)
+- [\_\_filename](/Nodejs/files/path.md)
 
-### 1. Event Loop Race
+## 6. Event Loop and Node Internals
 
-**Challenge**:  
-Predict the exact output order of this code:
+### 1. Internals
 
-```javascript
-console.log("Start");
+- [V8 Engine](/Nodejs/sub/internals.md)
+- [libuv](/Nodejs/sub/internals.md)
+- [Event Loop](/Nodejs/sub/internals.md)
 
-setTimeout(() => {
-  console.log("Timeout 1");
-}, 0);
+## 9. Command Line Apps
 
-Promise.resolve().then(() => {
-  console.log("Promise 1");
-});
+- Printing Output
+  - [process.stdout](/Nodejs/command_line_app/printing_output.md)
+  - [process.stderr](/Nodejs/command_line_app/printing_output.md)
+  - [cli-progress package](/Nodejs/command_line_app/printing_output.md)
+  - [chalk package](/Nodejs/command_line_app/printing_output.md)
+- Taking Input
+  - [process.stdin](/Nodejs/command_line_app/taking_input.md)
+  - [Prompts package](/Nodejs/command_line_app/taking_input.md)
+  - [Inquirer package](/Nodejs/command_line_app/taking_input.md)
+- Environment Variables
+  - [process.env](/Nodejs/command_line_app/evn.md)
+  - [dotenv package](/Nodejs/command_line_app/evn.md)
 
-setImmediate(() => {
-  console.log("Immediate 1");
-});
+## 10. Working with API
 
-process.nextTick(() => {
-  console.log("Next Tick 1");
-});
+- Authentication
+  [passport.js](/Nodejs/sub/passportjs.md)
+  [jsonwebtoken](/Nodejs/sub/auth.md)
+  [OAuth 2.0 / OpenID Connect](/Nodejs/sub/auth.md)
+  [Session-based Authentication](/Nodejs/sub/auth.md)
 
-console.log("End");
-```
+- HTTP Server
+  - [HTTP](/Nodejs/server/http.md)
+  - [Realtime - Socket.io](/Nodejs/Readme.md)
+  - [ExpressJs](/Nodejs/server/expressjs.md)
+  - [Fastify](/Nodejs/server/fastify.md)
+  - [NestJs] (/NodeJs/server/nestjs.md)
 
-▶️ **Task**:  
-Write down the output order **before** you run it. Explain _why_ it's that order based on Event Loop phases.
+## 11. Keeping Application Running
 
-### 2. Heavy CPU Blocking Simulation
+- [Nodemon](/Nodejs/sub/keep_app_runing.md)
 
-**Challenge**:  
-Simulate heavy CPU blocking in Node.js and show how it blocks the event loop.
+## 12. Templating Engines
 
-Example hint:
+- [ej](/Nodejs/template_engines/templates_engines.md)
+- [pug](/Nodejs/template_engines/templates_engines.md)
+- [marko](/Nodejs/template_engines/templates_engines.md)
 
-```javascript
-const start = Date.now();
-while (Date.now() - start < 5000) {
-  // Block for 5 seconds
-}
-console.log("Done!");
-```
+## 13. Working with Databases
 
-▶️ **Task**:  
-Now try putting `setTimeout(() => console.log('Hello'), 1000);` **before** the loop.
+Pending
 
-Explain why it **doesn't** print "Hello" after 1 second.
+## 14. Testing
 
-### 3. Create your own Event Loop simulation (Tiny Version)
+- [Testing](/Testing/README.md)
+- [Unit](/Testing/Unit.md)
+- [Integration Testing](/Testing/IntegrationTesting.md)
+- [TDD](/Testing/TDD.md)
 
-**Challenge**:  
-Fake a mini event loop using JavaScript arrays.
+Pending
 
-Example:
+## 15. Logging
 
-```javascript
-const microTasks = [];
-const macroTasks = [];
+1. [Winston](/Nodejs/logging/winston.md)
+1. [Morgan](/Nodejs/logging/morgan.md)
 
-function eventLoop() {
-  while (microTasks.length || macroTasks.length) {
-    while (microTasks.length) {
-      const task = microTasks.shift();
-      task();
-    }
+## 16. Keeping App Running
 
-    if (macroTasks.length) {
-      const task = macroTasks.shift();
-      task();
-    }
-  }
-}
+1. [Pm2](/Nodejs/sub/pm2.md)
+2. forever Package
+3. nohup
 
-// Add tasks
-microTasks.push(() => console.log("Microtask 1"));
-macroTasks.push(() => console.log("Macrotask 1"));
-microTasks.push(() => console.log("Microtask 2"));
+## 17. Threads
 
-// Run our fake event loop
-eventLoop();
-```
+- [Overview](/Nodejs/threads/overview.md)
+- [Child Processes](/Nodejs/threads/child_process.md)
+- [Cluster](/Nodejs/threads/cluster.md)
+- [Worker Threads](/Nodejs/threads/cluster.md)
 
-▶️ **Task**:  
-Add some `setTimeout` and `Promise.then` to simulate how Node handles real event loop.
+## 18. More Debugging
 
-### 4. Module Caching Bug Challenge
+-- Memory Leaks
+-- node --inspect
+-- Using APM
 
-▶️ **Task**:
-Create two files:
+## 19. Common Built-in Modules
 
-- `counter.js`:
+1. [fs](/Nodejs/sub/fs.md)
+2. [os](/Nodejs/sub/os.md)
+3. [net](/Nodejs/sub/net.md)
+4. [Path](/Nodejs/sub/path.md)
+5. [url](/Nodejs/sub/url.md)
+6. [events](/Nodejs/async_programing/event_emitter.md)
+7. [http/https](/Nodejs/server/http.md)
+8. [crypto](/Nodejs/sub/crypto.md)
+9. [process](/Nodejs/sub/process.md)
+10. [perf_hooks](/Nodejs/sub/perf_hooks.md)
+11. [Buffer](/Nodejs/sub/buffer.md)
+12. [Streams](/Nodejs/sub/streams.md)
 
-```javascript
-let count = 0;
+## 20. Security Practices
 
-module.exports = {
-  increment: () => ++count,
-  reset: () => {
-    count = 0;
-  },
-  getCount: () => count,
-};
-```
+- [Helmet.js](/Nodejs/sub/security.md)
+- [CSRF Protection](/Nodejs/sub/security.md)
+- [Rate Limiting](/Nodejs/sub/security.md)
+- [Input Validation/Sanitization](/Nodejs/sub/security.md)
+- [Password Hashing](/Nodejs/sub/security.md)
+- [XSS/SQL Injection](./sub/xss.md)
 
-- `app.js`:
+## 21. Benchmarking & Load Testing
 
-```javascript
-const counter1 = require("./counter");
-counter1.increment();
-counter1.increment();
+These tools are essential for testing performance under stress and identifying bottlenecks.
 
-const counter2 = require("./counter");
-console.log(counter2.getCount()); // Predict output
-counter2.reset();
-console.log(counter1.getCount()); // Predict output
-```
+- Benchmarking Tools:
 
-> **Question**:
+  - [artillery](/Nodejs/benchmark/artillery.md) – Powerful load testing toolkit for APIs
+  - [k6](/Nodejs/benchmark/k6.md) – Scripting-based performance testing tool (great with CI)
+  - Apache Benchmark (ab) – Simple CLI load testing
+  - autocannon – Fast HTTP benchmarking tool by Matteo Collina
+  - wrk – Modern HTTP benchmarking tool (native)
+  - bombardier – High-performance HTTP(S) benchmarking tool
 
-- What will be printed?
-- Why is module caching important here?
+- Usage Techniques:
 
----
+  - Creating baselines
+  - Simulating real-world load
+  - Analyzing latency, RPS (requests per second), and throughput
+  - Integrating with CI/CD pipelines
 
-## 3. 📡 **Handling Events — Custom EventEmitters Advanced**
+[Read more](./benchmark/techniques.md)
 
-Create **your own event-driven classes**:
+## 22. Performance Optimization
 
-```javascript
-const EventEmitter = require("events");
+- Profiling Node.js apps using:
 
-class Auth extends EventEmitter {
-  register(username) {
-    console.log("Registering user...");
-    this.emit("registered", username);
-  }
-}
+  - Chrome DevTools (`node --inspect`)
+  - `clinic.js` suite (doctor, flamegraph, bubbleprof)
+  - `0x` – Flamegraph profiler
 
-const auth = new Auth();
+- Memory leaks and garbage collection:
+  - CPU bottlenecks
+  - Event loop delays (`perf_hooks`, `blocked-at`)
+  - Avoiding synchronous code
+  - Efficient I/O and buffer management
 
-// Observer Pattern
-auth.on("registered", (username) => {
-  console.log(`Sending welcome email to ${username}`);
-});
+[Read more](./benchmark/profiling.md)
 
-auth.register("hero");
-```
+## 23. Application Architecture
 
-✅ You are now building **Observable systems** — like what large apps (Discord, Slack) do.
+- Monolith vs Microservices in Node.js
+- MVC, Clean Architecture, Hexagonal Architecture
+- Folder structure best practices
+- Using DI containers like awilix
+- [Nx monorepo](./architecture/nx.md)
 
-## 4. 🚀 **Async Control**
+[Read more](./architecture/overview.md)
 
-In real projects, you'll **combine**:
+## 24. Message Queues and Jobs
 
-- Promises
-- Async/await
-- Streams (which are EventEmitters)
-- Timeouts
-- Manual Promise wrappers
-
-Example: **Manually Promisify fs**
-
-```javascript
-const fs = require("fs");
-
-function readFileAsync(path) {
-  return new Promise((resolve, reject) => {
-    fs.readFile(path, "utf8", (err, data) => {
-      if (err) reject(err);
-      else resolve(data);
-    });
-  });
-}
-
-async function read() {
-  try {
-    const content = await readFileAsync("data.txt");
-    console.log(content);
-  } catch (err) {
-    console.error("Error:", err);
-  }
-}
-
-read();
-```
-
-✅ Manually **promisifying** gives you **more control** than relying on libraries.
-
-### 🎯 **Concepts**
-
-| Concept                  | Why It Matters                                     |
-| ------------------------ | -------------------------------------------------- |
-| Backpressure             | Prevent memory overflow when client is slower      |
-| HighWaterMark in streams | Tuning how much data is buffered in streams        |
-| Graceful Shutdown        | Stop accepting new connections but finish old ones |
-| Zero-Copy Streaming      | `stream.pipe()` does not copy data manually        |
-
-## Nodejs Internal Modules
-
-There are **four main APIs** in `fs` you must master:
-
-| Style                  | Example Function       | Characteristics                           |
-| :--------------------- | :--------------------- | :---------------------------------------- |
-| Callback-based         | `fs.readFile`          | Asynchronous but uses callbacks           |
-| Promise-based          | `fs.promises.readFile` | Modern async/await style                  |
-| Stream-based           | `fs.createReadStream`  | Efficient chunked reading/writing         |
-| Synchronous (blocking) | `fs.readFileSync`      | Blocks entire process — **use carefully** |
-
-### 1. **Promise-based fs (best practice)**
-
-Instead of messy callbacks, Node provides a **promise API** via `fs.promises`.
-
-```javascript
-const fs = require("fs/promises");
-const path = require("path");
-
-async function readFileAsync() {
-  try {
-    const data = await fs.readFile(path.join(__dirname, "file.txt"), "utf8");
-    console.log(data);
-  } catch (err) {
-    console.error("Error reading file:", err);
-  }
-}
-
-readFileAsync();
-```
-
-✅ Use `fs/promises` for **clean, awaitable** code.
-
----
-
-### 2. **Important Advanced Functions**
-
-Let's cover the most powerful ones:
-
-#### a. `fs.promises.mkdir` — Make Directory (Recursive)
-
-```javascript
-await fs.mkdir("a/b/c", { recursive: true });
-console.log("Folders created");
-```
-
-✅ If the parent folders don’t exist, **recursive** creates them.
-
----
-
-#### b. `fs.promises.readdir` — Read Directory
-
-```javascript
-const files = await fs.readdir("./myFolder");
-console.log("Files:", files);
-```
-
-✅ Lists all files/folders inside a directory.
-
----
-
-#### c. `fs.promises.stat` — File/Folder Information
-
-```javascript
-const stat = await fs.stat("path/to/file");
-console.log(stat.isFile()); // true
-console.log(stat.isDirectory()); // false
-console.log("Size:", stat.size, "bytes");
-```
-
-✅ Check **if it's a file or folder**, get **size**, **timestamps**.
-
----
-
-#### d. `fs.promises.unlink` — Delete a File
-
-```javascript
-await fs.unlink("path/to/file.txt");
-console.log("File deleted");
-```
-
-✅ Careful: `unlink` = permanently deletes the file.
-
----
-
-#### e. `fs.promises.rm` — Remove Directory/File (new method)
-
-```javascript
-await fs.rm("path/to/folder", { recursive: true, force: true });
-console.log("Folder deleted");
-```
-
-✅ **`rm`** replaces old `rmdir` — better, safer, stronger.
-
----
-
-### 3. **Watch Files in Real Time**
-
-Monitor when a file changes:
-
-```javascript
-const fs = require("fs");
-
-fs.watch("./file.txt", (eventType, filename) => {
-  console.log(`Event: ${eventType} on file: ${filename}`);
-});
-```
-
-✅ Useful for hot reloading servers, live updates.
-
----
-
-### 4. **Handling Streams** (Best for BIG Files)
-
-```javascript
-const fs = require("fs");
-
-const readStream = fs.createReadStream("bigfile.txt", {
-  highWaterMark: 16 * 1024,
-}); // 16kb chunks
-
-readStream.on("data", (chunk) => {
-  console.log("Chunk:", chunk.length, "bytes");
-});
-
-readStream.on("end", () => {
-  console.log("Reading done");
-});
-```
-
-✅ Memory efficient: only **small chunks** loaded.
-
-**Tip:** You can **pipe** streams to each other:
-
-```javascript
-const writeStream = fs.createWriteStream("copy.txt");
-readStream.pipe(writeStream);
-```
-
----
-
-### 5. **Advanced Error Handling**
-
-✅ Always check for errors — not every failure is critical.
-
-```javascript
-try {
-  await fs.readFile("nonexistent.txt");
-} catch (err) {
-  if (err.code === "ENOENT") {
-    console.error("File does not exist");
-  } else {
-    throw err;
-  }
-}
-```
-
-| Error Code | Meaning               |
-| :--------- | :-------------------- |
-| `ENOENT`   | File/folder not found |
-| `EACCES`   | Permission denied     |
-| `EISDIR`   | Is a directory        |
-
----
-
-### 6. **Atomic Writes (safe writes)**
-
-If you want **safe saving** (prevent half-written files):
-
-```javascript
-const fs = require("fs/promises");
-
-async function safeWrite(filePath, data) {
-  const tmpPath = filePath + ".tmp";
-  await fs.writeFile(tmpPath, data);
-  await fs.rename(tmpPath, filePath); // Atomic
-}
-
-safeWrite("data.json", '{"name": "Hero"}');
-```
-
-✅ Guarantees either **old** or **new** data — never broken file.
-
----
-
-### 7. **Bonus: Copy files easily**
-
-From Node.js 16+, use `fs.promises.cp()`:
-
-```javascript
-await fs.cp("source.txt", "destination.txt");
-```
-
-✅ Fast, clean file copying!
-
----
-
-### 8. Real World Example
-
-**Serve static files manually** using only `fs`:
-
-```javascript
-const http = require("http");
-const fs = require("fs/promises");
-const path = require("path");
-
-const server = http.createServer(async (req, res) => {
-  let filePath = path.join(
-    __dirname,
-    "public",
-    req.url === "/" ? "index.html" : req.url
-  );
-
-  try {
-    const content = await fs.readFile(filePath);
-    res.writeHead(200);
-    res.end(content);
-  } catch (err) {
-    res.writeHead(404);
-    res.end("404 Not Found");
-  }
-});
-
-server.listen(3000, () =>
-  console.log("Server running on http://localhost:3000")
-);
-```
-
-✅ No Express, fully manual server!
-
-
-## Load Testing using Artillery
-
-🔹 **Goal**: Test if your Node.js server can handle heavy real-world traffic.
-
-### ✅ What you will master
-
-| Concept        | Tools/Techniques                 | What you'll do                  |
-| :------------- | :------------------------------- | :------------------------------ |
-| Load Testing   | Artillery                        | Simulate 100s/1000s of users    |
-| Stress Testing | Artillery + custom scenarios     | Push server until it breaks     |
-| Reporting      | Artillery reports                | Analyze p50, p90, p99 latencies |
-| Spike Testing  | Sudden traffic burst simulations |
-
----
-
-### 🛠 Tools
-
-- [`artillery`](https://artillery.io/)
-  - `artillery quick`
-  - `artillery run`
-  - `artillery report`
-
-### ✍ How you will practice
-
-### Example Task 1: Install and run basic Artillery load test
-
-```bash
-npm install -g artillery
-```
-
-Basic load test:
-
-```bash
-artillery quick --count 50 -n 20 http://localhost:3000/
-```
-
-- 50 users
-- 20 requests each
-- Boom! You’ll see latency stats.
-
----
-
-### Example Task 2: Create a full load test script (`loadtest.yml`)
-
-```yaml
-config:
-  target: "http://localhost:3000"
-  phases:
-    - duration: 60
-      arrivalRate: 10
-scenarios:
-  - flow:
-      - get:
-          url: "/api/data"
-```
-
-Run it:
-
-```bash
-artillery run loadtest.yml
-```
-
-You will see:
-
-- Requests/sec
-- Response Times (p50, p90, p99)
-- Errors
-- Latency
-
-### 🧹 3. Memory Management and Garbage Collection
-
-🔹 **Goal**: Prevent memory leaks, manage app memory usage like a pro.
-
-#### ✅ What you will master
-
-| Concept                    | Tools/Techniques                                     | What you'll do |
-| :------------------------- | :--------------------------------------------------- | :------------- |
-| How Node.js manages memory | V8 heap, garbage collection types                    |
-| Memory Leaks               | Identify and fix leaks                               |
-| Garbage Collection         | Understand `Scavenge`, `Mark-Sweep`, `Mark-Compact`  |
-| Manual Garbage Collection  | `global.gc()` (only when started with `--expose-gc`) |
-| Heap Snapshots             | Chrome DevTools, heapdump module                     |
-| Memory profiling           | `clinic heapprofile`, `node --inspect`               |
-
-#### 🛠 Tools
-
-- `--inspect` and Chrome DevTools
-- `heapdump` npm package
-- `clinic heapprofile`
-- Visual heap snapshot analysis
-
-#### Example Task 1: Memory Leak Example
-
-```javascript
-let leaks = [];
-
-function leakMemory() {
-  leaks.push(new Array(1000000).join("leak"));
-}
-
-setInterval(leakMemory, 1000);
-```
-
-- Run with `node --inspect app.js`
-- Open `chrome://inspect`
-- Take **Heap Snapshots** over time.
-- See how memory keeps growing 🔥.
-
----
-
-#### Example Task 2: Monitor memory usage
-
-```javascript
-setInterval(() => {
-  const used = process.memoryUsage();
-  console.log(`Heap Used: ${(used.heapUsed / 1024 / 1024).toFixed(2)} MB`);
-}, 2000);
-```
-
-You'll see how much memory your app uses live.
-
-#### 📜 Summary of your Advanced Node.js Roadmap
-
-| Step | Focus                        | Tools                                   |
-| :--- | :--------------------------- | :-------------------------------------- |
-| 1    | CPU + Memory Profiling       | Node Inspector, Chrome DevTools, Clinic |
-| 2    | Micro and Macro Benchmarking | Benchmark.js, autocannon                |
-| 3    | Load Testing                 | Artillery scripts                       |
-| 4    | Memory Management            | Heap snapshots, GC understanding        |
-| 5    | Leak Detection               | heapdump, memory reports                |
-
-## Error Handling
-
-### 🧠 First: What Types of Errors Exist in Node.js?
-
-| Error Type             | Example                                             | What It Means         |
-| :--------------------- | :-------------------------------------------------- | :-------------------- |
-| **Synchronous error**  | `throw new Error('Something went wrong')`           | Immediate, blocking   |
-| **Asynchronous error** | `fs.readFile('nofile', cb)` → error inside callback | Error happens _later_ |
-| **Promise rejection**  | `Promise.reject(new Error('fail'))`                 | Unhandled `.catch()`  |
-| **Operational Error**  | Database connection fails, API timeout              | Expected failures     |
-| **Programmer Error**   | Typos, bugs, wrong API usage                        | Code mistake          |
-
-✅ Good apps **handle Operational errors** carefully.  
-❌ Programmer errors should **crash** the app (so you find the bug and fix).
-
----
-
-### 🚀 Synchronous Error Handling Pattern
-
-Wrap synchronous risky code inside `try-catch`.
-
-```js
-try {
-  let data = riskyFunction();
-  console.log(data);
-} catch (err) {
-  console.error("Caught an error:", err.message);
-}
-```
-
-✅ Simple, works immediately.
-
----
-
-###🚀 Asynchronous (Callback) Error Handling Pattern
-
-Always **first argument** in Node.js callback is `err`.
-
-```js
-fs.readFile("/invalid/path", (err, data) => {
-  if (err) {
-    console.error("Failed to read file:", err.message);
-    return;
-  }
-  console.log(data.toString());
-});
-```
-
-✅ Always **check** if `err` exists inside callbacks!
-
----
-
-### 🚀 Promise Error Handling Pattern
-
-Always `.catch()` your promises.
-
-```js
-asyncFunction()
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((error) => {
-    console.error("Promise rejected:", error.message);
-  });
-```
-
-✅ Every promise must have a `.catch()` somewhere!
-
----
-
-### 🚀 `async/await` Error Handling Pattern
-
-Use `try-catch` around `await`.
-
-```js
-async function fetchData() {
-  try {
-    const data = await fetchFromDatabase();
-    console.log(data);
-  } catch (err) {
-    console.error("Failed to fetch data:", err.message);
-  }
-}
-```
-
-✅ No silent failures.
-
----
-
-### 💥 Global Error Handlers
-
-Sometimes your server should **catch** unhandled errors globally too:
-
-```js
-process.on("uncaughtException", (err) => {
-  console.error("Uncaught Exception:", err);
-  process.exit(1); // mandatory: exit process
-});
-
-process.on("unhandledRejection", (reason, promise) => {
-  console.error("Unhandled Promise Rejection:", reason);
-  process.exit(1);
-});
-```
-
-✅ Catch catastrophic failures and shut down gracefully.
-
-### 📚 Advanced Professional Error Handling Patterns
-
-#### 1. **Centralized Error Handling Middleware (Express)**
-
-In ExpressJS, make a central error handler:
-
-```js
-// error-handler.js
-function errorHandler(err, req, res, next) {
-  console.error(err.stack);
-
-  res.status(err.statusCode || 500).json({
-    success: false,
-    message: err.message || "Internal Server Error",
-  });
-}
-
-module.exports = errorHandler;
-```
-
-Use it in your app:
-
-```js
-const errorHandler = require("./error-handler");
-
-app.use(errorHandler);
-```
-
-✅ All errors go through this one place.
-
----
-
-#### 2. **Create Custom Error Classes**
-
-Instead of throwing generic `Error`, you create **structured errors**:
-
-```js
-class AppError extends Error {
-  constructor(message, statusCode) {
-    super(message);
-    this.statusCode = statusCode;
-    this.isOperational = true;
-    Error.captureStackTrace(this, this.constructor);
-  }
-}
-```
-
-Usage:
-
-```js
-throw new AppError("User not found", 404);
-```
-
-✅ Helps you distinguish between **Operational errors** (handle) and **Programmer errors** (crash).
-
----
-
-#### 3. **Use `next(err)` in Express**
-
-In routes:
-
-```js
-app.get("/user/:id", async (req, res, next) => {
-  try {
-    const user = await User.findById(req.params.id);
-    if (!user) {
-      return next(new AppError("User not found", 404));
-    }
-    res.json(user);
-  } catch (err) {
-    next(err);
-  }
-});
-```
-
-✅ If an error occurs, `next(err)` sends it to the error handler.
-
----
-
-#### 4. **Fail Fast, Fail Loud**
-
-**Best practice**: **Crash** immediately if a **Programmer error** (e.g., typo, undefined variable) occurs.
-
-Don't try to recover from bugs:
-
-- Let the app crash.
-- Use a process manager (like **PM2**) to auto-restart.
-
-✅ This ensures you don't run your app in a corrupted state.
-
----
-
-#### 5. **Graceful Shutdowns on Fatal Errors**
-
-On fatal errors, you should close servers gracefully:
-
-```js
-process.on("uncaughtException", (err) => {
-  console.error(err);
-  process.exit(1);
-});
-
-process.on("unhandledRejection", (err) => {
-  console.error(err);
-  server.close(() => {
-    process.exit(1);
-  });
-});
-```
-
-✅ Example: Wait for HTTP server to close before exiting.
-
----
-
-### 📈 Complete Node.js Error Handling Flow
-
-```mermaid
-flowchart TD
-A[Error Happens] --> B{Type of Error?}
-B -- Operational --> C[Handle Gracefully]
-B -- Programmer --> D[Crash App]
-C --> E[Return Error Response]
-D --> F[PM2 Restart App]
-```
-
-✅ Handle expected errors. Crash on bugs. Restart automatically.
-
----
-
-### 📋 Node.js Error Handling Cheat Sheet
-
-| Pattern                            | Use                     |
-| :--------------------------------- | :---------------------- |
-| `try-catch`                        | Sync code, async/await  |
-| `if (err) return next(err)`        | In callbacks            |
-| `Promise.catch()`                  | In promises             |
-| `process.on('uncaughtException')`  | Fatal sync error        |
-| `process.on('unhandledRejection')` | Fatal promise rejection |
-| Custom `AppError` class            | Structured errors       |
-| Express `errorHandler` middleware  | Central handling        |
-| Crash on bugs                      | Fail fast               |
-
----
-
-### 🏆 Summary
-
-✅ Properly handled async/sync errors  
-✅ Built centralized error middleware  
-✅ Structured errors using classes  
-✅ Catch-all global event listeners  
-✅ Graceful shutdowns
-
-## Test
-
-### 🧠 First: Understanding Testing Types
-
-| Type of Test              | What It Tests                               | Example                                           |
-| :------------------------ | :------------------------------------------ | :------------------------------------------------ |
-| **Unit Test**             | Smallest unit (function/class) in isolation | Does `sum(2, 3)` return `5`?                      |
-| **Integration Test**      | How modules/services work _together_        | API route connects to DB and returns correct user |
-| **End-to-End (E2E) Test** | Entire app flow like a user would           | Browser opens, user signs up                      |
-
-### ⚙️ Testing Libraries You Need
-
-| Library              | Purpose                                       |
-| :------------------- | :-------------------------------------------- |
-| **Jest**/**Vitest**  | Test runner, assertion, mocking               |
-| **Supertest**        | For HTTP endpoint testing (Integration tests) |
-| **Sinon** (optional) | Mocking and spying functions (if needed)      |
-| **ts-jest**          | If you are using TypeScript                   |
-
-Most popular setup today = **Jest + Supertest**.
-
-### 🚀 Installing
-
-```bash
-npm install --save-dev jest supertest
-```
-
-In `package.json`:
-
-```json
-"scripts": {
-  "test": "jest"
-}
-```
-
-✅ Now you can run tests with:
-
-```bash
-npm run test
-```
-
-### ✏️ Basic **Unit Testing** Example (pure function)
-
-Suppose you have:
-
-```js
-// utils.js
-function sum(a, b) {
-  return a + b;
-}
-module.exports = { sum };
-```
-
-Unit Test:
-
-```js
-// utils.test.js
-const { sum } = require("./utils");
-
-describe("Utils functions", () => {
-  test("should add two numbers", () => {
-    expect(sum(2, 3)).toBe(5);
-  });
-
-  test("should return NaN if passed non-numbers", () => {
-    expect(sum("a", 3)).toBeNaN();
-  });
-});
-```
-
-✅ `describe` groups tests  
-✅ `test` or `it` defines a test case  
-✅ `expect` creates assertions
-
-Run:
-
-```bash
-npm run test
-```
-
----
-
-### ✏️ Basic **Integration Testing** Example (API route)
-
-Suppose you have an **Express app**:
-
-```js
-// app.js
-const express = require("express");
-const app = express();
-
-app.get("/api/hello", (req, res) => {
-  res.json({ message: "Hello World" });
-});
-
-module.exports = app;
-```
-
-Test:
-
-```js
-// app.test.js
-const request = require("supertest");
-const app = require("./app");
-
-describe("GET /api/hello", () => {
-  test("should respond with Hello World", async () => {
-    const response = await request(app).get("/api/hello");
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body.message).toBe("Hello World");
-  });
-});
-```
-
-✅ `request(app).get()` hits the route.  
-✅ Assertions check HTTP status and JSON body.
-
----
-
-### 🔥 Mocking External Services in Unit Tests
-
-Suppose you have:
-
-```js
-// userService.js
-const db = require("./db");
-
-async function getUser(id) {
-  return db.findUserById(id);
-}
-module.exports = { getUser };
-```
-
-You can **mock** the `db` module:
-
-```js
-// userService.test.js
-const { getUser } = require("./userService");
-const db = require("./db");
-
-jest.mock("./db");
-
-describe("UserService", () => {
-  test("should return user", async () => {
-    db.findUserById.mockResolvedValue({ id: "123", name: "John" });
-
-    const user = await getUser("123");
-    expect(user).toEqual({ id: "123", name: "John" });
-  });
-});
-```
-
-✅ No real DB calls — we mock it.  
-✅ Faster tests, more reliable.
-
----
-
-### 🏛️ Organizing Tests Properly
-
-Professional structure:
-
-```
-/src
-  /controllers
-  /models
-  /services
-  /routes
-/tests
-  /unit
-    sum.test.js
-    userService.test.js
-  /integration
-    app.test.js
-  /e2e (if needed)
-jest.config.js
-```
-
-✅ Clean separation  
-✅ Easier CI/CD setup later
-
----
-
-### 📚 Summary of Patterns
-
-| Pattern                      | Details                                 |
-| :--------------------------- | :-------------------------------------- |
-| **Unit tests**               | Test small isolated functions/classes   |
-| **Integration tests**        | Test Express routes, service + DB flow  |
-| **Mocking**                  | Mock DBs, APIs to avoid real dependency |
-| **Supertest**                | For hitting HTTP endpoints              |
-| **Describe / test / expect** | Jest keywords for writing tests         |
-| **jest.mock()**              | Mock a module automatically             |
-
-### to check code coverage!
-
-You can also run:
-
-```bash
-npm run test -- --coverage
-```
-
----
-
-## Testing a Real Project
-
-Imagine a real Node app structure:
-
-```
-/src
-  /controllers
-    userController.js
-  /services
-    userService.js
-  /models
-    userModel.js
-  /routes
-    userRoutes.js
-  app.js
-/tests
-  /unit
-    userService.test.js
-  /integration
-    userRoutes.test.js
-jest.config.js
-```
-
-This will involve:
-
-- Mocking **Database** access in **Unit** tests.
-- Testing **Express routes** in **Integration** tests.
-- Using **Supertest** and **Jest** together.
-
-### 1. Code: Real Service + Controller Example
-
-**`userModel.js`** — (imagine this interacts with MongoDB normally):
-
-```js
-// src/models/userModel.js
-const users = [{ id: "1", name: "John Doe" }]; // Fake DB for now
-
-async function findById(id) {
-  return users.find((user) => user.id === id) || null;
-}
-
-async function createUser(user) {
-  users.push(user);
-  return user;
-}
-
-module.exports = { findById, createUser };
-```
-
----
-
-**`userService.js`** — (business logic):
-
-```js
-// src/services/userService.js
-const userModel = require("../models/userModel");
-
-async function getUserById(id) {
-  const user = await userModel.findById(id);
-  if (!user) {
-    throw new Error("User not found");
-  }
-  return user;
-}
-
-async function addUser(data) {
-  return userModel.createUser(data);
-}
-
-module.exports = { getUserById, addUser };
-```
-
----
-
-**`userController.js`** — (express route handlers):
-
-```js
-// src/controllers/userController.js
-const userService = require("../services/userService");
-
-async function getUser(req, res) {
-  try {
-    const user = await userService.getUserById(req.params.id);
-    res.json(user);
-  } catch (error) {
-    res.status(404).json({ error: error.message });
-  }
-}
-
-async function createUser(req, res) {
-  const user = await userService.addUser(req.body);
-  res.status(201).json(user);
-}
-
-module.exports = { getUser, createUser };
-```
-
----
-
-**`userRoutes.js`** — (routing):
-
-```js
-// src/routes/userRoutes.js
-const express = require("express");
-const router = express.Router();
-const userController = require("../controllers/userController");
-
-router.get("/:id", userController.getUser);
-router.post("/", userController.createUser);
-
-module.exports = router;
-```
-
----
-
-**`app.js`** — (main app):
-
-```js
-// src/app.js
-const express = require("express");
-const app = express();
-
-app.use(express.json());
-
-const userRoutes = require("./routes/userRoutes");
-app.use("/users", userRoutes);
-
-module.exports = app;
-```
-
----
-
-### 2. Real **Unit Testing**: `userService.test.js`
-
-We will **mock** the **userModel**, because we are testing only the **service logic**, **NOT** the database!
-
-```js
-// tests/unit/userService.test.js
-const userService = require("../../src/services/userService");
-const userModel = require("../../src/models/userModel");
-
-jest.mock("../../src/models/userModel");
-
-describe("UserService", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  describe("getUserById", () => {
-    it("should return user if found", async () => {
-      const fakeUser = { id: "1", name: "Test User" };
-      userModel.findById.mockResolvedValue(fakeUser);
-
-      const user = await userService.getUserById("1");
-
-      expect(user).toEqual(fakeUser);
-      expect(userModel.findById).toHaveBeenCalledWith("1");
-    });
-
-    it("should throw error if user not found", async () => {
-      userModel.findById.mockResolvedValue(null);
-
-      await expect(userService.getUserById("999")).rejects.toThrow(
-        "User not found"
-      );
-    });
-  });
-
-  describe("addUser", () => {
-    it("should create and return user", async () => {
-      const newUser = { id: "2", name: "Jane Doe" };
-      userModel.createUser.mockResolvedValue(newUser);
-
-      const user = await userService.addUser(newUser);
-
-      expect(user).toEqual(newUser);
-      expect(userModel.createUser).toHaveBeenCalledWith(newUser);
-    });
-  });
-});
-```
-
-✅ `jest.mock` automatically mocks `userModel`.  
-✅ Testing **only the service logic**, no real DB call.
-
----
-
-### 3. Real **Integration Testing**: `userRoutes.test.js`
-
-Now we **test the routes**.  
-We can use **Supertest** to call HTTP endpoints.
-
-```js
-// tests/integration/userRoutes.test.js
-const request = require("supertest");
-const app = require("../../src/app");
-const userModel = require("../../src/models/userModel");
-
-jest.mock("../../src/models/userModel");
-
-describe("User Routes", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
-
-  describe("GET /users/:id", () => {
-    it("should return a user if found", async () => {
-      const fakeUser = { id: "1", name: "Test User" };
-      userModel.findById.mockResolvedValue(fakeUser);
-
-      const res = await request(app).get("/users/1");
-
-      expect(res.statusCode).toBe(200);
-      expect(res.body).toEqual(fakeUser);
-    });
-
-    it("should return 404 if user not found", async () => {
-      userModel.findById.mockResolvedValue(null);
-
-      const res = await request(app).get("/users/999");
-
-      expect(res.statusCode).toBe(404);
-      expect(res.body).toEqual({ error: "User not found" });
-    });
-  });
-
-  describe("POST /users", () => {
-    it("should create a new user", async () => {
-      const newUser = { id: "2", name: "Jane Doe" };
-      userModel.createUser.mockResolvedValue(newUser);
-
-      const res = await request(app).post("/users").send(newUser);
-
-      expect(res.statusCode).toBe(201);
-      expect(res.body).toEqual(newUser);
-    });
-  });
-});
-```
-
-✅ We **mock** DB even in integration tests, to keep tests **fast** and **isolated**.  
-✅ We **actually call HTTP endpoints** using `request(app)`.
-
----
-
-### 🔥 Advanced Testing Principles Shown
-
-| Principle                                      | Example                             |
-| :--------------------------------------------- | :---------------------------------- |
-| Mock DB in Unit tests                          | `jest.mock('./userModel')`          |
-| Mock DB in Integration tests                   | Also mock models in integration     |
-| Test error cases                               | Not just success paths              |
-| Clean mocks after each test                    | `jest.clearAllMocks()`              |
-| Cover controllers, services, models separately | ✅                                  |
-| Structure cleanly                              | `tests/unit/`, `tests/integration/` |
-
----
-
-### 📊 Code Coverage Example
-
-Run tests with coverage:
-
-```bash
-npm run test -- --coverage
-```
-
-You will get:
-
-| File              | % Lines tested |
-| :---------------- | :------------- |
-| userService.js    | 100%           |
-| userController.js | 100%           |
-| userModel.js      | 0% (mocked)    |
-| app.js            | 100%           |
-| userRoutes.js     | 100%           |
-
----
-
-### 🎯 Summary: Real-World Node Testing
-
-- **Unit tests**: Test service logic, mock DB.
-- **Integration tests**: Test HTTP routes, mock DB.
-- **Mock all external systems** (DB, APIs, etc).
-- **Clear mocks** between tests to avoid contamination.
-- **Write error cases** (user not found, bad input, etc).
-
----
+- [Redis](../Redis/Notes.docx)
+- [RabbitMQ](../RabbitMQ/Notes.docx) / Kafka integration
+- AWS SQS
+- AWS Event Bridge
