@@ -153,3 +153,11 @@ Pending
 10. [perf_hooks](/Nodejs/sub/perf_hooks.md)
 11. [Buffer](/Nodejs/sub/buffer.md)
 12. [Streams](/Nodejs/sub/streams.md)
+
+## Security Practices
+
+- [Helmet.js](/Nodejs/sub/security.md)
+- [CSRF Protection](/Nodejs/sub/security.md)
+- [Rate Limiting](/Nodejs/sub/security.md)
+- [Input Validation/Sanitization](/Nodejs/sub/security.md)
+- [Password Hashing](/Nodejs/sub/security.md)
