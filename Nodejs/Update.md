@@ -25,9 +25,8 @@
 
 ## 2. Modules
 
-### 2.1 [CommonJs](/Nodejs/sub/modules.md)
-
-### 2.2 [ESM Modules](/Nodejs/sub/modules.md)
+- [CommonJs](/Nodejs/sub/modules.md)
+- [ESM Modules](/Nodejs/sub/modules.md)
 
 ## 3. npm
 
