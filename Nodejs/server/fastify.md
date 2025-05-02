@@ -12,8 +12,6 @@ Or with TypeScript:
 npm install fastify @types/node typescript ts-node --save-dev
 ```
 
----
-
 ## 🔧 2. **Create a Basic Server**
 
 ### `server.js`
