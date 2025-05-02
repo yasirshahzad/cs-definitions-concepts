@@ -110,3 +110,120 @@ Then you can use `.js` extensions for ESM files.
 | Loading            | Synchronous                 | Asynchronous                      |
 | Default in Node.js | Yes (without config)        | With `.mjs` or `"type": "module"` |
 | Browser Support    | No (requires bundler)       | Yes (modern browsers)             |
+
+---
+
+## 🧱 Part 1: Creating Custom Modules in Node.js
+
+Node.js uses the **CommonJS module system** (via `require()`/`module.exports`) and also supports **ES Modules** (via `import/export`).
+
+### ✅ Step-by-Step: Creating a Custom Module
+
+Let’s create a math utility module.
+
+### 📁 File: `mathUtil.js`
+
+```js
+function add(a, b) {
+  return a + b;
+}
+
+function multiply(a, b) {
+  return a * b;
+}
+
+// Export functions
+module.exports = {
+  add,
+  multiply,
+};
+```
+
+### 📁 File: `main.js`
+
+```js
+const math = require("./mathUtil");
+
+console.log("Add:", math.add(2, 3)); // 5
+console.log("Multiply:", math.multiply(4, 5)); // 20
+```
+
+> 🔁 Tip: You can also export a single function or class directly:
+
+```js
+module.exports = function greet(name) {
+  return `Hello, ${name}`;
+};
+```
+
+---
+
+## 📦 Best Practices for Custom Modules
+
+- Keep modules **small and single-purpose**.
+- Use **clear exports**.
+- Separate logic, config, DB, routes, etc. into **individual modules**.
+- Use **`index.js`** to aggregate submodules when needed.
+
+---
+
+## 🌍 Part 2: The `global` Keyword in Node.js
+
+### 🔎 What is `global`?
+
+- In Node.js, `global` is like `window` in browsers — it provides global scope.
+- Avoid using `global` too much; use it only for constants or one-time app-wide config.
+
+### ✅ Example: Defining Global Variables
+
+```js
+// defineGlobal.js
+global.appName = "MyApp";
+global.logger = (msg) => console.log(`[${global.appName}] ${msg}`);
+```
+
+```js
+// useGlobal.js
+require("./defineGlobal");
+global.logger("Server started..."); // [MyApp] Server started...
+```
+
+> ⚠️ **Avoid polluting** the global scope unnecessarily — use `global` sparingly and with purpose.
+
+---
+
+## 🛠️ Use Cases for `global` in Node.js
+
+✅ Suitable for:
+
+- Shared configuration values (`global.config`)
+- Logging helpers (`global.logger`)
+- Environment flags
+
+❌ Avoid for:
+
+- Large objects
+- Mutable shared state
+- Replacing dependency injection
+
+---
+
+## 💡 Bonus: How Modules Are Cached
+
+When you `require()` a module, Node.js **caches** it — meaning if it's required again, it won’t re-run the file:
+
+```js
+require("./initOnce"); // runs and logs
+require("./initOnce"); // silent (cached)
+```
+
+---
+
+## 🧠 Summary
+
+| Feature          | Description                                           |
+| ---------------- | ----------------------------------------------------- |
+| `module.exports` | How you define what your module exposes               |
+| `require()`      | How you import a module                               |
+| `global`         | A special object for global variables (use sparingly) |
+| Module cache     | Modules are cached after the first load               |

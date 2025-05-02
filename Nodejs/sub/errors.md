@@ -1,6 +1,8 @@
 # Error Handling in NodeJs
 
-## 🔴 1. System Errors
+## 1. Types of Errors
+
+### 🔴 1. System Errors
 
 > **Definition:** Errors caused by system-level operations (like file system, network, etc.)
 
@@ -27,7 +29,7 @@ fs.readFile("/invalid/path.txt", (err, data) => {
 });
 ```
 
-## 🟡 2. User-Specified Errors
+### 🟡 2. User-Specified Errors
 
 > **Definition:** Custom errors thrown in your business logic.
 
@@ -58,7 +60,7 @@ function validateUserAge(age) {
 
 ---
 
-## 🔵 3. Assertion Errors
+### 🔵 3. Assertion Errors
 
 > **Definition:** Errors thrown using Node's `assert` module.
 
@@ -82,7 +84,7 @@ console.log(divide(10, 0)); // AssertionError
 
 ---
 
-## 🟠 4. JavaScript Errors
+### 🟠 4. JavaScript Errors
 
 > **Definition:** Standard JS errors like `TypeError`, `ReferenceError`, etc.
 
@@ -103,7 +105,7 @@ try {
 
 ---
 
-## 🔥 5. Uncaught Exceptions
+## 🔥 2. Uncaught Exceptions
 
 > **Definition:** Errors not caught anywhere in the app that crash the process.
 
@@ -126,7 +128,7 @@ setTimeout(() => {
 
 ---
 
-## 🌀 6. Handling Async Errors
+## 🌀 3. Handling Async Errors
 
 > **Definition:** Errors in Promises or async/await code.
 
@@ -177,7 +179,7 @@ app.get(
 
 ---
 
-## 🧠 7. Call Stack / Stack Trace
+## 🧠 4. Call Stack / Stack Trace
 
 > **Definition:** Shows the function call path where the error occurred.
 
@@ -206,7 +208,7 @@ try {
 
 ---
 
-## 🧰 8. Using Debugger
+## 🧰 5. Using Debugger
 
 > **Definition:** Tool to step through code and inspect variables.
 
